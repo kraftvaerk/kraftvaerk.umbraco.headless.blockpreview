@@ -1,0 +1,32 @@
+{
+  "name": "Kraftvaerk.Umbraco.Headless.BlockPreview.frontend",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc && vite build",
+    "watch": "node ./build/watch.js ./../../Umbraco wwwroot/app_plugins/Kraftvaerk.Umbraco.Headless.BlockPreview.Frontend",
+    "init-umbraco": "node build/umbraco.js init-umbraco",
+    "test-umbraco": "node build/umbraco.js test-umbraco",
+    "remove-umbraco": "node build/umbraco.js remove-umbraco",
+    "usync": "node build/umbraco.js usync",
+    "generate": "cross-env NODE_TLS_REJECT_UNAUTHORIZED=0 npx openapi-typescript-codegen --input https://localhost:44341/umbraco/swagger/Kraftvaerk.Umbraco.Headless.Blockpreview-api-v1/swagger.json --output ./src/blockpreview-api --client fetch --name BlockPreviewClient --useOptions",
+    "publish": "node build/umbraco.js publish"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lit": "^3.1.4"
+  },
+  "devDependencies": {
+    "@types/node": "^22.2.0",
+    "@umbraco-cms/backoffice": "^16.0.0",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.4.5",
+    "eslint": "^9.9.0",
+    "inquirer": "^10.1.8",
+    "openapi-typescript-codegen": "^0.29.0",
+    "typescript": "^5.2.2",
+    "vite": "^5.3.1"
+  }
+}

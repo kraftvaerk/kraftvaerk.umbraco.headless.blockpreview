@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackageId>Kraftvaerk.Umbraco.Headless.BlockPreview</PackageId>
+    <Title>Kraftvaerk.Umbraco.Headless.BlockPreview</Title>
+    <Authors>Kraftvaerk,Kaspar Boel Kjeldsen</Authors>
+	<Company>Kraftvaerk</Company>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageOutputPath>$(OutputPath)</PackageOutputPath>
+    <Version>1.0.7</Version>
+	<PackageIcon>logo.png</PackageIcon>
+	<PackageProjectUrl>https://github.com/kraftvaerk/kraftvaerk.umbraco.headless.blockpreview</PackageProjectUrl>
+	<RepositoryUrl>https://github.com/kraftvaerk/kraftvaerk.umbraco.headless.blockpreview</RepositoryUrl>
+	<PackageTags>umbraco;plugin;package;umbraco-marketplace;kraftvaerk; </PackageTags>
+	<Description>Live preview of your blocks, right inside the backoffice — powered by your frontend.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Constants\" />
+    <Folder Include="Helpers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="HtmlAgilityPack" Version="1.12.1" />
+    <PackageReference Include="Umbraco.Cms" Version="[16.0.0, 17.0.0)" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ui\**" Pack="true" PackagePath="content\ui" />
+    <None Include="buildTransitive\**" Pack="true" PackagePath="buildTransitive" />
+	  <!-- Include the schema file in the root of the package -->
+	  <None Include="appsettings-schema.headlessBlockPreview.json" Pack="true" PackagePath="\" />
+	  <None Include="Images\logo.png" Pack="true" PackagePath="" />
+	  <None Include="..\README.md">
+		  <Pack>True</Pack>
+		  <PackagePath>\</PackagePath>
+	  </None>
+	  <!-- Include the .props file in the buildTransitive folder so it's automatically imported by consumers -->
+  </ItemGroup>
+</Project>
+

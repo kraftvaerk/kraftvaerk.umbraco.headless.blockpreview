@@ -1,0 +1,24 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<PackageReferenceProjectContentFilesPath>$(MSBuildThisFileDirectory)..\content\ui\**</PackageReferenceProjectContentFilesPath>
+
+	</PropertyGroup>
+
+	<Target Name="CopyPackageReferenceProjectAssets" BeforeTargets="Build">
+		<ItemGroup>
+			<PackageReferenceProjectContentFiles Include="$(PackageReferenceProjectContentFilesPath)" />
+		</ItemGroup>
+		<Message Text="Copying Kraftvaerk.Umbraco.Headless.BlockPreview files: $(PackageReferenceProjectContentFilesPath) - #@(PackageReferenceProjectContentFiles->Count()) files" Importance="high" />
+		<Copy SourceFiles="@(PackageReferenceProjectContentFiles)" DestinationFiles="@(PackageReferenceProjectContentFiles->'$(MSBuildProjectDirectory)\wwwroot\app_plugins\Kraftvaerk.Umbraco.Headless.BlockPreview.frontend\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+	</Target>
+
+	<Target Name="ClearPackageReferenceProjectAssets" BeforeTargets="Clean">
+		<ItemGroup>
+			<PackageReferenceProjectDir Include="$(MSBuildProjectDirectory)\wwwroot\app_plugins\Kraftvaerk.Umbraco.Headless.BlockPreview.frontend\" />
+		</ItemGroup>
+		<Message Text="Clear old Kraftvaerk.Umbraco.Headless.BlockPreview data" Importance="high" />
+		<RemoveDir Directories="@(PackageReferenceProjectDir)" />
+	</Target>
+
+
+</Project>

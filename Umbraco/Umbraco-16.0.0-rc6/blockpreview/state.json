@@ -1,0 +1,22 @@
+[
+  {
+    "Id": "387fbbea-8c41-4019-ac76-c3e6e590f6e1",
+    "Enabled": true,
+    "EnabledNested": false,
+    "EnabledList": true,
+    "EnabledGrid": true,
+    "EnabledRTE": true,
+    "AdvancedSettings": null,
+    "Alias": "rteBlock"
+  },
+  {
+    "Id": "fb1c626d-b539-49be-9295-412f1bfe462a",
+    "Enabled": true,
+    "EnabledNested": true,
+    "EnabledList": true,
+    "EnabledGrid": true,
+    "EnabledRTE": true,
+    "AdvancedSettings": null,
+    "Alias": "testBlock"
+  }
+]
