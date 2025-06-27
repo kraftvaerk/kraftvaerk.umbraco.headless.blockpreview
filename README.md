@@ -147,6 +147,12 @@ Register this implementation in DI like any other Umbraco service. This gives yo
 - 🛠️ Anything else you need  
   If you can derive it from the page, culture, or domain — you can change it here.
 
+## ❓ For Developers
+
+The login for the umbraco project(s) is admin@example.com / 1234567890
+
+I develop up against my own headless project found at [kasparboelkjeldsen/kjeldsen.dev](https://github.com/kasparboelkjeldsen/kjeldsen.dev) and the testblock I use in this project is also implemented there for testing purposes.
+
 ## ❓ FAQ
 
 - **Which editors are supported?**  
