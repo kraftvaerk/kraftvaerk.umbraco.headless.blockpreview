@@ -259,9 +259,9 @@ export class HeadlessPreviewElement extends UmbLitElement implements UmbBlockEdi
 
     button.addEventListener('click', () => {
       HeadlessPreviewElement.useBeamFallback = !HeadlessPreviewElement.useBeamFallback;
-      console.log(HeadlessPreviewElement.useBeamFallback);
+    
       this.requestUpdate();
-      console.log(this.#currentId);
+
     });
 
     uuiActionBar.insertBefore(button, uuiActionBar.firstElementChild);
@@ -273,12 +273,12 @@ export class HeadlessPreviewElement extends UmbLitElement implements UmbBlockEdi
         border: 2px solid transparent;
         box-sizing: border-box;
         transition: border-color 0.2s ease-in-out;
-        min-height: 50px;
+        height: 100%;
       }
-      .__headless-preview a {
+      .__headless-preview > a:first-of-type {
         display: flex;
-        min-height: 50px;
         width: 100%;
+        height: 100%;
       }
       .__headless-preview:hover {
         border: 2px solid var(--uui-palette-malibu);

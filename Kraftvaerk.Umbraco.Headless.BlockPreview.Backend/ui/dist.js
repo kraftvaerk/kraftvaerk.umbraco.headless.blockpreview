@@ -57,7 +57,7 @@ const dt = (s) => new Je(typeof s == "string" ? s : s + "", void 0, ke), Ye = (s
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-const { is: pt, defineProperty: ft, getOwnPropertyDescriptor: mt, getOwnPropertyNames: bt, getOwnPropertySymbols: _t, getPrototypeOf: $t } = Object, N = globalThis, De = N.trustedTypes, yt = De ? De.emptyScript : "", ye = N.reactiveElementPolyfillSupport, G = (s, e) => s, fe = { toAttribute(s, e) {
+const { is: pt, defineProperty: ft, getOwnPropertyDescriptor: mt, getOwnPropertyNames: bt, getOwnPropertySymbols: _t, getPrototypeOf: $t } = Object, B = globalThis, De = B.trustedTypes, yt = De ? De.emptyScript : "", ye = B.reactiveElementPolyfillSupport, G = (s, e) => s, fe = { toAttribute(s, e) {
   switch (e) {
     case Boolean:
       s = s ? yt : null;
@@ -86,7 +86,7 @@ const { is: pt, defineProperty: ft, getOwnPropertyDescriptor: mt, getOwnProperty
   }
   return t;
 } }, Pe = (s, e) => !pt(s, e), Me = { attribute: !0, type: String, converter: fe, reflect: !1, useDefault: !1, hasChanged: Pe };
-Symbol.metadata ?? (Symbol.metadata = Symbol("metadata")), N.litPropertyMetadata ?? (N.litPropertyMetadata = /* @__PURE__ */ new WeakMap());
+Symbol.metadata ?? (Symbol.metadata = Symbol("metadata")), B.litPropertyMetadata ?? (B.litPropertyMetadata = /* @__PURE__ */ new WeakMap());
 let j = class extends HTMLElement {
   static addInitializer(e) {
     this._$Ei(), (this.l ?? (this.l = [])).push(e);
@@ -288,14 +288,14 @@ let j = class extends HTMLElement {
   firstUpdated(e) {
   }
 };
-j.elementStyles = [], j.shadowRootOptions = { mode: "open" }, j[G("elementProperties")] = /* @__PURE__ */ new Map(), j[G("finalized")] = /* @__PURE__ */ new Map(), ye == null || ye({ ReactiveElement: j }), (N.reactiveElementVersions ?? (N.reactiveElementVersions = [])).push("2.1.0");
+j.elementStyles = [], j.shadowRootOptions = { mode: "open" }, j[G("elementProperties")] = /* @__PURE__ */ new Map(), j[G("finalized")] = /* @__PURE__ */ new Map(), ye == null || ye({ ReactiveElement: j }), (B.reactiveElementVersions ?? (B.reactiveElementVersions = [])).push("2.1.0");
 /**
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-const J = globalThis, me = J.trustedTypes, qe = me ? me.createPolicy("lit-html", { createHTML: (s) => s }) : void 0, Xe = "$lit$", U = `lit$${Math.random().toFixed(9).slice(2)}$`, Ze = "?" + U, vt = `<${Ze}>`, q = document, Y = () => q.createComment(""), X = (s) => s === null || typeof s != "object" && typeof s != "function", Oe = Array.isArray, Et = (s) => Oe(s) || typeof (s == null ? void 0 : s[Symbol.iterator]) == "function", ve = `[ 	
-\f\r]`, z = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, xe = /-->/g, je = />/g, C = RegExp(`>|${ve}(?:([^\\s"'>=/]+)(${ve}*=${ve}*(?:[^ 	
+const J = globalThis, me = J.trustedTypes, qe = me ? me.createPolicy("lit-html", { createHTML: (s) => s }) : void 0, Xe = "$lit$", R = `lit$${Math.random().toFixed(9).slice(2)}$`, Ze = "?" + R, vt = `<${Ze}>`, q = document, Y = () => q.createComment(""), X = (s) => s === null || typeof s != "object" && typeof s != "function", Oe = Array.isArray, Et = (s) => Oe(s) || typeof (s == null ? void 0 : s[Symbol.iterator]) == "function", ve = `[ 	
+\f\r]`, z = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, xe = /-->/g, je = />/g, N = RegExp(`>|${ve}(?:([^\\s"'>=/]+)(${ve}*=${ve}*(?:[^ 	
 \f\r"'\`<>=]|("|')|))|$)`, "g"), Ve = /'/g, We = /"/g, Qe = /^(?:script|style|textarea|title)$/i, gt = (s) => (e, ...t) => ({ _$litType$: s, strings: e, values: t }), re = gt(1), x = Symbol.for("lit-noChange"), f = Symbol.for("lit-nothing"), Ke = /* @__PURE__ */ new WeakMap(), I = q.createTreeWalker(q, 129);
 function et(s, e) {
   if (!Oe(s) || !s.hasOwnProperty("raw")) throw Error("invalid template strings array");
@@ -306,10 +306,10 @@ const At = (s, e) => {
   let r, n = e === 2 ? "<svg>" : e === 3 ? "<math>" : "", o = z;
   for (let a = 0; a < t; a++) {
     const l = s[a];
-    let c, b, p = -1, $ = 0;
-    for (; $ < l.length && (o.lastIndex = $, b = o.exec(l), b !== null); ) $ = o.lastIndex, o === z ? b[1] === "!--" ? o = xe : b[1] !== void 0 ? o = je : b[2] !== void 0 ? (Qe.test(b[2]) && (r = RegExp("</" + b[2], "g")), o = C) : b[3] !== void 0 && (o = C) : o === C ? b[0] === ">" ? (o = r ?? z, p = -1) : b[1] === void 0 ? p = -2 : (p = o.lastIndex - b[2].length, c = b[1], o = b[3] === void 0 ? C : b[3] === '"' ? We : Ve) : o === We || o === Ve ? o = C : o === xe || o === je ? o = z : (o = C, r = void 0);
-    const S = o === C && s[a + 1].startsWith("/>") ? " " : "";
-    n += o === z ? l + vt : p >= 0 ? (i.push(c), l.slice(0, p) + Xe + l.slice(p) + U + S) : l + U + (p === -2 ? a : S);
+    let c, b, u = -1, $ = 0;
+    for (; $ < l.length && (o.lastIndex = $, b = o.exec(l), b !== null); ) $ = o.lastIndex, o === z ? b[1] === "!--" ? o = xe : b[1] !== void 0 ? o = je : b[2] !== void 0 ? (Qe.test(b[2]) && (r = RegExp("</" + b[2], "g")), o = N) : b[3] !== void 0 && (o = N) : o === N ? b[0] === ">" ? (o = r ?? z, u = -1) : b[1] === void 0 ? u = -2 : (u = o.lastIndex - b[2].length, c = b[1], o = b[3] === void 0 ? N : b[3] === '"' ? We : Ve) : o === We || o === Ve ? o = N : o === xe || o === je ? o = z : (o = N, r = void 0);
+    const S = o === N && s[a + 1].startsWith("/>") ? " " : "";
+    n += o === z ? l + vt : u >= 0 ? (i.push(c), l.slice(0, u) + Xe + l.slice(u) + R + S) : l + R + (u === -2 ? a : S);
   }
   return [et(s, n + (s[t] || "<?>") + (e === 2 ? "</svg>" : e === 3 ? "</math>" : "")), i];
 };
@@ -320,27 +320,27 @@ class Z {
     let n = 0, o = 0;
     const a = e.length - 1, l = this.parts, [c, b] = At(e, t);
     if (this.el = Z.createElement(c, i), I.currentNode = this.el.content, t === 2 || t === 3) {
-      const p = this.el.content.firstChild;
-      p.replaceWith(...p.childNodes);
+      const u = this.el.content.firstChild;
+      u.replaceWith(...u.childNodes);
     }
     for (; (r = I.nextNode()) !== null && l.length < a; ) {
       if (r.nodeType === 1) {
-        if (r.hasAttributes()) for (const p of r.getAttributeNames()) if (p.endsWith(Xe)) {
-          const $ = b[o++], S = r.getAttribute(p).split(U), te = /([.?@])?(.*)/.exec($);
-          l.push({ type: 1, index: n, name: te[2], strings: S, ctor: te[1] === "." ? St : te[1] === "?" ? Tt : te[1] === "@" ? kt : $e }), r.removeAttribute(p);
-        } else p.startsWith(U) && (l.push({ type: 6, index: n }), r.removeAttribute(p));
+        if (r.hasAttributes()) for (const u of r.getAttributeNames()) if (u.endsWith(Xe)) {
+          const $ = b[o++], S = r.getAttribute(u).split(R), te = /([.?@])?(.*)/.exec($);
+          l.push({ type: 1, index: n, name: te[2], strings: S, ctor: te[1] === "." ? St : te[1] === "?" ? Tt : te[1] === "@" ? kt : $e }), r.removeAttribute(u);
+        } else u.startsWith(R) && (l.push({ type: 6, index: n }), r.removeAttribute(u));
         if (Qe.test(r.tagName)) {
-          const p = r.textContent.split(U), $ = p.length - 1;
+          const u = r.textContent.split(R), $ = u.length - 1;
           if ($ > 0) {
             r.textContent = me ? me.emptyScript : "";
-            for (let S = 0; S < $; S++) r.append(p[S], Y()), I.nextNode(), l.push({ type: 2, index: ++n });
-            r.append(p[$], Y());
+            for (let S = 0; S < $; S++) r.append(u[S], Y()), I.nextNode(), l.push({ type: 2, index: ++n });
+            r.append(u[$], Y());
           }
         }
       } else if (r.nodeType === 8) if (r.data === Ze) l.push({ type: 2, index: n });
       else {
-        let p = -1;
-        for (; (p = r.data.indexOf(U, p + 1)) !== -1; ) l.push({ type: 7, index: n }), p += U.length - 1;
+        let u = -1;
+        for (; (u = r.data.indexOf(R, u + 1)) !== -1; ) l.push({ type: 7, index: n }), u += R.length - 1;
       }
       n++;
     }
@@ -672,24 +672,24 @@ class Dt extends Error {
     return !0;
   }
 }
-var A, w, v, H, D, V, B;
+var A, w, v, U, D, V, H;
 class Mt {
   constructor(e) {
     T(this, A);
     T(this, w);
     T(this, v);
-    T(this, H);
+    T(this, U);
     T(this, D);
     T(this, V);
-    T(this, B);
-    y(this, A, !1), y(this, w, !1), y(this, v, !1), y(this, H, []), y(this, D, new Promise((t, i) => {
-      y(this, V, t), y(this, B, i);
+    T(this, H);
+    y(this, A, !1), y(this, w, !1), y(this, v, !1), y(this, U, []), y(this, D, new Promise((t, i) => {
+      y(this, V, t), y(this, H, i);
       const r = (a) => {
         h(this, A) || h(this, w) || h(this, v) || (y(this, A, !0), h(this, V) && h(this, V).call(this, a));
       }, n = (a) => {
-        h(this, A) || h(this, w) || h(this, v) || (y(this, w, !0), h(this, B) && h(this, B).call(this, a));
+        h(this, A) || h(this, w) || h(this, v) || (y(this, w, !0), h(this, H) && h(this, H).call(this, a));
       }, o = (a) => {
-        h(this, A) || h(this, w) || h(this, v) || h(this, H).push(a);
+        h(this, A) || h(this, w) || h(this, v) || h(this, U).push(a);
       };
       return Object.defineProperty(o, "isResolved", {
         get: () => h(this, A)
@@ -714,22 +714,22 @@ class Mt {
   }
   cancel() {
     if (!(h(this, A) || h(this, w) || h(this, v))) {
-      if (y(this, v, !0), h(this, H).length)
+      if (y(this, v, !0), h(this, U).length)
         try {
-          for (const e of h(this, H))
+          for (const e of h(this, U))
             e();
         } catch (e) {
           console.warn("Cancellation threw an error", e);
           return;
         }
-      h(this, H).length = 0, h(this, B) && h(this, B).call(this, new Dt("Request aborted"));
+      h(this, U).length = 0, h(this, H) && h(this, H).call(this, new Dt("Request aborted"));
     }
   }
   get isCancelled() {
     return h(this, v);
   }
 }
-A = new WeakMap(), w = new WeakMap(), v = new WeakMap(), H = new WeakMap(), D = new WeakMap(), V = new WeakMap(), B = new WeakMap();
+A = new WeakMap(), w = new WeakMap(), v = new WeakMap(), U = new WeakMap(), D = new WeakMap(), V = new WeakMap(), H = new WeakMap();
 const Re = (s) => s != null, ee = (s) => typeof s == "string", Ae = (s) => ee(s) && s !== "", Ue = (s) => typeof s == "object" && typeof s.type == "string" && typeof s.stream == "function" && typeof s.arrayBuffer == "function" && typeof s.constructor == "function" && typeof s.constructor.name == "string" && /^(Blob|File)$/.test(s.constructor.name) && /^(Blob|File)$/.test(s[Symbol.toStringTag]), st = (s) => s instanceof FormData, qt = (s) => {
   try {
     return btoa(s);
@@ -841,12 +841,12 @@ const Re = (s) => s != null, ee = (s) => typeof s == "string", Ae = (s) => ee(s)
   try {
     const n = jt(s, e), o = Vt(e), a = Kt(e), l = await Wt(s, e);
     if (!r.isCancelled) {
-      const c = await zt(s, e, n, a, o, l, r), b = await Gt(c), p = Ft(c, e.responseHeader), $ = {
+      const c = await zt(s, e, n, a, o, l, r), b = await Gt(c), u = Ft(c, e.responseHeader), $ = {
         url: n,
         ok: c.ok,
         status: c.status,
         statusText: c.statusText,
-        body: p ?? b
+        body: u ?? b
       };
       Jt(e, $), t($.body);
     }
@@ -960,53 +960,53 @@ var Qt = Object.defineProperty, es = Object.getOwnPropertyDescriptor, it = (s) =
   for (var r = i > 1 ? void 0 : i ? es(e, t) : e, n = s.length - 1, o; n >= 0; n--)
     (o = s[n]) && (r = (i ? o(e, t, r) : o(r)) || r);
   return i && r && Qt(e, t, r), r;
-}, He = (s, e, t) => e.has(s) || it("Cannot " + t), d = (s, e, t) => (He(s, e, "read from private field"), t ? t.call(s) : e.get(s)), _ = (s, e, t) => e.has(s) ? it("Cannot add the same private member more than once") : e instanceof WeakSet ? e.add(s) : e.set(s, t), m = (s, e, t, i) => (He(s, e, "write to private field"), e.set(s, t), t), ts = (s, e, t) => (He(s, e, "access private method"), t), k, R, L, P, _e, oe, ae, le, F, ce, O, he, de, ue, Se, rt;
+}, He = (s, e, t) => e.has(s) || it("Cannot " + t), d = (s, e, t) => (He(s, e, "read from private field"), t ? t.call(s) : e.get(s)), _ = (s, e, t) => e.has(s) ? it("Cannot add the same private member more than once") : e instanceof WeakSet ? e.add(s) : e.set(s, t), m = (s, e, t, i) => (He(s, e, "write to private field"), e.set(s, t), t), ts = (s, e, t) => (He(s, e, "access private method"), t), C, O, L, k, _e, oe, ae, le, F, ce, P, he, de, ue, Se, rt;
 const ss = "umb-headless-preview";
-let u = class extends Ge {
+let p = class extends Ge {
   constructor() {
-    super(), _(this, Se), _(this, k, null), _(this, R), _(this, L), _(this, P), _(this, _e), _(this, oe), _(this, ae, !1), _(this, le, []), _(this, F), _(this, ce, !1), _(this, O), _(this, he, !1), _(this, de, !1), _(this, ue, !1), this.init();
+    super(), _(this, Se), _(this, C, null), _(this, O), _(this, L), _(this, k), _(this, _e), _(this, oe), _(this, ae, !1), _(this, le, []), _(this, F), _(this, ce, !1), _(this, P), _(this, he, !1), _(this, de, !1), _(this, ue, !1), this.init();
   }
   async updated(s) {
-    super.updated(s), (d(this, R) !== this.content || d(this, L) !== this.settings) && ts(this, Se, rt).call(this);
+    super.updated(s), (d(this, O) !== this.content || d(this, L) !== this.settings) && ts(this, Se, rt).call(this);
   }
   render() {
     var s, e, t, i, r, n;
-    return d(this, O) || m(this, O, u.blockSettings.find((o) => {
+    return d(this, P) || m(this, P, p.blockSettings.find((o) => {
       var a;
       return o.id == ((a = this.blockType) == null ? void 0 : a.contentElementTypeKey);
-    })), d(this, R) || m(this, R, this.content), d(this, L) || m(this, L, this.settings), d(this, le).forEach((o) => {
+    })), d(this, O) || m(this, O, this.content), d(this, L) || m(this, L, this.settings), d(this, le).forEach((o) => {
       this.manageButtons(o);
-    }), u.useBeamFallback || d(this, P) === "blockbeam" || d(this, ce) && !((s = d(this, O)) != null && s.enabledNested) || !((e = d(this, O)) != null && e.enabledGrid) && d(this, he) || !((t = d(this, O)) != null && t.enabledList) && d(this, de) || !((i = d(this, O)) != null && i.enabledRTE) && d(this, ue) || d(this, F) ? this.blockBeam(d(this, F)) : re`<div class="__headless-preview"><a href=${((r = this.config) != null && r.showContentEdit ? (n = this.config) == null ? void 0 : n.editContentPath : void 0) ?? ""}>${Lt(d(this, P))}</a></div>`;
+    }), p.useBeamFallback || d(this, k) === "blockbeam" || d(this, ce) && !((s = d(this, P)) != null && s.enabledNested) || !((e = d(this, P)) != null && e.enabledGrid) && d(this, he) || !((t = d(this, P)) != null && t.enabledList) && d(this, de) || !((i = d(this, P)) != null && i.enabledRTE) && d(this, ue) || d(this, F) ? this.blockBeam(d(this, F)) : re`<div class="__headless-preview"><a href=${((r = this.config) != null && r.showContentEdit ? (n = this.config) == null ? void 0 : n.editContentPath : void 0) ?? ""}>${Lt(d(this, k))}</a></div>`;
   }
   async init() {
-    m(this, P, u.loadingBarHtml), this.consumeContext(ot, (s) => {
+    m(this, k, p.loadingBarHtml), this.consumeContext(ot, (s) => {
       var t;
       m(this, oe, (t = s == null ? void 0 : s.getVariantId()) == null ? void 0 : t.culture), console.log(s == null ? void 0 : s.getHostElement().tagName), m(this, he, (s == null ? void 0 : s.getHostElement().tagName) === "UMB-PROPERTY-EDITOR-UI-BLOCK-GRID"), m(this, de, (s == null ? void 0 : s.getHostElement().tagName) === "UMB-PROPERTY-EDITOR-UI-BLOCK-LIST"), m(this, ue, (s == null ? void 0 : s.getHostElement().tagName) === "UMB-PROPERTY-EDITOR-UI-TIPTAP");
       const e = s == null ? void 0 : s.getHostElement();
       e != null && m(this, le, this.findAllInShadowRoots("uui-action-bar", e));
     }), this.consumeContext(at, (s) => {
-      m(this, k, s == null ? void 0 : s.getUnique()), m(this, R, this.content), this.getHtmlString().then(() => {
+      m(this, C, s == null ? void 0 : s.getUnique()), m(this, O, this.content), this.getHtmlString().then(() => {
         this.requestUpdate();
       });
     }), this.checkReadiness(), this.uiLoop();
   }
   checkReadiness() {
     setTimeout(() => {
-      d(this, P) === u.loadingBarHtml ? ((d(this, k) === null || d(this, k) === void 0) && m(this, ce, !0), this.getHtmlString()) : this.checkReadiness();
+      d(this, k) === p.loadingBarHtml ? ((d(this, C) === null || d(this, C) === void 0) && m(this, ce, !0), this.getHtmlString()) : this.checkReadiness();
     }, 500);
   }
   uiLoop() {
     setTimeout(() => {
-      d(this, ae) !== u.useBeamFallback && (m(this, ae, u.useBeamFallback), this.requestUpdate()), this.uiLoop();
+      d(this, ae) !== p.useBeamFallback && (m(this, ae, p.useBeamFallback), this.requestUpdate()), this.uiLoop();
     }, 100);
   }
   async getHtmlString() {
     var e, t;
     const s = {
-      id: d(this, k),
+      id: d(this, C),
       contentType: (e = this.blockType) == null ? void 0 : e.contentElementTypeKey,
       settingsType: ((t = this.blockType) == null ? void 0 : t.settingsElementTypeKey) ?? "",
-      content: JSON.stringify(d(this, R)),
+      content: JSON.stringify(d(this, O)),
       settings: JSON.stringify(d(this, L) ?? {}),
       culture: d(this, oe)
     };
@@ -1019,11 +1019,11 @@ let u = class extends Ge {
           }).kraftvaerkUmbracoHeadlessBlockpreviewApiV1.postApiV1KraftvaerkUmbracoHeadlessBlockpreview({
             requestBody: s
           });
-          m(this, P, o.html ?? "blockbeam"), this.requestUpdate();
+          m(this, k, o.html ?? "blockbeam"), this.requestUpdate();
         }
       });
     } catch (i) {
-      m(this, P, "blockbeam"), m(this, F, i instanceof Error ? i.message : "Unknown error");
+      m(this, k, "blockbeam"), m(this, F, i instanceof Error ? i.message : "Unknown error");
     }
   }
   blockBeam(s) {
@@ -1053,7 +1053,7 @@ let u = class extends Ge {
     var t;
     if (s.querySelector(".__blockpreview-button")) return;
     const e = this.getHostElement().ownerDocument.createElement("a");
-    e.classList.add("__blockpreview-button"), e.setAttribute("data-id", ((t = d(this, k)) == null ? void 0 : t.toString()) ?? ""), e.setAttribute("style", `
+    e.classList.add("__blockpreview-button"), e.setAttribute("data-id", ((t = d(this, C)) == null ? void 0 : t.toString()) ?? ""), e.setAttribute("style", `
       height: 33px;
       width: 33px;
       background: #f3f3f5;
@@ -1071,45 +1071,45 @@ let u = class extends Ge {
     }), e.addEventListener("mouseleave", () => {
       e.style.background = "#f3f3f5";
     }), e.addEventListener("click", () => {
-      u.useBeamFallback = !u.useBeamFallback, console.log(u.useBeamFallback), this.requestUpdate(), console.log(d(this, k));
+      p.useBeamFallback = !p.useBeamFallback, this.requestUpdate();
     }), s.insertBefore(e, s.firstElementChild);
   }
 };
-k = /* @__PURE__ */ new WeakMap();
-R = /* @__PURE__ */ new WeakMap();
+C = /* @__PURE__ */ new WeakMap();
+O = /* @__PURE__ */ new WeakMap();
 L = /* @__PURE__ */ new WeakMap();
-P = /* @__PURE__ */ new WeakMap();
+k = /* @__PURE__ */ new WeakMap();
 _e = /* @__PURE__ */ new WeakMap();
 oe = /* @__PURE__ */ new WeakMap();
 ae = /* @__PURE__ */ new WeakMap();
 le = /* @__PURE__ */ new WeakMap();
 F = /* @__PURE__ */ new WeakMap();
 ce = /* @__PURE__ */ new WeakMap();
-O = /* @__PURE__ */ new WeakMap();
+P = /* @__PURE__ */ new WeakMap();
 he = /* @__PURE__ */ new WeakMap();
 de = /* @__PURE__ */ new WeakMap();
 ue = /* @__PURE__ */ new WeakMap();
 Se = /* @__PURE__ */ new WeakSet();
 rt = function() {
   clearTimeout(d(this, _e)), m(this, _e, window.setTimeout(async () => {
-    m(this, R, this.content), m(this, L, this.settings), await this.getHtmlString();
+    m(this, O, this.content), m(this, L, this.settings), await this.getHtmlString();
   }, 10));
 };
-u.useBeamFallback = !1;
-u.loadingBarHtml = '<uui-loader-bar style="color: #006eff"></uui-loader-bar>';
-u.blockSettings = [];
-u.styles = [
+p.useBeamFallback = !1;
+p.loadingBarHtml = '<uui-loader-bar style="color: #006eff"></uui-loader-bar>';
+p.blockSettings = [];
+p.styles = [
   Ye`
       .__headless-preview {
         border: 2px solid transparent;
         box-sizing: border-box;
         transition: border-color 0.2s ease-in-out;
-        min-height: 50px;
+        height: 100%;
       }
-      .__headless-preview a {
+      .__headless-preview > a:first-of-type {
         display: flex;
-        min-height: 50px;
         width: 100%;
+        height: 100%;
       }
       .__headless-preview:hover {
         border: 2px solid var(--uui-palette-malibu);
@@ -1126,37 +1126,37 @@ u.styles = [
 ];
 g([
   E({ attribute: !1 })
-], u.prototype, "content", 2);
+], p.prototype, "content", 2);
 g([
   E({ attribute: !1 })
-], u.prototype, "settings", 2);
+], p.prototype, "settings", 2);
 g([
   E({ attribute: !1 })
-], u.prototype, "blockType", 2);
+], p.prototype, "blockType", 2);
 g([
   E({ attribute: !1 })
-], u.prototype, "label", 2);
+], p.prototype, "label", 2);
 g([
   E({ attribute: !1 })
-], u.prototype, "icon", 2);
+], p.prototype, "icon", 2);
 g([
   E({ attribute: !1 })
-], u.prototype, "config", 2);
+], p.prototype, "config", 2);
 g([
   E({ attribute: !1 })
-], u.prototype, "contentInvalid", 2);
+], p.prototype, "contentInvalid", 2);
 g([
   E({ attribute: !1 })
-], u.prototype, "settingsInvalid", 2);
+], p.prototype, "settingsInvalid", 2);
 g([
   E({ attribute: !1 })
-], u.prototype, "unsupported", 2);
+], p.prototype, "unsupported", 2);
 g([
   E({ attribute: !1 })
-], u.prototype, "unpublished", 2);
-u = g([
+], p.prototype, "unpublished", 2);
+p = g([
   tt(ss)
-], u);
+], p);
 var is = Object.defineProperty, rs = Object.getOwnPropertyDescriptor, nt = (s, e, t, i) => {
   for (var r = i > 1 ? void 0 : i ? rs(e, t) : e, n = s.length - 1, o; n >= 0; n--)
     (o = s[n]) && (r = (i ? o(e, t, r) : o(r)) || r);
@@ -1312,15 +1312,15 @@ nt([
 K = nt([
   tt(ns)
 ], K);
-const $s = async (s, e) => {
+const ys = async (s, e) => {
   s.consumeContext(pe, async (t) => {
     const i = await (t == null ? void 0 : t.getLatestToken()) ?? "", r = (t == null ? void 0 : t.getServerUrl()) ?? "", n = await os(r, i);
-    u.blockSettings = n;
+    p.blockSettings = n;
     const o = {
       alias: "Kraftvaerk.Umbraco.Headless.BlockPreview",
       name: "Umbraco Community Headless Block Preview",
       type: "blockEditorCustomView",
-      element: u,
+      element: p,
       forContentTypeAlias: n.filter((c) => c.enabled && c.alias).map((c) => c.alias) ?? []
     }, a = {
       type: "workspaceView",
@@ -1361,6 +1361,7 @@ const $s = async (s, e) => {
   });
 };
 async function os(s, e) {
+  as();
   try {
     const i = await new be({ BASE: s, TOKEN: e }).kraftvaerkUmbracoHeadlessBlockpreviewApiV1.optionsApiV1KraftvaerkUmbracoHeadlessBlockpreview();
     return console.log("Enabled block aliases:", i), i;
@@ -1368,7 +1369,17 @@ async function os(s, e) {
     return console.error("Fetch failed:", t), [];
   }
 }
+async function as() {
+  const s = "/App_Plugins/global/global.css";
+  try {
+    if ((await fetch(s, { method: "HEAD" })).ok) {
+      const t = document.createElement("link");
+      t.rel = "stylesheet", t.href = s, document.head.appendChild(t);
+    }
+  } catch {
+  }
+}
 export {
-  $s as onInit
+  ys as onInit
 };
 //# sourceMappingURL=dist.js.map

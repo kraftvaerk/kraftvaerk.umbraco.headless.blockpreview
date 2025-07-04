@@ -72,6 +72,7 @@ export const onInit: UmbEntryPointOnInit = async (_host, extensionRegistry) => {
 
 async function fetchEnabledBlocks(base: string, token: string): Promise<HeadlessPreviewToggleModel[]> {
 
+  tryInsertGlobalFonts();
   try {
     const client = new BlockPreviewClient({ BASE: base, TOKEN: token });
 
@@ -84,4 +85,22 @@ async function fetchEnabledBlocks(base: string, token: string): Promise<Headless
     return []
   }
 }
+
+async function tryInsertGlobalFonts() {
+  const url = '/App_Plugins/global/global.css';
+
+  try {
+    const response = await fetch(url, { method: 'HEAD' });
+
+    if (response.ok) {
+      const css = document.createElement('link');
+      css.rel = 'stylesheet';
+      css.href = url;
+      document.head.appendChild(css);
+    }
+  } catch (error) {
+    
+  }
+}
+
 
