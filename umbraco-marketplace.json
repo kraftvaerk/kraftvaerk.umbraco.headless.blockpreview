@@ -1,0 +1,46 @@
+{
+  "$schema": "https://marketplace.umbraco.com/umbraco-marketplace-schema.json",
+  "Category": "Editor Tools",
+  "AlternateCategory": "Headless",
+  "Title": "Kraftvaerk Umbraco Headless BlockPreview",
+  "Description": "Live preview of your blocks, right inside the backoffice — powered by your frontend.",
+  "AuthorDetails": {
+    "Name": "Kraftvaerk",
+    "Description": "Don't leave digital to chance. Leave it to us.",
+    "Url": "https://kraftvaerk.com",
+    "ImageUrl": "https://github.com/kraftvaerk.png",
+    "Contributors": [
+      {
+        "Name": "Kaspar Boel Kjeldsen",
+        "Url": "https://github.com/kasparboelkjeldsen"
+      }
+    ],
+    "SyncContributorsFromRepository": false
+  },
+  "LicenseTypes": ["Free"],
+  "PackageType": "Package",
+  "Tags": [
+    "umbraco",
+    "plugin",
+    "block preview",
+    "headless",
+    "block list",
+    "block grid",
+    "live preview"
+  ],
+  "LookingForContributors": true,
+  "LookingForMaintainer": false,
+  "DocumentationUrl": "https://github.com/kraftvaerk/kraftvaerk.umbraco.headless.blockpreview",
+  "IssueTrackerUrl": "https://github.com/kraftvaerk/kraftvaerk.umbraco.headless.blockpreview/issues",
+  "RelatedPackages": [
+    {
+      "PackageId": "Kraftvaerk.Umbraco.Headless.Preview"
+    },
+    {
+      "PackageId": "Kraftvaerk.Umbraco.Headless.CacheKeys"
+    },
+    {
+      "PackageId": "Kraftvaerk.Umbraco.BlockFilter"
+    }
+  ]
+}
