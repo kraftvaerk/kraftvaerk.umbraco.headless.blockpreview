@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc && vite build",
-    "watch": "node ./build/watch.js ./../../Umbraco wwwroot/app_plugins/Kraftvaerk.Umbraco.Headless.BlockPreview.Frontend",
+    "watch": "node ./build/watch.js ./../../Umbraco wwwroot/App_Plugins/Kraftvaerk.Umbraco.Headless.BlockPreview.Frontend",
     "init-umbraco": "node build/umbraco.js init-umbraco",
     "test-umbraco": "node build/umbraco.js test-umbraco",
     "remove-umbraco": "node build/umbraco.js remove-umbraco",

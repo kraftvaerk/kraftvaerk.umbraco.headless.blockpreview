@@ -9,7 +9,7 @@
           "name": "knowit-Kraftvaerk.Umbraco.Headless.BlockPreview.Frontend EntryPoint",
           "alias": "knowit-Kraftvaerk.Umbraco.Headless.BlockPreview.Frontend.entrypoint",
           "type": "entryPoint",
-          "js": "/app_plugins/Kraftvaerk.Umbraco.Headless.BlockPreview.frontend/dist.js"
+          "js": "/App_Plugins/Kraftvaerk.Umbraco.Headless.BlockPreview.frontend/dist.js"
         }
       ]
 }

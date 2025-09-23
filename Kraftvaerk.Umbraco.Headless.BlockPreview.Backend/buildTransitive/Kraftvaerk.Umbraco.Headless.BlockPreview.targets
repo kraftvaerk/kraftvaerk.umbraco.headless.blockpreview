@@ -9,12 +9,12 @@
 			<PackageReferenceProjectContentFiles Include="$(PackageReferenceProjectContentFilesPath)" />
 		</ItemGroup>
 		<Message Text="Copying Kraftvaerk.Umbraco.Headless.BlockPreview files: $(PackageReferenceProjectContentFilesPath) - #@(PackageReferenceProjectContentFiles->Count()) files" Importance="high" />
-		<Copy SourceFiles="@(PackageReferenceProjectContentFiles)" DestinationFiles="@(PackageReferenceProjectContentFiles->'$(MSBuildProjectDirectory)\wwwroot\app_plugins\Kraftvaerk.Umbraco.Headless.BlockPreview.frontend\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+		<Copy SourceFiles="@(PackageReferenceProjectContentFiles)" DestinationFiles="@(PackageReferenceProjectContentFiles->'$(MSBuildProjectDirectory)\wwwroot\App_Plugins\Kraftvaerk.Umbraco.Headless.BlockPreview.frontend\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
 	</Target>
 
 	<Target Name="ClearPackageReferenceProjectAssets" BeforeTargets="Clean">
 		<ItemGroup>
-			<PackageReferenceProjectDir Include="$(MSBuildProjectDirectory)\wwwroot\app_plugins\Kraftvaerk.Umbraco.Headless.BlockPreview.frontend\" />
+			<PackageReferenceProjectDir Include="$(MSBuildProjectDirectory)\wwwroot\App_Plugins\Kraftvaerk.Umbraco.Headless.BlockPreview.frontend\" />
 		</ItemGroup>
 		<Message Text="Clear old Kraftvaerk.Umbraco.Headless.BlockPreview data" Importance="high" />
 		<RemoveDir Directories="@(PackageReferenceProjectDir)" />

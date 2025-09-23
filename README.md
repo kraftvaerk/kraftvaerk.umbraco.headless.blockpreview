@@ -1,6 +1,6 @@
 # Kraftvaerk.Umbraco.Headless.BlockPreview
 
-Live preview of your blocks, right inside the backoffice — powered by your frontend.
+Live preview of your blocks, right inside the backoffice - powered by your frontend.
 
 ⚡ **Works with Umbraco 16 and newer**  
 🧩 **Supports Block List, Block Grid, and blocks inside RTE**  
