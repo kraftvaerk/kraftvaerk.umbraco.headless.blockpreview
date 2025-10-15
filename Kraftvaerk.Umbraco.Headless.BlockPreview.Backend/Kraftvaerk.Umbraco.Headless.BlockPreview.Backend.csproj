@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+	<TargetFrameworks>net9.0;net10.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>Kraftvaerk.Umbraco.Headless.BlockPreview</PackageId>
@@ -12,7 +12,7 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageOutputPath>$(OutputPath)</PackageOutputPath>
-    <Version>1.0.12</Version>
+    <Version>1.1.0</Version>
 	<PackageIcon>logo.png</PackageIcon>
 	<PackageProjectUrl>https://github.com/kraftvaerk/kraftvaerk.umbraco.headless.blockpreview</PackageProjectUrl>
 	<RepositoryUrl>https://github.com/kraftvaerk/kraftvaerk.umbraco.headless.blockpreview</RepositoryUrl>
@@ -23,10 +23,15 @@
     <Folder Include="Constants\" />
     <Folder Include="Helpers\" />
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="HtmlAgilityPack" Version="1.12.1" />
-    <PackageReference Include="Umbraco.Cms" Version="[16.0.0, 17.0.0)" />
-  </ItemGroup>
+  
+	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
+		<PackageReference Include="HtmlAgilityPack" Version="1.12.1" />
+		<PackageReference Include="Umbraco.Cms" Version="[16.0.0, 17.0.0)" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net10.0'">
+		<PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
+		<PackageReference Include="Umbraco.Cms" Version="[17.0.0-beta, 18.0.0)" />
+	</ItemGroup>
   <ItemGroup>
     <None Include="ui\**" Pack="true" PackagePath="content\ui" />
     <None Include="buildTransitive\**" Pack="true" PackagePath="buildTransitive" />

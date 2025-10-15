@@ -1,0 +1,16 @@
+{
+    "$schema": "./../umbraco-package-schema.json",
+    "id": "Kraftvaerk.Umbraco.Headless.BlockPreview.Frontend",
+    "name": "Kraftvaerk.Umbraco.Headless.BlockPreview.Frontend",
+    "allowPackageTelemetry": true,
+    "version": "0.0.0",
+    "extensions": [
+        {
+          "name": "knowit-Kraftvaerk.Umbraco.Headless.BlockPreview.Frontend EntryPoint",
+          "alias": "knowit-Kraftvaerk.Umbraco.Headless.BlockPreview.Frontend.entrypoint",
+          "type": "backofficeEntryPoint",
+          "js": "/App_Plugins/Kraftvaerk.Umbraco.Headless.BlockPreview.frontend/dist.js"
+        }
+      ]
+}
+
