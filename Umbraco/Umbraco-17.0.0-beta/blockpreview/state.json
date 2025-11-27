@@ -28,5 +28,15 @@
     "EnabledRTE": true,
     "AdvancedSettings": null,
     "Alias": "testBlock"
+  },
+  {
+    "Id": "28fd7acc-0f3a-4228-bcdc-bdc86e2ee7a5",
+    "Enabled": true,
+    "EnabledNested": true,
+    "EnabledList": true,
+    "EnabledGrid": true,
+    "EnabledRTE": true,
+    "AdvancedSettings": null,
+    "Alias": "nestedHell"
   }
 ]

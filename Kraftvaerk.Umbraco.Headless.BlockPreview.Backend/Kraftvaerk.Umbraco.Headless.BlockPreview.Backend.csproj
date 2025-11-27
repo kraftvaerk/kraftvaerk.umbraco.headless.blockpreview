@@ -12,7 +12,7 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageOutputPath>$(OutputPath)</PackageOutputPath>
-    <Version>1.1.0</Version>
+    <Version>1.1.5</Version>
 	<PackageIcon>logo.png</PackageIcon>
 	<PackageProjectUrl>https://github.com/kraftvaerk/kraftvaerk.umbraco.headless.blockpreview</PackageProjectUrl>
 	<RepositoryUrl>https://github.com/kraftvaerk/kraftvaerk.umbraco.headless.blockpreview</RepositoryUrl>
@@ -30,7 +30,7 @@
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net10.0'">
 		<PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
-		<PackageReference Include="Umbraco.Cms" Version="[17.0.0-beta, 18.0.0)" />
+		<PackageReference Include="Umbraco.Cms" Version="[17.0.0, 18.0.0)" />
 	</ItemGroup>
   <ItemGroup>
     <None Include="ui\**" Pack="true" PackagePath="content\ui" />

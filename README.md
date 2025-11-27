@@ -2,7 +2,7 @@
 
 Live preview of your blocks, right inside the backoffice - powered by your frontend.
 
-⚡ **Works with Umbraco 16 and newer (including 17.0.0-beta)**  
+⚡ **Works with Umbraco 16 and newer **  
 🧩 **Supports Block List, Block Grid, and blocks inside RTE**  
 🧠 **Headless and frontend-agnostic** — bring your own HTML  
 🌍 **Multi-site and culture-aware** — override settings per domain or language  

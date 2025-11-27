@@ -6,6 +6,8 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using NPoco.fastJSON;
 using Umbraco.Cms.Core.DeliveryApi;
 using Umbraco.Cms.Core.Models.DeliveryApi;
@@ -27,26 +29,56 @@ public class BlockHelper : IBlockHelper
     }
     public IApiElement? BlockContent(string? content, string? contentTypeGuidString)
     {
-        if(content == null || contentTypeGuidString == null || string.IsNullOrEmpty(content) || string.IsNullOrEmpty(contentTypeGuidString)) return Fail();
+        if (content == null || contentTypeGuidString == null || string.IsNullOrEmpty(content) || string.IsNullOrEmpty(contentTypeGuidString)) return Fail();
+
+        var contentAsJObject = JObject.Parse(content);
 
         var guid = Guid.Parse(contentTypeGuidString);
 
         var contentType = _contentTypeService.Get(guid);
 
-        if(contentType == null) return Fail();
+        //if (contentType == null) return Fail();
+
+        PopulateEditorAlias(contentAsJObject, contentType);
+
+        contentAsJObject = ReNestJson(contentAsJObject);
+
+        content = contentAsJObject.ToString(Formatting.None);
+
+
+        if (contentType == null) return Fail();
 
         var publishedContentType = _publishedContentTypeFactory.CreateContentType(contentType);
 
-        //content = PopulateMissingUdis(content);
+        Dictionary<string, object>? data = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(content);
 
-
-        Dictionary<string, object>? data = JsonSerializer.Deserialize<Dictionary<string, object>>(content);
-
-        if(data == null)
+        if (data == null)
         {
             return Fail("Failed to deserialize content JSON. Ensure the content is valid JSON.");
         }
+
         // do further clean up
+        CleanupKeys(publishedContentType, data);
+
+        if (data == null) return Fail();
+
+        try
+        {
+            Dictionary<string, object?> deserializedData = ConvertJsonElement(data);
+            VariationContext variationContext = new VariationContext();
+            IPublishedElement publishedElement = new PublishedElement(publishedContentType, Guid.NewGuid(), deserializedData, true, variationContext);
+
+            var apiElement = _apiElementBuilder.Build(publishedElement);
+            return apiElement;
+        }
+        catch (Exception e)
+        {
+            return Fail(e.Message);
+        }
+    }
+
+    private static void CleanupKeys(IPublishedContentType publishedContentType, Dictionary<string, object> data)
+    {
         foreach (var key in data.Keys.ToList())
         {
             var prop = publishedContentType.PropertyTypes.FirstOrDefault(x => x.Alias == key);
@@ -56,7 +88,7 @@ public class BlockHelper : IBlockHelper
                 if (!string.IsNullOrWhiteSpace(originalValue))
                 {
                     // Deserialize and ensure the result is not null
-                    var deserialized = JsonSerializer.Deserialize<List<Dictionary<string, string>>>(originalValue);
+                    var deserialized = System.Text.Json.JsonSerializer.Deserialize<List<Dictionary<string, string>>>(originalValue);
                     if (deserialized != null)
                     {
                         var newValue = string.Join(",", deserialized.Select(d =>
@@ -79,27 +111,133 @@ public class BlockHelper : IBlockHelper
                 }
             }
         }
-
-        if (data == null) return Fail();
-        Dictionary<string, object?> deserializedData = ConvertJsonElement(data);
-        
-
-
-        VariationContext variationContext = new VariationContext();
-        IPublishedElement publishedElement = new PublishedElement(publishedContentType, Guid.NewGuid(), deserializedData, true, variationContext);
-
-        var apiElement = _apiElementBuilder.Build(publishedElement);
-
-        return apiElement;
     }
 
-    private string PopulateMissingUdis(string json)
+    private static void PopulateEditorAlias(JObject contentAsJObject, global::Umbraco.Cms.Core.Models.IContentType? contentType)
     {
-        var node = JsonNode.Parse(json);
-        if (node == null) throw new InvalidOperationException("Invalid JSON");
+        if(contentType == null)
+            return;
+        foreach (var prop in contentAsJObject.Properties().ToList())
+        {
+            var propType = contentType.PropertyTypes
+                .FirstOrDefault(x => x.Alias.Equals(prop.Name, StringComparison.InvariantCulture));
 
-        FillUdis(node);
-        return node.ToJsonString(new JsonSerializerOptions { WriteIndented = true });
+            if (propType == null)
+                continue;
+
+            var metaProperty = new JProperty(
+                prop.Name + "_editorAlias",
+                propType.PropertyEditorAlias
+            );
+
+            prop.AddAfterSelf(metaProperty);
+        }
+    }
+
+    public JObject ReNestJson(JObject node)
+    {
+        // Start the recursive processing from the root JObject
+        var processed = ProcessToken(node);
+        return (JObject)processed;
+    }
+
+    private JToken ProcessToken(JToken token)
+    {
+        switch (token.Type)
+        {
+            case JTokenType.Object:
+                return ProcessObject((JObject)token);
+
+            case JTokenType.Array:
+                return ProcessArray((JArray)token);
+
+            default:
+                // Primitive: just clone it
+                return token.DeepClone();
+        }
+    }
+
+    private JToken ProcessObject(JObject obj)
+    {
+        var test = obj.ToString();
+        // fix nested dropdowns (and anything else that comes up)
+        IsArrayToStringFix(obj);
+
+        // fix guids
+        if (obj["editorAlias"] != null && obj["editorAlias"]!.Value<string>() == "Umbraco.MultiNodeTreePicker" && obj["value"] != null && obj["value"].ToString().StartsWith("["))
+        {
+            var value = JArray.Parse(obj["value"]!.ToString());
+            var newValueArray = new List<string>();
+
+            foreach(var val in value)
+            {
+                var type = val["type"].ToString();
+                var unique = val["unique"].ToString();
+                newValueArray.Add($"umb://{type}/{unique.Replace("-", "")}");
+            }
+            obj["value"] = string.Join(",", newValueArray);
+        }
+
+        var newObj = new JObject();
+        foreach (var prop in obj.Properties().ToList())
+        {
+            if (prop.Name.EndsWith("_editorAlias")) continue;
+            newObj[prop.Name] = ProcessToken(prop.Value);
+        }
+
+        return newObj;
+    }
+
+    private JToken ProcessArray(JArray array)
+    {
+        var newArray = new JArray();
+        foreach (var item in array)
+        {
+            newArray.Add(ProcessToken(item));
+        }
+        return newArray;
+    }
+
+    public void IsArrayToStringFix(JObject obj)
+    {
+        var test = obj.ToString();
+
+        // handle inserted _editoralias first
+        var props = obj.Properties().ToList();
+        var blockProps = props.Where(p => p.Name.Contains("_editorAlias"));
+
+        var hasDirectEditor = props.Any(x => x.Name == "editorAlias");
+
+        if (!blockProps.Any() && !hasDirectEditor)
+            return;
+
+        foreach(var blockProp in blockProps)
+        {
+            var name = blockProp.Name.Replace("_editorAlias", "");
+            var original = props.First(x => x.Name == blockProp.Name.Replace("_editorAlias", ""));
+
+            var value = original.Value;
+
+            if(value.Type == JTokenType.Array)
+            {
+                // mend array to string
+                var jsonArrayAsString = value.ToString(Formatting.None);
+                original.Value = new JValue(jsonArrayAsString); 
+            }
+        }
+
+        if(hasDirectEditor)
+        {
+            var original = props.First(x => x.Name == "value");
+            var value = original.Value;
+
+            if (value.Type == JTokenType.Array)
+            {
+                // mend array to string
+                var jsonArrayAsString = value.ToString(Formatting.None);
+                original.Value = new JValue(jsonArrayAsString);
+            }
+        }
     }
 
     private void FillUdis(JsonNode node)

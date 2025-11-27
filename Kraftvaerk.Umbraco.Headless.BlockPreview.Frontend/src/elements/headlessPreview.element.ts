@@ -16,7 +16,16 @@ const elementName = 'umb-headless-preview';
 export class HeadlessPreviewElement extends UmbLitElement implements UmbBlockEditorCustomViewElement {
 
   static useBeamFallback = false;
-  static loadingBarHtml = '<uui-loader-bar style="color: #006eff"></uui-loader-bar>';
+  static loadingBarHtml = `
+    <umb-ref-grid-block standalone>
+      <umb-icon slot="icon" name="icon-plugin"></umb-icon>
+      <div slot="name" style="display:flex; align-items:center; gap:8px; padding:6px 0;">
+        <uui-loader-bar style="width:140px; --uui-color-loader-bar: #006eff;"></uui-loader-bar>
+        <uui-tag look="secondary" style="opacity:.6;">Loading preview…</uui-tag>
+      </div>
+      <umb-block-grid-areas-container slot="areas" draggable="false"></umb-block-grid-areas-container>
+    </umb-ref-grid-block>
+  `;
   static blockSettings: HeadlessPreviewToggleModel[] = []; 
 
   @property({ attribute: false }) content?: UmbBlockDataType;
@@ -170,11 +179,16 @@ export class HeadlessPreviewElement extends UmbLitElement implements UmbBlockEdi
             TOKEN: token,
           });
 
-          const response = await client.kraftvaerkUmbracoHeadlessBlockpreviewApiV1.postApiV1KraftvaerkUmbracoHeadlessBlockpreview({
-            requestBody: blockPreviewObject,
-          });
+          try {
+            const response = await client.kraftvaerkUmbracoHeadlessBlockpreviewApiV1.postApiV1KraftvaerkUmbracoHeadlessBlockpreview({
+              requestBody: blockPreviewObject,
+            });
 
-          this.#currentHtmlString = response.html ?? 'blockbeam';
+            this.#currentHtmlString = response.html ?? 'blockbeam';
+          } catch (error) {
+            this.#currentHtmlString = 'blockbeam';
+            this.#lastError = error instanceof Error ? error.message : 'Unknown error';
+          }
           this.requestUpdate();
         }
       });
@@ -291,6 +305,8 @@ export class HeadlessPreviewElement extends UmbLitElement implements UmbBlockEdi
       .__block-preview {
         width: 100%;
       }
+
+      
     `,
   ];
 }

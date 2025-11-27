@@ -72,6 +72,12 @@ public class RequestHelper : IRequestHelper
             var className = selector.Substring(1);
             node = doc.DocumentNode.SelectSingleNode($"//*[contains(concat(' ', normalize-space(@class), ' '), ' {className} ')]");
         }
+        else if (selector.Equals("body", StringComparison.OrdinalIgnoreCase))
+        {
+
+            node = doc.DocumentNode.SelectSingleNode("//body");
+
+        }
 
         return node?.InnerHtml;
     }
