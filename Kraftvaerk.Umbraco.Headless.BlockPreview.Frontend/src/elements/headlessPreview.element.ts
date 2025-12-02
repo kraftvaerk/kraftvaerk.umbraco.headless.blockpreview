@@ -4,12 +4,11 @@ import { UmbBlockTypeBaseModel } from "@umbraco-cms/backoffice/block-type";
 import { UmbEntityUnique } from "@umbraco-cms/backoffice/entity";
 import { UmbLitElement } from "@umbraco-cms/backoffice/lit-element";
 import { UMB_VARIANT_WORKSPACE_CONTEXT } from "@umbraco-cms/backoffice/workspace";
-import { css, html, nothing } from "lit";
+import { css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { BlockPreviewClient, HeadlessPreviewToggleModel } from "../blockpreview-api";
 import { UMB_AUTH_CONTEXT } from "@umbraco-cms/backoffice/auth";
-
 const elementName = 'umb-headless-preview';
 
 @customElement(elementName)
@@ -17,14 +16,10 @@ export class HeadlessPreviewElement extends UmbLitElement implements UmbBlockEdi
 
   static useBeamFallback = false;
   static loadingBarHtml = `
-    <umb-ref-grid-block standalone>
-      <umb-icon slot="icon" name="icon-plugin"></umb-icon>
-      <div slot="name" style="display:flex; align-items:center; gap:8px; padding:6px 0;">
-        <uui-loader-bar style="width:140px; --uui-color-loader-bar: #006eff;"></uui-loader-bar>
-        <uui-tag look="secondary" style="opacity:.6;">Loading preview…</uui-tag>
-      </div>
-      <umb-block-grid-areas-container slot="areas" draggable="false"></umb-block-grid-areas-container>
-    </umb-ref-grid-block>
+    <uui-ref-node name="Loading preview..." detail="" standalone href="">
+      <uui-icon slot="icon" name="icon-plugin"></uui-icon>
+      <uui-loader-bar style="color: #006eff;"></uui-loader-bar>
+    </uui-ref-node>
   `;
   static blockSettings: HeadlessPreviewToggleModel[] = []; 
 
@@ -200,19 +195,10 @@ export class HeadlessPreviewElement extends UmbLitElement implements UmbBlockEdi
   }
 
   private blockBeam(message?: string) {
-    const label = this.label + (message ? `- Rendering-error:  ${message}` : '');
-    return html`<umb-ref-grid-block
-      standalone
-      href=${(this.config?.showContentEdit ? this.config?.editContentPath : undefined) ?? ''}>
-      <umb-icon slot="icon" .name=${this.icon}></umb-icon>
-      <umb-ufm-render slot="name" inline .markdown=${label} .value=${this.content}></umb-ufm-render>
-      ${this.unpublished
-        ? html`<uui-tag slot="name" look="secondary" title=${this.localize.term('blockEditor_notExposedDescription')}>
-            <umb-localize key="blockEditor_notExposedLabel"></umb-localize>
-          </uui-tag>`
-        : nothing}
-      <umb-block-grid-areas-container slot="areas" draggable="false"></umb-block-grid-areas-container>
-    </umb-ref-grid-block>`;
+    return html`
+    <uui-ref-node .name=${this.label ?? 'error'} .detail=${message ?? ''} standalone="">
+      <uui-icon slot="icon" .name=${this.icon ?? 'icon-plugin'} style="--uui-icon-color:var(--uui-palette-maroon-flush);"></uui-icon>
+     </uui-ref-node>`;
   }
 
   private findAllInShadowRoots<T extends Element = Element>(

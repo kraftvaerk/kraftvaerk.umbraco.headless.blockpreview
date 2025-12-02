@@ -12,7 +12,7 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageOutputPath>$(OutputPath)</PackageOutputPath>
-    <Version>1.1.5</Version>
+    <Version>1.2.0</Version>
 	<PackageIcon>logo.png</PackageIcon>
 	<PackageProjectUrl>https://github.com/kraftvaerk/kraftvaerk.umbraco.headless.blockpreview</PackageProjectUrl>
 	<RepositoryUrl>https://github.com/kraftvaerk/kraftvaerk.umbraco.headless.blockpreview</RepositoryUrl>

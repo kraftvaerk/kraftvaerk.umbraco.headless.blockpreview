@@ -14,6 +14,13 @@ public class BlockPreviewSettings : IBlockPreviewSettings
     {
         _headlessBlockPreviewOptions = options.Value;
     }
+
+    public string FinalHtmlManipulation(string html, Guid? pageId, string? culture, string? resolvedDomain)
+    {
+        // by default, do nothing
+        return html;
+    }
+
     public HeadlessBlockPreviewOptions Options(Guid? pageId, string? culture, string? resolvedDomain)
     {
         // just return options - this is a service to other developers to be able to take control of how options are set up. 

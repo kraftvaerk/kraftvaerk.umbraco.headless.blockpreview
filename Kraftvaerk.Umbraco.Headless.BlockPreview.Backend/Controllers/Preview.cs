@@ -108,6 +108,8 @@ public class Preview : Controller
             if (options.Template != null && options.Template.Contains(BlockPreviewConstants.HtmlReplace))
                 html = options.Template.Replace(BlockPreviewConstants.HtmlReplace, html);
 
+            html = _settings.FinalHtmlManipulation(html ?? "", pageId, preview.Culture, resolvedDomain);
+
             return Ok(new { html });
         }
         catch(Exception e)
