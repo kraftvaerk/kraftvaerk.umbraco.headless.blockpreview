@@ -229,7 +229,7 @@ export class HeadlessPreviewElement extends UmbLitElement implements UmbBlockEdi
   private manageButtons(uuiActionBar: HTMLElement) {
     if (uuiActionBar.querySelector('.__blockpreview-button')) return;
 
-    const button = this.getHostElement().ownerDocument.createElement('a');
+    const button = this.getHostElement().ownerDocument.createElement('div');
     button.classList.add('__blockpreview-button');
     button.setAttribute('data-id', this.#currentId?.toString() ?? '');
     button.setAttribute('style', `
@@ -290,6 +290,7 @@ export class HeadlessPreviewElement extends UmbLitElement implements UmbBlockEdi
 
       .__block-preview {
         width: 100%;
+        pointer-events: none;
       }
 
       

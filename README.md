@@ -23,7 +23,7 @@ When enabled:
 How you render that HTML is entirely up to you — use Vue, React, Razor, or `document.write`.  
 ✨ *It's your problem*
 
-## 🚀 Quickstart
+## Quickstart
 
 ### 1. Install the NuGet package
 
@@ -99,7 +99,7 @@ app.listen(3000, () => {
 
 This just dumps the raw request. For actual previews, you'll want to render real components using your frontend framework of choice.
 
-## 💾 Persistent settings
+## Persistent settings
 
 BlockPreview adds an extra tab to the editing workspace for blocks in the Block List and Block Grid editors, allowing you to toggle preview mode for each block.
 
@@ -109,7 +109,29 @@ Whenever you enable preview for a block (in a Block List, Block Grid, or RTE), t
 
 This file contains the list of blocks that should use preview mode and their configuration. You can commit this file to your Git repository to ensure consistent behavior across environments.
 
-## 🔧 Advanced: Per-site behavior
+## Font loading
+
+If your previewed blocks rely on custom fonts, you might notice that fonts don't load correctly in the backoffice preview, even if you have injected your css in the template.
+This is because the backoffice runs your preview inside a deeply nested web-component and fonts don't load correctly in that context.
+
+This plugin will attemp to load the file /wwwroot/App_Plugins/global/global.css and inject it into the backoffice
+
+Example:
+```css
+/* Fira Sans - Local fonts */
+@font-face {
+    font-family: 'Fira Sans';
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+    src: url('/assets/fonts/FiraSans-Light.ttf') format('truetype');
+}
+... more font-faces ...
+```
+
+This would enable the fira sans font to be used in your block previews.
+
+## Advanced: Per-site behavior
 
 If you're working with a multi-site or multi-lingual setup, you might want different preview behavior depending on the request context — for example, sending requests to different frontend apps, applying different stylesheets, or customizing the HTML template.
 
@@ -147,13 +169,13 @@ Register this implementation in DI like any other Umbraco service. This gives yo
 - 🛠️ Anything else you need  
   If you can derive it from the page, culture, or domain — you can change it here.
 
-## ❓ For Developers
+## For Developers
 
 The login for the umbraco project(s) is admin@example.com / 1234567890
 
 I develop up against my own headless project found at [kasparboelkjeldsen/kjeldsen.dev](https://github.com/kasparboelkjeldsen/kjeldsen.dev) and the testblock I use in this project is also implemented there for testing purposes.
 
-## ❓ FAQ
+## FAQ
 
 - **Which editors are supported?**  
   Block List, Block Grid, and blocks used in the Rich Text Editor (RTE).  
@@ -180,7 +202,7 @@ I develop up against my own headless project found at [kasparboelkjeldsen/kjelds
 - **What happens if preview fails?**  
   If `Debug` is `false`, it fails silently. If `true`, failed attempts are logged as errors in Umbraco's logger.
 
-## 📦 License & Contributing
+## License & Contributing
 
 This package is open source and licensed under the [MIT License](https://opensource.org/licenses/MIT).
 

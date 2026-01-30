@@ -27,7 +27,7 @@ public class BlockHelper : IBlockHelper
         _contentTypeService = contentTypeService;
         _publishedContentTypeFactory = publishedContentTypeFactory;
     }
-    public IApiElement? BlockContent(string? content, string? contentTypeGuidString)
+    public (IApiElement? apiElement, Dictionary<string, object?> rawData) BlockContent(string? content, string? contentTypeGuidString)
     {
         if (content == null || contentTypeGuidString == null || string.IsNullOrEmpty(content) || string.IsNullOrEmpty(contentTypeGuidString)) return Fail();
 
@@ -69,7 +69,7 @@ public class BlockHelper : IBlockHelper
             IPublishedElement publishedElement = new PublishedElement(publishedContentType, Guid.NewGuid(), deserializedData, true, variationContext);
 
             var apiElement = _apiElementBuilder.Build(publishedElement);
-            return apiElement;
+            return (apiElement, deserializedData);
         }
         catch (Exception e)
         {
@@ -268,9 +268,9 @@ public class BlockHelper : IBlockHelper
         }
     }
 
-    private IApiElement? Fail(string reason = "")
+    private (IApiElement? apiElement, Dictionary<string, object?> rawData) Fail(string reason = "")
     {
-        return null;
+        return (null, new Dictionary<string, object?>());
     }
 
     private Dictionary<string, object?> ConvertJsonElement(Dictionary<string, object> dictionary)

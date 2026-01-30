@@ -6,7 +6,7 @@ namespace Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.BlockHelper;
 
 public interface IBlockHelper
 {
-    IApiElement? BlockContent(string? content, string? contentTypeGuidString);
+    (IApiElement? apiElement, Dictionary<string, object?> rawData) BlockContent(string? content, string? contentTypeGuidString);
 }
 
 

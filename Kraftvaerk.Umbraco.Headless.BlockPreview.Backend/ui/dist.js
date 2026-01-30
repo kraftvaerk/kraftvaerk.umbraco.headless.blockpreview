@@ -1050,7 +1050,7 @@ let p = class extends Ge {
   manageButtons(s) {
     var t;
     if (s.querySelector(".__blockpreview-button")) return;
-    const e = this.getHostElement().ownerDocument.createElement("a");
+    const e = this.getHostElement().ownerDocument.createElement("div");
     e.classList.add("__blockpreview-button"), e.setAttribute("data-id", ((t = d(this, C)) == null ? void 0 : t.toString()) ?? ""), e.setAttribute("style", `
       height: 33px;
       width: 33px;
@@ -1124,6 +1124,7 @@ p.styles = [
 
       .__block-preview {
         width: 100%;
+        pointer-events: none;
       }
 
       

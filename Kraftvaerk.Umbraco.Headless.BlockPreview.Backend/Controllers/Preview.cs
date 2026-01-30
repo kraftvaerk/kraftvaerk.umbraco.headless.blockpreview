@@ -7,6 +7,7 @@ using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.PreviewDB;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.RequestHelper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using StackExchange.Profiling.Internal;
 using Umbraco.Cms.Api.Common.Attributes;
 using Umbraco.Cms.Api.Common.Filters;
 using Umbraco.Cms.Core;
@@ -57,11 +58,16 @@ public class Preview : Controller
         }
         IApiElement? content = null;
         IApiElement? settings = null;
-
+        Dictionary<string, object?> rawContent = new Dictionary<string, object?>();
+        Dictionary<string, object?> rawSettings = new Dictionary<string, object?>();
         try
         {
-            content = _blockHelper.BlockContent(preview.Content, preview.ContentType);
-            settings = _blockHelper.BlockContent(preview.Settings, preview.SettingsType);
+            var c = _blockHelper.BlockContent(preview.Content, preview.ContentType);
+            var s = _blockHelper.BlockContent(preview.Settings, preview.SettingsType);
+            content = c.apiElement;
+            settings = s.apiElement;
+            rawContent = c.rawData;
+            rawSettings = s.rawData;
         }
         catch(Exception e)
         {
@@ -73,7 +79,7 @@ public class Preview : Controller
             return BadRequest("Could not create IApiElement from Content");
         }
 
-        var model = new BlockPreviewBackendModel() { Content = content, Settings = settings };
+        var model = new BlockPreviewBackendModel() { Content = content, Settings = settings, RawContent = rawContent, RawSettings = rawSettings, Key = preview.Id.HasValue() ? Guid.Parse(preview.Id) : Guid.Empty };
         try
         {
             Guid? pageId = preview.Id != null ? Guid.Parse(preview.Id) : null;
