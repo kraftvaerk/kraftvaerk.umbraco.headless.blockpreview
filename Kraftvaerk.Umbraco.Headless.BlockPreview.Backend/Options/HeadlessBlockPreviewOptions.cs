@@ -15,6 +15,7 @@ public class HeadlessBlockPreviewOptions
     public string Selector { get; set; } = string.Empty;
     public string Template { get; set; } = string.Empty;
 
+    public bool EnableOutputCaching { get; set; } = false;
     public bool Debug { get; set; }
 }
 

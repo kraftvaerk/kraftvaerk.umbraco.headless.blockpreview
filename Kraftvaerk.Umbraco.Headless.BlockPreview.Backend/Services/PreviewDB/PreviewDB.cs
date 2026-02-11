@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Umbraco.Cms.Core.Services;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Caching.Memory;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Models;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.PreviewDB;
 using Kraftvaerk.Umbraco.Headless.Blockpreview.Backend.PackageConstants;
@@ -10,12 +11,16 @@ namespace Kraftvaerk.Umbraco.Headless.Blockpreview.Backend.Services.PreviewDB;
 public class PreviewDB : IPreviewDB
 {
     private readonly IContentTypeService _contentTypeService;
+    private readonly IMemoryCache _cache;
     private readonly string _storagePath;
     private readonly string _filePath;
 
-    public PreviewDB(IWebHostEnvironment env, IContentTypeService contentTypeService)
+    private const string CacheKey = "PreviewDB_State";
+
+    public PreviewDB(IWebHostEnvironment env, IContentTypeService contentTypeService, IMemoryCache cache)
     {
         _contentTypeService = contentTypeService;
+        _cache = cache;
 
         _storagePath = Path.Combine(env.ContentRootPath, BlockPreviewConstants.BlockPreviewFolder);
         _filePath = Path.Combine(_storagePath, BlockPreviewConstants.BlockStateFile);
@@ -34,14 +39,19 @@ public class PreviewDB : IPreviewDB
 
     private List<HeadlessPreviewToggleModel> ReadState()
     {
-        var json = File.ReadAllText(_filePath);
-        return JsonSerializer.Deserialize<List<HeadlessPreviewToggleModel>>(json) ?? new List<HeadlessPreviewToggleModel>();
+        return _cache.GetOrCreate(CacheKey, entry =>
+        {
+            var json = File.ReadAllText(_filePath);
+            return JsonSerializer.Deserialize<List<HeadlessPreviewToggleModel>>(json) ?? [];
+        }) ?? [];
     }
 
     private void WriteState(List<HeadlessPreviewToggleModel> aliases)
     {
-        var json = JsonSerializer.Serialize(aliases.Distinct().ToList(), new JsonSerializerOptions { WriteIndented = true });
+        var state = aliases.Distinct().ToList();
+        var json = JsonSerializer.Serialize(state, new JsonSerializerOptions { WriteIndented = true });
         File.WriteAllText(_filePath, json);
+        _cache.Set(CacheKey, state);
     }
 
     public HeadlessPreviewToggleModel Get(Guid blockId)
@@ -65,7 +75,7 @@ public class PreviewDB : IPreviewDB
         if (contentType == null)
             return;
 
-        var enabledAliases = ReadState();
+        var enabledAliases = ReadState().ToList();
         model.Alias = contentType.Alias;
         enabledAliases.RemoveAll(x => x.Id == model.Id);
 

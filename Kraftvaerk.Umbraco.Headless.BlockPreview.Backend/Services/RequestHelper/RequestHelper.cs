@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Models;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Options;
@@ -14,9 +15,17 @@ namespace Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.RequestHelpe
 public class RequestHelper : IRequestHelper
 {
     private readonly IHttpClientFactory _httpClientFactory;
-    public RequestHelper(IHttpClientFactory httpClientFactory)
+    private readonly ILogger<RequestHelper> _logger;
+
+    private static readonly JsonSerializerOptions _jsonOptions = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+    };
+
+    public RequestHelper(IHttpClientFactory httpClientFactory, ILogger<RequestHelper> logger)
     {
         _httpClientFactory = httpClientFactory;
+        _logger = logger;
     }
 
 
@@ -26,12 +35,7 @@ public class RequestHelper : IRequestHelper
         var header = BlockPreviewConstants.DefaultHeader;
         var url = $"{previewOptions.Host}{previewOptions.Api}";
 
-        var options = new JsonSerializerOptions
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-        };
-
-        var json = JsonSerializer.Serialize(model, options);
+        var json = JsonSerializer.Serialize(model, _jsonOptions);
 
         using (var client = _httpClientFactory.CreateClient("fetch-headless-preview-by-post"))
         {
@@ -42,11 +46,21 @@ public class RequestHelper : IRequestHelper
 
             if (!response.IsSuccessStatusCode)
             {
-                // optionally log or throw based on your error strategy
+                if (previewOptions.Debug)
+                {
+                    _logger.LogWarning("BlockPreview Debug: Request to {Url} failed with status {StatusCode}", url, response.StatusCode);
+                }
                 return null;
             }
 
-            return await response.Content.ReadAsStringAsync();
+            var result = await response.Content.ReadAsStringAsync();
+
+            if (previewOptions.Debug)
+            {
+                _logger.LogWarning("BlockPreview Debug: Received response from {Url}, length: {Length} chars", url, result?.Length ?? 0);
+            }
+
+            return result;
         }
     }
 

@@ -2,6 +2,7 @@ using Asp.Versioning;
 using Kraftvaerk.Umbraco.Headless.Blockpreview.Backend.PackageConstants;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Models;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.BlockHelper;
+using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.BlockPreviewCache;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.BlockPreviewSettings;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.PreviewDB;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.RequestHelper;
@@ -32,18 +33,21 @@ public class Preview : Controller
     private readonly IRequestHelper _requestHelper;
     private readonly IPreviewDB _previewDB;
     private readonly IBlockPreviewSettings _settings;
+    private readonly IBlockPreviewCache _cache;
     private readonly IUmbracoHelperAccessor _umbracoHelperAccessor;
     public Preview(
         IBlockHelper blockHelper, 
         IRequestHelper requestHelper, 
         IPreviewDB previewDB,
         IBlockPreviewSettings settings,
+        IBlockPreviewCache cache,
         IUmbracoHelperAccessor umbracoHelperAccessor)
     {
         _blockHelper = blockHelper;
         _requestHelper = requestHelper;
         _previewDB = previewDB;
         _settings = settings;
+        _cache = cache;
         _umbracoHelperAccessor = umbracoHelperAccessor;
 
     }
@@ -56,6 +60,14 @@ public class Preview : Controller
         {
             return BadRequest("Invalid preview data provided.");
         }
+
+        // Check cache first if output caching is enabled
+        var globalOptions = _settings.Options(null, preview.Culture, null);
+        if (globalOptions.EnableOutputCaching && _cache.TryGet(preview, out var cachedHtml))
+        {
+            return Ok(new { html = cachedHtml });
+        }
+
         IApiElement? content = null;
         IApiElement? settings = null;
         Dictionary<string, object?> rawContent = new Dictionary<string, object?>();
@@ -115,6 +127,12 @@ public class Preview : Controller
                 html = options.Template.Replace(BlockPreviewConstants.HtmlReplace, html);
 
             html = _settings.FinalHtmlManipulation(html ?? "", pageId, preview.Culture, resolvedDomain);
+
+            // Store in cache if output caching is enabled
+            if (options.EnableOutputCaching && html != null)
+            {
+                _cache.Set(preview, html);
+            }
 
             return Ok(new { html });
         }

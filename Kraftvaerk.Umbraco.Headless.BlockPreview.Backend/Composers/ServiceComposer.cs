@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Options;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.BlockHelper;
+using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.BlockPreviewCache;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.BlockPreviewSettings;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.PreviewDB;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.RequestHelper;
@@ -17,6 +18,7 @@ namespace Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Composers
             builder.Services.AddTransient<IBlockHelper, BlockHelper>();
             builder.Services.AddTransient<IRequestHelper, RequestHelper>();
             builder.Services.AddTransient<IPreviewDB, PreviewDB>();
+            builder.Services.AddSingleton<IBlockPreviewCache, BlockPreviewCache>();
 
             builder.Services.Configure<HeadlessBlockPreviewOptions>(
                 builder.Config.GetSection(HeadlessBlockPreviewOptions.SectionName));

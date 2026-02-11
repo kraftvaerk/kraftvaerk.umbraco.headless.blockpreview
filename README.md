@@ -43,6 +43,7 @@ After the first startup, the package registers an appsettings schema, so you'll 
   "ApiKey": "woot",
   "Selector": "#__preview",
   "Template": "<link rel=\"stylesheet\" href=\"/cms.css\" /><style>.__block-preview { background: black; }</style><div class=\"__block-preview\">{{html}}</div>",
+  "EnableOutputCaching": false,
   "Debug": false
 }
 ```
@@ -64,8 +65,11 @@ After the first startup, the package registers an appsettings schema, so you'll 
 - **Template**:  
   An HTML string that wraps the returned preview HTML. The placeholder `{{html}}` will be replaced with the content extracted by `Selector`. This is your chance to include custom stylesheets, fonts, or any other dependencies your preview needs.
 
+- **EnableOutputCaching**:  
+  When set to `true`, preview responses are cached in memory based on the block content. Identical requests within 24 hours return cached HTML instantly, avoiding repeated calls to your frontend. This can significantly improve performance for frequently edited blocks, but may increase RAM usage.
+
 - **Debug**:  
-  When set to `true`, failed previews are logged as errors using Umbraco's logging. When `false`, failures are silently ignored — helpful in production environments to avoid excessive log noise.
+  When set to `true`, preview requests and responses are logged as warnings using Umbraco's logging — useful for troubleshooting. When `false`, logging is minimal.
 
 ### 3. Implement a frontend preview endpoint
 
