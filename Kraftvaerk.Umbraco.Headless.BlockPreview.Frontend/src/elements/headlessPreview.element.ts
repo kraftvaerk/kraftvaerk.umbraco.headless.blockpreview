@@ -98,7 +98,6 @@ export class HeadlessPreviewElement extends UmbLitElement implements UmbBlockEdi
 
     this.consumeContext(UMB_BLOCK_MANAGER_CONTEXT, (blockManager) => {
       this.#culture = blockManager?.getVariantId()?.culture;
-      console.log(blockManager?.getHostElement().tagName)
       this.#isGrid = blockManager?.getHostElement().tagName === 'UMB-PROPERTY-EDITOR-UI-BLOCK-GRID';
       this.#isList = blockManager?.getHostElement().tagName === 'UMB-PROPERTY-EDITOR-UI-BLOCK-LIST';
       this.#isRTE = blockManager?.getHostElement().tagName === 'UMB-PROPERTY-EDITOR-UI-TIPTAP';

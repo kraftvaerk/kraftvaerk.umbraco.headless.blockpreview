@@ -1,0 +1,17 @@
+{
+  "name": "headless-blockpreview-example-target",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Minimal Node target for Kraftvaerk Umbraco Headless BlockPreview",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

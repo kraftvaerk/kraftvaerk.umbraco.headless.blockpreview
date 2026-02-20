@@ -2,7 +2,7 @@
 
 Live preview of your blocks, right inside the backoffice - powered by your frontend.
 
-⚡ **Works with Umbraco 16 and newer **  
+⚡ **Works with Umbraco 17 and newer **  
 🧩 **Supports Block List, Block Grid, and blocks inside RTE**  
 🧠 **Headless and frontend-agnostic** — bring your own HTML  
 🌍 **Multi-site and culture-aware** — override settings per domain or language  
@@ -38,7 +38,7 @@ After the first startup, the package registers an appsettings schema, so you'll 
 
 ```json
 "HeadlessBlockPreview": {
-  "Host": "http://localhost:3000",
+  "Host": "http://localhost:3001",
   "Api": "/__blockpreview",
   "ApiKey": "woot",
   "Selector": "#__preview",
@@ -71,7 +71,23 @@ After the first startup, the package registers an appsettings schema, so you'll 
 - **Debug**:  
   When set to `true`, preview requests and responses are logged as warnings using Umbraco's logging — useful for troubleshooting. When `false`, logging is minimal.
 
-### 3. Implement a frontend preview endpoint
+### 3. Run the bundled example preview server (recommended)
+
+This repository includes a minimal Node-based preview target in `example-preview-frontend`.
+
+Run it with:
+
+```bash
+cd example-preview-frontend
+npm install
+npm start
+```
+
+It listens on `http://localhost:3001` and exposes `POST /__blockpreview`.
+
+The sample Umbraco project in `Umbraco/Umbraco-17.2.0` is preconfigured to use this target.
+
+### 4. (Optional) Implement your own frontend preview endpoint
 
 The package sends a `POST` request with the following payload:
 
@@ -85,7 +101,7 @@ public class BlockPreviewBackendModel
 
 If your frontend uses Umbraco's Content Delivery API types, this should feel familiar — and easy to work with.
 
-Here's a minimal Express server that echoes the request body as HTML:
+If you prefer your own target app, here's a minimal Express server that echoes the request body as HTML:
 
 ```js
 const express = require('express');
@@ -96,8 +112,8 @@ app.post('/__blockpreview', (req, res) => {
   res.send(`<pre>${JSON.stringify(req.body, null, 2)}</pre>`);
 });
 
-app.listen(3000, () => {
-  console.log('Preview server running on http://localhost:3000');
+app.listen(3001, () => {
+  console.log('Preview server running on http://localhost:3001');
 });
 ```
 
@@ -118,7 +134,7 @@ This file contains the list of blocks that should use preview mode and their con
 If your previewed blocks rely on custom fonts, you might notice that fonts don't load correctly in the backoffice preview, even if you have injected your css in the template.
 This is because the backoffice runs your preview inside a deeply nested web-component and fonts don't load correctly in that context.
 
-This plugin will attemp to load the file /wwwroot/App_Plugins/global/global.css and inject it into the backoffice
+This plugin will attempt to load the file /wwwroot/App_Plugins/global/global.css and inject it into the backoffice
 
 Example:
 ```css
@@ -175,7 +191,7 @@ Register this implementation in DI like any other Umbraco service. This gives yo
 
 ## For Developers
 
-The login for the umbraco project(s) is admin@example.com / 1234567890
+The login for the sample Umbraco project (`Umbraco/Umbraco-17.2.0`) is admin@example.com / 1234567890
 
 I develop up against my own headless project found at [kasparboelkjeldsen/kjeldsen.dev](https://github.com/kasparboelkjeldsen/kjeldsen.dev) and the testblock I use in this project is also implemented there for testing purposes.
 
