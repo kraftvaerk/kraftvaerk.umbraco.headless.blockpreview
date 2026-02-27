@@ -15,32 +15,16 @@ app.post('/__blockpreview', (req, res) => {
   const { content, settings } = normalizePayload(body);
 
   const alias =
-    content?.contentTypeAlias ||
     content?.contentType?.alias ||
     content?.contentType?.Alias ||
     content?.contentType ||
+    content?.contentTypeAlias ||
     body.contentTypeAlias ||
     body.contentType ||
     'unknown.block';
 
-  const contentId = content?.id || body.id || 'n/a';
-  const culture = content?.culture || body.culture || body.Culture || 'n/a';
-  const apiKey = req.get('kuhb-header') || 'none';
-
-  const html = `
-    <div id="__preview" style="font-family: system-ui, sans-serif; padding: 16px; border: 1px solid #ddd; border-radius: 6px; background: #fff;">
-      <h3 style="margin: 0 0 12px;">Example Block Preview</h3>
-      <p style="margin: 0 0 8px;"><strong>Alias:</strong> ${escapeHtml(String(alias))}</p>
-      <p style="margin: 0 0 8px;"><strong>ID:</strong> ${escapeHtml(String(contentId))}</p>
-      <p style="margin: 0 0 12px;"><strong>Culture:</strong> ${escapeHtml(String(culture))}</p>
-      <h4 style="margin: 12px 0 6px;">Content payload</h4>
-      <pre style="white-space: pre-wrap; margin: 0 0 12px;">${escapeHtml(JSON.stringify(content, null, 2))}</pre>
-      <h4 style="margin: 12px 0 6px;">Settings payload</h4>
-      <pre style="white-space: pre-wrap; margin: 0;">${escapeHtml(JSON.stringify(settings, null, 2))}</pre>
-      <p style="margin: 12px 0 0; opacity: 0.7;"><small>kuhb-header: ${escapeHtml(apiKey)}</small></p>
-    </div>
-  `;
-
+  const renderedHtml = renderBlock(alias, content, settings);
+  const html = `<!DOCTYPE html><html><body><div id="__preview">${renderedHtml}</div></body></html>`;
   res.type('html').send(html);
 });
 
@@ -71,6 +55,26 @@ function parseMaybeJson(value) {
   } catch {
     return value;
   }
+}
+
+function renderBlock(contentType, content, settings) {
+  const props = extractApiElementProperties(content);
+
+  const textValue = props.text || props.Text || '';
+  return `
+    <div style="padding: 16px; color: white; font-family: system-ui, sans-serif;">
+      <h2 style="margin: 0 0 16px;">${escapeHtml(String(textValue))}</h2>
+      <p style="margin: 0; font-size: 0.9em; opacity: 0.8;">Content Type: ${escapeHtml(String(contentType))}</p>
+    </div>
+  `;
+}
+
+function extractApiElementProperties(content) {
+  if (!content) return {};
+  if (content.properties && typeof content.properties === 'object' && !Array.isArray(content.properties)) {
+    return content.properties;
+  }
+  return content;
 }
 
 function escapeHtml(value) {
