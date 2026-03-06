@@ -193,9 +193,20 @@ export class HeadlessPreviewElement extends UmbLitElement implements UmbBlockEdi
     }
   }
 
+  private resolveLabel(label: string | undefined): string {
+    console.log('Resolving label', { label, content: this.content });
+    if (!label) return 'error';
+    if (!this.content) return label;
+    const contentObj = this.content as Record<string, unknown>;
+    return label.replace(/\{[=+!]([^}]+)\}/g, (_match, alias) => {
+      const val = contentObj?.[alias];
+      return val !== undefined && val !== null && val !== '' ? String(val) : '';
+    });
+  }
+
   private blockBeam(message?: string) {
     return html`
-    <uui-ref-node .name=${this.label ?? 'error'} .detail=${message ?? ''} standalone="">
+    <uui-ref-node .name=${this.resolveLabel(this.label)} .detail=${message ?? ''} standalone="">
       <uui-icon slot="icon" .name=${this.icon ?? 'icon-plugin'} style="--uui-icon-color:var(--uui-palette-maroon-flush);"></uui-icon>
      </uui-ref-node>`;
   }
