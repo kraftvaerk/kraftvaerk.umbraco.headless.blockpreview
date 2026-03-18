@@ -87,7 +87,7 @@ const { is: pt, defineProperty: ft, getOwnPropertyDescriptor: mt, getOwnProperty
   return t;
 } }, Pe = (s, e) => !pt(s, e), De = { attribute: !0, type: String, converter: pe, reflect: !1, useDefault: !1, hasChanged: Pe };
 Symbol.metadata ?? (Symbol.metadata = Symbol("metadata")), B.litPropertyMetadata ?? (B.litPropertyMetadata = /* @__PURE__ */ new WeakMap());
-let j = class extends HTMLElement {
+let V = class extends HTMLElement {
   static addInitializer(e) {
     this._$Ei(), (this.l ?? (this.l = [])).push(e);
   }
@@ -288,15 +288,15 @@ let j = class extends HTMLElement {
   firstUpdated(e) {
   }
 };
-j.elementStyles = [], j.shadowRootOptions = { mode: "open" }, j[G("elementProperties")] = /* @__PURE__ */ new Map(), j[G("finalized")] = /* @__PURE__ */ new Map(), be == null || be({ ReactiveElement: j }), (B.reactiveElementVersions ?? (B.reactiveElementVersions = [])).push("2.1.0");
+V.elementStyles = [], V.shadowRootOptions = { mode: "open" }, V[G("elementProperties")] = /* @__PURE__ */ new Map(), V[G("finalized")] = /* @__PURE__ */ new Map(), be == null || be({ ReactiveElement: V }), (B.reactiveElementVersions ?? (B.reactiveElementVersions = [])).push("2.1.0");
 /**
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-const J = globalThis, fe = J.trustedTypes, qe = fe ? fe.createPolicy("lit-html", { createHTML: (s) => s }) : void 0, Xe = "$lit$", U = `lit$${Math.random().toFixed(9).slice(2)}$`, Ze = "?" + U, vt = `<${Ze}>`, q = document, Y = () => q.createComment(""), X = (s) => s === null || typeof s != "object" && typeof s != "function", Oe = Array.isArray, Et = (s) => Oe(s) || typeof (s == null ? void 0 : s[Symbol.iterator]) == "function", ye = `[ 	
-\f\r]`, F = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, xe = /-->/g, je = />/g, N = RegExp(`>|${ye}(?:([^\\s"'>=/]+)(${ye}*=${ye}*(?:[^ 	
-\f\r"'\`<>=]|("|')|))|$)`, "g"), Ve = /'/g, We = /"/g, Qe = /^(?:script|style|textarea|title)$/i, gt = (s) => (e, ...t) => ({ _$litType$: s, strings: e, values: t }), Ae = gt(1), x = Symbol.for("lit-noChange"), m = Symbol.for("lit-nothing"), Ke = /* @__PURE__ */ new WeakMap(), I = q.createTreeWalker(q, 129);
+const J = globalThis, fe = J.trustedTypes, qe = fe ? fe.createPolicy("lit-html", { createHTML: (s) => s }) : void 0, Xe = "$lit$", R = `lit$${Math.random().toFixed(9).slice(2)}$`, Ze = "?" + R, vt = `<${Ze}>`, q = document, Y = () => q.createComment(""), X = (s) => s === null || typeof s != "object" && typeof s != "function", Oe = Array.isArray, gt = (s) => Oe(s) || typeof (s == null ? void 0 : s[Symbol.iterator]) == "function", ye = `[ 	
+\f\r]`, F = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, xe = /-->/g, Ve = />/g, N = RegExp(`>|${ye}(?:([^\\s"'>=/]+)(${ye}*=${ye}*(?:[^ 	
+\f\r"'\`<>=]|("|')|))|$)`, "g"), je = /'/g, We = /"/g, Qe = /^(?:script|style|textarea|title)$/i, Et = (s) => (e, ...t) => ({ _$litType$: s, strings: e, values: t }), Ae = Et(1), x = Symbol.for("lit-noChange"), m = Symbol.for("lit-nothing"), Ke = /* @__PURE__ */ new WeakMap(), I = q.createTreeWalker(q, 129);
 function et(s, e) {
   if (!Oe(s) || !s.hasOwnProperty("raw")) throw Error("invalid template strings array");
   return qe !== void 0 ? qe.createHTML(e) : e;
@@ -307,9 +307,9 @@ const At = (s, e) => {
   for (let a = 0; a < t; a++) {
     const l = s[a];
     let c, _, u = -1, b = 0;
-    for (; b < l.length && (o.lastIndex = b, _ = o.exec(l), _ !== null); ) b = o.lastIndex, o === F ? _[1] === "!--" ? o = xe : _[1] !== void 0 ? o = je : _[2] !== void 0 ? (Qe.test(_[2]) && (r = RegExp("</" + _[2], "g")), o = N) : _[3] !== void 0 && (o = N) : o === N ? _[0] === ">" ? (o = r ?? F, u = -1) : _[1] === void 0 ? u = -2 : (u = o.lastIndex - _[2].length, c = _[1], o = _[3] === void 0 ? N : _[3] === '"' ? We : Ve) : o === We || o === Ve ? o = N : o === xe || o === je ? o = F : (o = N, r = void 0);
+    for (; b < l.length && (o.lastIndex = b, _ = o.exec(l), _ !== null); ) b = o.lastIndex, o === F ? _[1] === "!--" ? o = xe : _[1] !== void 0 ? o = Ve : _[2] !== void 0 ? (Qe.test(_[2]) && (r = RegExp("</" + _[2], "g")), o = N) : _[3] !== void 0 && (o = N) : o === N ? _[0] === ">" ? (o = r ?? F, u = -1) : _[1] === void 0 ? u = -2 : (u = o.lastIndex - _[2].length, c = _[1], o = _[3] === void 0 ? N : _[3] === '"' ? We : je) : o === We || o === je ? o = N : o === xe || o === Ve ? o = F : (o = N, r = void 0);
     const T = o === N && s[a + 1].startsWith("/>") ? " " : "";
-    n += o === F ? l + vt : u >= 0 ? (i.push(c), l.slice(0, u) + Xe + l.slice(u) + U + T) : l + U + (u === -2 ? a : T);
+    n += o === F ? l + vt : u >= 0 ? (i.push(c), l.slice(0, u) + Xe + l.slice(u) + R + T) : l + R + (u === -2 ? a : T);
   }
   return [et(s, n + (s[t] || "<?>") + (e === 2 ? "</svg>" : e === 3 ? "</math>" : "")), i];
 };
@@ -326,11 +326,11 @@ class Z {
     for (; (r = I.nextNode()) !== null && l.length < a; ) {
       if (r.nodeType === 1) {
         if (r.hasAttributes()) for (const u of r.getAttributeNames()) if (u.endsWith(Xe)) {
-          const b = _[o++], T = r.getAttribute(u).split(U), te = /([.?@])?(.*)/.exec(b);
+          const b = _[o++], T = r.getAttribute(u).split(R), te = /([.?@])?(.*)/.exec(b);
           l.push({ type: 1, index: n, name: te[2], strings: T, ctor: te[1] === "." ? St : te[1] === "?" ? Tt : te[1] === "@" ? kt : $e }), r.removeAttribute(u);
-        } else u.startsWith(U) && (l.push({ type: 6, index: n }), r.removeAttribute(u));
+        } else u.startsWith(R) && (l.push({ type: 6, index: n }), r.removeAttribute(u));
         if (Qe.test(r.tagName)) {
-          const u = r.textContent.split(U), b = u.length - 1;
+          const u = r.textContent.split(R), b = u.length - 1;
           if (b > 0) {
             r.textContent = fe ? fe.emptyScript : "";
             for (let T = 0; T < b; T++) r.append(u[T], Y()), I.nextNode(), l.push({ type: 2, index: ++n });
@@ -340,7 +340,7 @@ class Z {
       } else if (r.nodeType === 8) if (r.data === Ze) l.push({ type: 2, index: n });
       else {
         let u = -1;
-        for (; (u = r.data.indexOf(U, u + 1)) !== -1; ) l.push({ type: 7, index: n }), u += U.length - 1;
+        for (; (u = r.data.indexOf(R, u + 1)) !== -1; ) l.push({ type: 7, index: n }), u += R.length - 1;
       }
       n++;
     }
@@ -405,7 +405,7 @@ class Q {
     return this._$AB;
   }
   _$AI(e, t = this) {
-    e = K(this, e, t), X(e) ? e === m || e == null || e === "" ? (this._$AH !== m && this._$AR(), this._$AH = m) : e !== this._$AH && e !== x && this._(e) : e._$litType$ !== void 0 ? this.$(e) : e.nodeType !== void 0 ? this.T(e) : Et(e) ? this.k(e) : this._(e);
+    e = K(this, e, t), X(e) ? e === m || e == null || e === "" ? (this._$AH !== m && this._$AR(), this._$AH = m) : e !== this._$AH && e !== x && this._(e) : e._$litType$ !== void 0 ? this.$(e) : e.nodeType !== void 0 ? this.T(e) : gt(e) ? this.k(e) : this._(e);
   }
   O(e) {
     return this._$AA.parentNode.insertBefore(e, this._$AB);
@@ -531,7 +531,7 @@ const Ot = (s, e, t) => {
  * SPDX-License-Identifier: BSD-3-Clause
  */
 const D = globalThis;
-let re = class extends j {
+let re = class extends V {
   constructor() {
     super(...arguments), this.renderOptions = { host: this }, this._$Do = void 0;
   }
@@ -558,8 +558,8 @@ let re = class extends j {
 };
 var Fe;
 re._$litElement$ = !0, re.finalized = !0, (Fe = D.litElementHydrateSupport) == null || Fe.call(D, { LitElement: re });
-const Ee = D.litElementPolyfillSupport;
-Ee == null || Ee({ LitElement: re });
+const ge = D.litElementPolyfillSupport;
+ge == null || ge({ LitElement: re });
 (D.litElementVersions ?? (D.litElementVersions = [])).push("4.2.0");
 /**
  * @license
@@ -576,7 +576,7 @@ const tt = (s) => (e, t) => {
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-const Ut = { attribute: !0, type: String, converter: pe, reflect: !1, hasChanged: Pe }, Rt = (s = Ut, e, t) => {
+const Rt = { attribute: !0, type: String, converter: pe, reflect: !1, hasChanged: Pe }, Ut = (s = Rt, e, t) => {
   const { kind: i, metadata: r } = t;
   let n = globalThis.litPropertyMetadata.get(r);
   if (n === void 0 && globalThis.litPropertyMetadata.set(r, n = /* @__PURE__ */ new Map()), i === "setter" && ((s = Object.create(s)).wrapped = !0), n.set(t.name, s), i === "accessor") {
@@ -597,8 +597,8 @@ const Ut = { attribute: !0, type: String, converter: pe, reflect: !1, hasChanged
   }
   throw Error("Unsupported decorator location: " + i);
 };
-function E(s) {
-  return (e, t) => typeof t == "object" ? Rt(s, e, t) : ((i, r, n) => {
+function g(s) {
+  return (e, t) => typeof t == "object" ? Ut(s, e, t) : ((i, r, n) => {
     const o = r.hasOwnProperty(n);
     return r.constructor.createProperty(n, i), o ? Object.getOwnPropertyDescriptor(r, n) : void 0;
   })(s, e, t);
@@ -609,7 +609,7 @@ function E(s) {
  * SPDX-License-Identifier: BSD-3-Clause
  */
 function Ht(s) {
-  return E({ ...s, state: !0, attribute: !1 });
+  return g({ ...s, state: !0, attribute: !1 });
 }
 /**
  * @license
@@ -672,24 +672,24 @@ class Mt extends Error {
     return !0;
   }
 }
-var A, w, v, R, M, W, H;
+var A, w, v, U, M, W, H;
 class Dt {
   constructor(e) {
     k(this, A);
     k(this, w);
     k(this, v);
-    k(this, R);
+    k(this, U);
     k(this, M);
     k(this, W);
     k(this, H);
-    y(this, A, !1), y(this, w, !1), y(this, v, !1), y(this, R, []), y(this, M, new Promise((t, i) => {
+    y(this, A, !1), y(this, w, !1), y(this, v, !1), y(this, U, []), y(this, M, new Promise((t, i) => {
       y(this, W, t), y(this, H, i);
       const r = (a) => {
         h(this, A) || h(this, w) || h(this, v) || (y(this, A, !0), h(this, W) && h(this, W).call(this, a));
       }, n = (a) => {
         h(this, A) || h(this, w) || h(this, v) || (y(this, w, !0), h(this, H) && h(this, H).call(this, a));
       }, o = (a) => {
-        h(this, A) || h(this, w) || h(this, v) || h(this, R).push(a);
+        h(this, A) || h(this, w) || h(this, v) || h(this, U).push(a);
       };
       return Object.defineProperty(o, "isResolved", {
         get: () => h(this, A)
@@ -714,23 +714,23 @@ class Dt {
   }
   cancel() {
     if (!(h(this, A) || h(this, w) || h(this, v))) {
-      if (y(this, v, !0), h(this, R).length)
+      if (y(this, v, !0), h(this, U).length)
         try {
-          for (const e of h(this, R))
+          for (const e of h(this, U))
             e();
         } catch (e) {
           console.warn("Cancellation threw an error", e);
           return;
         }
-      h(this, R).length = 0, h(this, H) && h(this, H).call(this, new Mt("Request aborted"));
+      h(this, U).length = 0, h(this, H) && h(this, H).call(this, new Mt("Request aborted"));
     }
   }
   get isCancelled() {
     return h(this, v);
   }
 }
-A = new WeakMap(), w = new WeakMap(), v = new WeakMap(), R = new WeakMap(), M = new WeakMap(), W = new WeakMap(), H = new WeakMap();
-const Ue = (s) => s != null, ee = (s) => typeof s == "string", ge = (s) => ee(s) && s !== "", Re = (s) => typeof s == "object" && typeof s.type == "string" && typeof s.stream == "function" && typeof s.arrayBuffer == "function" && typeof s.constructor == "function" && typeof s.constructor.name == "string" && /^(Blob|File)$/.test(s.constructor.name) && /^(Blob|File)$/.test(s[Symbol.toStringTag]), st = (s) => s instanceof FormData, qt = (s) => {
+A = new WeakMap(), w = new WeakMap(), v = new WeakMap(), U = new WeakMap(), M = new WeakMap(), W = new WeakMap(), H = new WeakMap();
+const Re = (s) => s != null, ee = (s) => typeof s == "string", Ee = (s) => ee(s) && s !== "", Ue = (s) => typeof s == "object" && typeof s.type == "string" && typeof s.stream == "function" && typeof s.arrayBuffer == "function" && typeof s.constructor == "function" && typeof s.constructor.name == "string" && /^(Blob|File)$/.test(s.constructor.name) && /^(Blob|File)$/.test(s[Symbol.toStringTag]), st = (s) => s instanceof FormData, qt = (s) => {
   try {
     return btoa(s);
   } catch {
@@ -740,7 +740,7 @@ const Ue = (s) => s != null, ee = (s) => typeof s == "string", ge = (s) => ee(s)
   const e = [], t = (r, n) => {
     e.push(`${encodeURIComponent(r)}=${encodeURIComponent(String(n))}`);
   }, i = (r, n) => {
-    Ue(n) && (Array.isArray(n) ? n.forEach((o) => {
+    Re(n) && (Array.isArray(n) ? n.forEach((o) => {
       i(r, o);
     }) : typeof n == "object" ? Object.entries(n).forEach(([o, a]) => {
       i(`${r}[${o}]`, a);
@@ -749,18 +749,18 @@ const Ue = (s) => s != null, ee = (s) => typeof s == "string", ge = (s) => ee(s)
   return Object.entries(s).forEach(([r, n]) => {
     i(r, n);
   }), e.length > 0 ? `?${e.join("&")}` : "";
-}, jt = (s, e) => {
+}, Vt = (s, e) => {
   const t = s.ENCODE_PATH || encodeURI, i = e.url.replace("{api-version}", s.VERSION).replace(/{(.*?)}/g, (n, o) => {
     var a;
     return (a = e.path) != null && a.hasOwnProperty(o) ? t(String(e.path[o])) : n;
   }), r = `${s.BASE}${i}`;
   return e.query ? `${r}${xt(e.query)}` : r;
-}, Vt = (s) => {
+}, jt = (s) => {
   if (s.formData) {
     const e = new FormData(), t = (i, r) => {
-      ee(r) || Re(r) ? e.append(i, r) : e.append(i, JSON.stringify(r));
+      ee(r) || Ue(r) ? e.append(i, r) : e.append(i, JSON.stringify(r));
     };
-    return Object.entries(s.formData).filter(([i, r]) => Ue(r)).forEach(([i, r]) => {
+    return Object.entries(s.formData).filter(([i, r]) => Re(r)).forEach(([i, r]) => {
       Array.isArray(r) ? r.forEach((n) => t(i, n)) : t(i, r);
     }), e;
   }
@@ -774,19 +774,19 @@ const Ue = (s) => s != null, ee = (s) => typeof s == "string", ge = (s) => ee(s)
     Accept: "application/json",
     ...n,
     ...e.headers
-  }).filter(([a, l]) => Ue(l)).reduce((a, [l, c]) => ({
+  }).filter(([a, l]) => Re(l)).reduce((a, [l, c]) => ({
     ...a,
     [l]: String(c)
   }), {});
-  if (ge(t) && (o.Authorization = `Bearer ${t}`), ge(i) && ge(r)) {
+  if (Ee(t) && (o.Authorization = `Bearer ${t}`), Ee(i) && Ee(r)) {
     const a = qt(`${i}:${r}`);
     o.Authorization = `Basic ${a}`;
   }
-  return e.body !== void 0 && (e.mediaType ? o["Content-Type"] = e.mediaType : Re(e.body) ? o["Content-Type"] = e.body.type || "application/octet-stream" : ee(e.body) ? o["Content-Type"] = "text/plain" : st(e.body) || (o["Content-Type"] = "application/json")), new Headers(o);
+  return e.body !== void 0 && (e.mediaType ? o["Content-Type"] = e.mediaType : Ue(e.body) ? o["Content-Type"] = e.body.type || "application/octet-stream" : ee(e.body) ? o["Content-Type"] = "text/plain" : st(e.body) || (o["Content-Type"] = "application/json")), new Headers(o);
 }, Kt = (s) => {
   var e;
   if (s.body !== void 0)
-    return (e = s.mediaType) != null && e.includes("/json") ? JSON.stringify(s.body) : ee(s.body) || Re(s.body) || st(s.body) ? s.body : JSON.stringify(s.body);
+    return (e = s.mediaType) != null && e.includes("/json") ? JSON.stringify(s.body) : ee(s.body) || Ue(s.body) || st(s.body) ? s.body : JSON.stringify(s.body);
 }, zt = async (s, e, t, i, r, n, o) => {
   const a = new AbortController(), l = {
     headers: n,
@@ -839,7 +839,7 @@ const Ue = (s) => s != null, ee = (s) => typeof s == "string", ge = (s) => ee(s)
   }
 }, Yt = (s, e) => new Dt(async (t, i, r) => {
   try {
-    const n = jt(s, e), o = Vt(e), a = Kt(e), l = await Wt(s, e);
+    const n = Vt(s, e), o = jt(e), a = Kt(e), l = await Wt(s, e);
     if (!r.isCancelled) {
       const c = await zt(s, e, n, a, o, l, r), _ = await Gt(c), u = Ft(c, e.responseHeader), b = {
         url: n,
@@ -956,15 +956,15 @@ class me {
 }
 var Qt = Object.defineProperty, es = Object.getOwnPropertyDescriptor, it = (s) => {
   throw TypeError(s);
-}, g = (s, e, t, i) => {
+}, E = (s, e, t, i) => {
   for (var r = i > 1 ? void 0 : i ? es(e, t) : e, n = s.length - 1, o; n >= 0; n--)
     (o = s[n]) && (r = (i ? o(e, t, r) : o(r)) || r);
   return i && r && Qt(e, t, r), r;
-}, He = (s, e, t) => e.has(s) || it("Cannot " + t), d = (s, e, t) => (He(s, e, "read from private field"), t ? t.call(s) : e.get(s)), $ = (s, e, t) => e.has(s) ? it("Cannot add the same private member more than once") : e instanceof WeakSet ? e.add(s) : e.set(s, t), f = (s, e, t, i) => (He(s, e, "write to private field"), e.set(s, t), t), ts = (s, e, t) => (He(s, e, "access private method"), t), C, O, L, S, _e, ne, oe, ae, V, le, P, ce, he, de, Se, rt;
+}, He = (s, e, t) => e.has(s) || it("Cannot " + t), d = (s, e, t) => (He(s, e, "read from private field"), t ? t.call(s) : e.get(s)), $ = (s, e, t) => e.has(s) ? it("Cannot add the same private member more than once") : e instanceof WeakSet ? e.add(s) : e.set(s, t), f = (s, e, t, i) => (He(s, e, "write to private field"), e.set(s, t), t), ts = (s, e, t) => (He(s, e, "access private method"), t), C, O, L, S, _e, ne, oe, ae, j, le, P, ce, he, de, Se, rt;
 const ss = "umb-headless-preview";
 let p = class extends Ge {
   constructor() {
-    super(), $(this, Se), $(this, C, null), $(this, O), $(this, L), $(this, S), $(this, _e), $(this, ne), $(this, oe, !1), $(this, ae, []), $(this, V), $(this, le, !1), $(this, P), $(this, ce, !1), $(this, he, !1), $(this, de, !1), this.init();
+    super(), $(this, Se), $(this, C, null), $(this, O), $(this, L), $(this, S), $(this, _e), $(this, ne), $(this, oe, !1), $(this, ae, []), $(this, j), $(this, le, !1), $(this, P), $(this, ce, !1), $(this, he, !1), $(this, de, !1), this.init();
   }
   async updated(s) {
     super.updated(s), (d(this, O) !== this.content || d(this, L) !== this.settings) && ts(this, Se, rt).call(this);
@@ -976,7 +976,7 @@ let p = class extends Ge {
       return o.id == ((a = this.blockType) == null ? void 0 : a.contentElementTypeKey);
     })), d(this, O) || f(this, O, this.content), d(this, L) || f(this, L, this.settings), d(this, ae).forEach((o) => {
       this.manageButtons(o);
-    }), p.useBeamFallback || d(this, S) === "blockbeam" || d(this, le) && !((s = d(this, P)) != null && s.enabledNested) || !((e = d(this, P)) != null && e.enabledGrid) && d(this, ce) || !((t = d(this, P)) != null && t.enabledList) && d(this, he) || !((i = d(this, P)) != null && i.enabledRTE) && d(this, de) || d(this, V) ? this.blockBeam(d(this, V)) : Ae`<div class="__headless-preview"><a href=${((r = this.config) != null && r.showContentEdit ? (n = this.config) == null ? void 0 : n.editContentPath : void 0) ?? ""}>${Lt(d(this, S))}</a></div>`;
+    }), p.useBeamFallback || d(this, S) === "blockbeam" || d(this, le) && !((s = d(this, P)) != null && s.enabledNested) || !((e = d(this, P)) != null && e.enabledGrid) && d(this, ce) || !((t = d(this, P)) != null && t.enabledList) && d(this, he) || !((i = d(this, P)) != null && i.enabledRTE) && d(this, de) || d(this, j) ? this.blockBeam(d(this, j)) : Ae`<div class="__headless-preview"><a href=${((r = this.config) != null && r.showContentEdit ? (n = this.config) == null ? void 0 : n.editContentPath : void 0) ?? ""}>${Lt(d(this, S))}</a></div>`;
   }
   async init() {
     f(this, S, p.loadingBarHtml), this.consumeContext(ot, (s) => {
@@ -1023,18 +1023,27 @@ let p = class extends Ge {
             });
             f(this, S, o.html ?? "blockbeam");
           } catch (o) {
-            f(this, S, "blockbeam"), f(this, V, o instanceof Error ? o.message : "Unknown error");
+            f(this, S, "blockbeam"), f(this, j, o instanceof Error ? o.message : "Unknown error");
           }
           this.requestUpdate();
         }
       });
     } catch (i) {
-      f(this, S, "blockbeam"), f(this, V, i instanceof Error ? i.message : "Unknown error");
+      f(this, S, "blockbeam"), f(this, j, i instanceof Error ? i.message : "Unknown error");
     }
+  }
+  resolveLabel(s) {
+    if (console.log("Resolving label", { label: s, content: this.content }), !s) return "error";
+    if (!this.content) return s;
+    const e = this.content;
+    return s.replace(/\{[=+!]([^}]+)\}/g, (t, i) => {
+      const r = e == null ? void 0 : e[i];
+      return r != null && r !== "" ? String(r) : "";
+    });
   }
   blockBeam(s) {
     return Ae`
-    <uui-ref-node .name=${this.label ?? "error"} .detail=${s ?? ""} standalone="">
+    <uui-ref-node .name=${this.resolveLabel(this.label)} .detail=${s ?? ""} standalone="">
       <uui-icon slot="icon" .name=${this.icon ?? "icon-plugin"} style="--uui-icon-color:var(--uui-palette-maroon-flush);"></uui-icon>
      </uui-ref-node>`;
   }
@@ -1081,7 +1090,7 @@ _e = /* @__PURE__ */ new WeakMap();
 ne = /* @__PURE__ */ new WeakMap();
 oe = /* @__PURE__ */ new WeakMap();
 ae = /* @__PURE__ */ new WeakMap();
-V = /* @__PURE__ */ new WeakMap();
+j = /* @__PURE__ */ new WeakMap();
 le = /* @__PURE__ */ new WeakMap();
 P = /* @__PURE__ */ new WeakMap();
 ce = /* @__PURE__ */ new WeakMap();
@@ -1130,37 +1139,37 @@ p.styles = [
       
     `
 ];
-g([
-  E({ attribute: !1 })
+E([
+  g({ attribute: !1 })
 ], p.prototype, "content", 2);
-g([
-  E({ attribute: !1 })
+E([
+  g({ attribute: !1 })
 ], p.prototype, "settings", 2);
-g([
-  E({ attribute: !1 })
+E([
+  g({ attribute: !1 })
 ], p.prototype, "blockType", 2);
-g([
-  E({ attribute: !1 })
+E([
+  g({ attribute: !1 })
 ], p.prototype, "label", 2);
-g([
-  E({ attribute: !1 })
+E([
+  g({ attribute: !1 })
 ], p.prototype, "icon", 2);
-g([
-  E({ attribute: !1 })
+E([
+  g({ attribute: !1 })
 ], p.prototype, "config", 2);
-g([
-  E({ attribute: !1 })
+E([
+  g({ attribute: !1 })
 ], p.prototype, "contentInvalid", 2);
-g([
-  E({ attribute: !1 })
+E([
+  g({ attribute: !1 })
 ], p.prototype, "settingsInvalid", 2);
-g([
-  E({ attribute: !1 })
+E([
+  g({ attribute: !1 })
 ], p.prototype, "unsupported", 2);
-g([
-  E({ attribute: !1 })
+E([
+  g({ attribute: !1 })
 ], p.prototype, "unpublished", 2);
-p = g([
+p = E([
   tt(ss)
 ], p);
 var is = Object.defineProperty, rs = Object.getOwnPropertyDescriptor, nt = (s, e, t, i) => {
