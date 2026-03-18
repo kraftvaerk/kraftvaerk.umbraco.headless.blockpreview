@@ -69,6 +69,7 @@ public class BlockHelper : IBlockHelper
             IPublishedElement publishedElement = new PublishedElement(publishedContentType, Guid.NewGuid(), deserializedData, true, variationContext);
 
             var apiElement = _apiElementBuilder.Build(publishedElement);
+            PatchNullPropertiesFromRawData(apiElement, contentAsJObject);
             return (apiElement, deserializedData);
         }
         catch (Exception e)
@@ -266,6 +267,120 @@ public class BlockHelper : IBlockHelper
                 FillUdis(item!);
             }
         }
+    }
+
+    /// <summary>
+    /// After the API element builder resolves property values, some reference-type
+    /// properties (e.g. ContentPicker) may be null because the referenced content
+    /// is not in the published cache. This method walks nested block list / block
+    /// grid structures and restores those null values from the original raw JSON.
+    /// </summary>
+    private void PatchNullPropertiesFromRawData(IApiElement apiElement, JObject rawData)
+    {
+        foreach (var prop in apiElement.Properties.ToList())
+        {
+            if (prop.Value is ApiBlockListModel blockList)
+            {
+                var rawObj = GetAsJObject(rawData[prop.Key]);
+                if (rawObj != null)
+                    PatchBlockItems(blockList.Items, rawObj);
+            }
+            else if (prop.Value is ApiBlockGridModel blockGrid)
+            {
+                var rawObj = GetAsJObject(rawData[prop.Key]);
+                if (rawObj != null)
+                    PatchBlockItems(blockGrid.Items, rawObj);
+            }
+        }
+    }
+
+    private void PatchBlockItems(IEnumerable<ApiBlockItem> items, JObject rawBlockJson)
+    {
+        var contentData = rawBlockJson["contentData"] as JArray;
+        if (contentData == null) return;
+
+        var settingsData = rawBlockJson["settingsData"] as JArray;
+
+        foreach (var item in items)
+        {
+            PatchElementProperties(item.Content, contentData);
+
+            if (item.Settings != null && settingsData != null)
+                PatchElementProperties(item.Settings, settingsData);
+
+            // Handle block grid areas recursively
+            if (item is ApiBlockGridItem gridItem)
+            {
+                foreach (var area in gridItem.Areas)
+                    PatchBlockItems(area.Items, rawBlockJson);
+            }
+        }
+    }
+
+    private void PatchElementProperties(IApiElement element, JArray dataArray)
+    {
+        var matchingData = dataArray.FirstOrDefault(
+            cd => string.Equals(
+                cd["key"]?.Value<string>(),
+                element.Id.ToString(),
+                StringComparison.OrdinalIgnoreCase));
+
+        if (matchingData == null) return;
+
+        var values = matchingData["values"] as JArray;
+        if (values == null) return;
+
+        // Build alias → raw value mapping
+        var rawValues = new JObject();
+        foreach (var v in values)
+        {
+            var alias = v["alias"]?.Value<string>();
+            if (alias != null)
+                rawValues[alias] = v["value"]?.DeepClone() ?? JValue.CreateNull();
+        }
+
+        // Replace null properties with their raw values
+        foreach (var kvp in element.Properties.ToList())
+        {
+            if (kvp.Value == null
+                && rawValues[kvp.Key] != null
+                && rawValues[kvp.Key]!.Type != JTokenType.Null)
+            {
+                element.Properties[kvp.Key] = ConvertJTokenToClrValue(rawValues[kvp.Key]!);
+            }
+        }
+
+        // Recurse into any nested block lists / grids inside this element
+        PatchNullPropertiesFromRawData(element, rawValues);
+    }
+
+    private static JObject? GetAsJObject(JToken? token)
+    {
+        if (token == null) return null;
+        if (token.Type == JTokenType.Object) return (JObject)token;
+        if (token.Type == JTokenType.String)
+        {
+            var str = token.Value<string>();
+            if (!string.IsNullOrWhiteSpace(str))
+            {
+                try { return JObject.Parse(str); }
+                catch { return null; }
+            }
+        }
+        return null;
+    }
+
+    private static object? ConvertJTokenToClrValue(JToken token)
+    {
+        return token.Type switch
+        {
+            JTokenType.String => token.Value<string>(),
+            JTokenType.Integer => token.Value<long>(),
+            JTokenType.Float => token.Value<double>(),
+            JTokenType.Boolean => token.Value<bool>(),
+            JTokenType.Null => null,
+            _ => token.ToString(Formatting.None),
+        };
     }
 
     private (IApiElement? apiElement, Dictionary<string, object?> rawData) Fail(string reason = "")
