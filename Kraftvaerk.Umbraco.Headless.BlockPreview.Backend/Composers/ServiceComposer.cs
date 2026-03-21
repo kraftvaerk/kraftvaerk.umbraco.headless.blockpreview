@@ -1,12 +1,13 @@
-using Microsoft.Extensions.DependencyInjection;
+using Kraftvaerk.Umbraco.Headless.Blockpreview.Backend.Services.PreviewDB;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Options;
+using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.BlockHelper;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.BlockPreviewCache;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.BlockPreviewSettings;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.PreviewDB;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.RequestHelper;
+using Microsoft.Extensions.DependencyInjection;
 using Umbraco.Cms.Core.Composing;
-using Kraftvaerk.Umbraco.Headless.Blockpreview.Backend.Services.PreviewDB;
 
 namespace Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Composers
 {
@@ -24,6 +25,8 @@ namespace Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Composers
                 builder.Config.GetSection(HeadlessBlockPreviewOptions.SectionName));
 
             builder.Services.AddTransient<IBlockPreviewSettings, BlockPreviewSettings>();
+
+            builder.Services.AddScoped<ContextCultureService>();
 
         }
     }

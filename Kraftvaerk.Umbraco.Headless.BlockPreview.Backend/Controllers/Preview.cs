@@ -1,12 +1,12 @@
 using Asp.Versioning;
 using Kraftvaerk.Umbraco.Headless.Blockpreview.Backend.PackageConstants;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Models;
+using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.BlockHelper;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.BlockPreviewCache;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.BlockPreviewSettings;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.PreviewDB;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.RequestHelper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StackExchange.Profiling.Internal;
 using Umbraco.Cms.Api.Common.Attributes;
@@ -15,7 +15,6 @@ using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models.DeliveryApi;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Web.Common;
-using Umbraco.Cms.Web.Common.Authorization;
 
 namespace Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Controllers;
 
@@ -35,13 +34,16 @@ public class Preview : Controller
     private readonly IBlockPreviewSettings _settings;
     private readonly IBlockPreviewCache _cache;
     private readonly IUmbracoHelperAccessor _umbracoHelperAccessor;
+    private readonly ContextCultureService _contextCultureService;
+
     public Preview(
         IBlockHelper blockHelper, 
         IRequestHelper requestHelper, 
         IPreviewDB previewDB,
         IBlockPreviewSettings settings,
         IBlockPreviewCache cache,
-        IUmbracoHelperAccessor umbracoHelperAccessor)
+        IUmbracoHelperAccessor umbracoHelperAccessor, 
+        ContextCultureService contextCultureService)
     {
         _blockHelper = blockHelper;
         _requestHelper = requestHelper;
@@ -49,6 +51,7 @@ public class Preview : Controller
         _settings = settings;
         _cache = cache;
         _umbracoHelperAccessor = umbracoHelperAccessor;
+        _contextCultureService = contextCultureService;
 
     }
 
@@ -67,6 +70,9 @@ public class Preview : Controller
         {
             return Ok(new { html = cachedHtml });
         }
+
+        if (!string.IsNullOrEmpty(preview.Culture))
+            _contextCultureService.SetCulture(preview.Culture);
 
         IApiElement? content = null;
         IApiElement? settings = null;
@@ -91,7 +97,7 @@ public class Preview : Controller
             return BadRequest("Could not create IApiElement from Content");
         }
 
-        var model = new BlockPreviewBackendModel() { Content = content, Settings = settings, RawContent = rawContent, RawSettings = rawSettings, Key = preview.Id.HasValue() ? Guid.Parse(preview.Id) : Guid.Empty };
+        var model = new BlockPreviewBackendModel() { Content = content, Settings = settings, RawContent = rawContent, RawSettings = rawSettings, Key = preview.Id.HasValue() ? Guid.Parse(preview.Id) : Guid.Empty, Culture = preview.Culture };
         try
         {
             Guid? pageId = preview.Id != null ? Guid.Parse(preview.Id) : null;
