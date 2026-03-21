@@ -17,6 +17,8 @@ namespace Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Models
         public Dictionary<string, object?> RawSettings { get; set; } = new Dictionary<string, object?>();
 
         public Guid Key { get; set; }
+
+        public string? Culture { get; set; }
     }
 }
 

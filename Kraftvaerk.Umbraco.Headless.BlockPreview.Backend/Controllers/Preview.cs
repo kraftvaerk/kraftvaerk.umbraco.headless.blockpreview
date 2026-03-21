@@ -91,7 +91,7 @@ public class Preview : Controller
             return BadRequest("Could not create IApiElement from Content");
         }
 
-        var model = new BlockPreviewBackendModel() { Content = content, Settings = settings, RawContent = rawContent, RawSettings = rawSettings, Key = preview.Id.HasValue() ? Guid.Parse(preview.Id) : Guid.Empty };
+        var model = new BlockPreviewBackendModel() { Content = content, Settings = settings, RawContent = rawContent, RawSettings = rawSettings, Key = preview.Id.HasValue() ? Guid.Parse(preview.Id) : Guid.Empty, Culture = preview.Culture };
         try
         {
             Guid? pageId = preview.Id != null ? Guid.Parse(preview.Id) : null;
