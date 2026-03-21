@@ -3,6 +3,7 @@ import { UmbBlockEditorCustomViewConfiguration, UmbBlockEditorCustomViewElement 
 import { UmbBlockTypeBaseModel } from "@umbraco-cms/backoffice/block-type";
 import { UmbEntityUnique } from "@umbraco-cms/backoffice/entity";
 import { UmbLitElement } from "@umbraco-cms/backoffice/lit-element";
+import { UmbUfmVirtualRenderController } from "@umbraco-cms/backoffice/ufm";
 import { UMB_VARIANT_WORKSPACE_CONTEXT } from "@umbraco-cms/backoffice/workspace";
 import { css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
@@ -48,8 +49,11 @@ export class HeadlessPreviewElement extends UmbLitElement implements UmbBlockEdi
   #isGrid: boolean = false;
   #isList: boolean = false;
   #isRTE: boolean = false;
+  #ufmLabelRenderer: UmbUfmVirtualRenderController;
   constructor() {
     super();
+
+    this.#ufmLabelRenderer = new UmbUfmVirtualRenderController(this);
     
     this.init();
   }
@@ -196,9 +200,22 @@ export class HeadlessPreviewElement extends UmbLitElement implements UmbBlockEdi
   private resolveLabel(label: string | undefined): string {
     console.log('Resolving label', { label, content: this.content });
     if (!label) return 'error';
+
+    this.#ufmLabelRenderer.markdown = label;
+    this.#ufmLabelRenderer.value = this.content;
+
+    const rendered = this.#ufmLabelRenderer.toString();
+    if (rendered) return rendered;
+
+    // Fallback while UFM renderer initializes: support common value placeholders.
     if (!this.content) return label;
     const contentObj = this.content as Record<string, unknown>;
-    return label.replace(/\{[=+!]([^}]+)\}/g, (_match, alias) => {
+    return label.replace(/\{([^{}]+)\}/g, (_match, token) => {
+      const rawToken = String(token).trim();
+      const legacyMatch = rawToken.match(/^[=+!](.+)$/);
+      const umbValueMatch = rawToken.match(/^umbValue\s*:\s*(.+)$/i);
+
+      const alias = (umbValueMatch?.[1] ?? legacyMatch?.[1] ?? rawToken).trim();
       const val = contentObj?.[alias];
       return val !== undefined && val !== null && val !== '' ? String(val) : '';
     });
@@ -207,8 +224,18 @@ export class HeadlessPreviewElement extends UmbLitElement implements UmbBlockEdi
   private blockBeam(message?: string) {
     return html`
     <uui-ref-node .name=${this.resolveLabel(this.label)} .detail=${message ?? ''} standalone="">
-      <uui-icon slot="icon" .name=${this.icon ?? 'icon-plugin'} style="--uui-icon-color:var(--uui-palette-maroon-flush);"></uui-icon>
+      <uui-icon slot="icon" .name=${this.resolveIconName()} style="--uui-icon-color:var(--uui-palette-maroon-flush);"></uui-icon>
      </uui-ref-node>`;
+  }
+
+  private resolveIconName(): string {
+    // Some Umbraco icon values include additional CSS classes (e.g. "icon-document color-blue").
+    const blockTypeIcon = (this.blockType as { icon?: string } | undefined)?.icon;
+    const raw = (this.icon ?? blockTypeIcon ?? '').trim();
+    if (!raw) return 'icon-plugin';
+
+    const iconName = raw.split(/\s+/)[0]?.trim();
+    return iconName || 'icon-plugin';
   }
 
   private findAllInShadowRoots<T extends Element = Element>(
