@@ -1,0 +1,32 @@
+{
+  "name": "Kraftvaerk.Umbraco.Headless.BlockPreview.extension",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc && vite build",
+    "dev": "vite build --watch",
+    "skills:copilot": "npx skills add umbraco/Umbraco-CMS-Backoffice-Skills --skill * -a github-copilot",
+    "skills:cursor": "npx skills add umbraco/Umbraco-CMS-Backoffice-Skills --skill * -a cursor",
+    "skills:windsurf": "npx skills add umbraco/Umbraco-CMS-Backoffice-Skills --skill * -a windsurf",
+    "skills:claude": "npx skills add umbraco/Umbraco-CMS-Backoffice-Skills --skill * -a claude",
+    "usync": "node build/umbraco.js usync",
+    "generate": "cross-env NODE_TLS_REJECT_UNAUTHORIZED=0 npx openapi-typescript-codegen --input https://localhost:44341/umbraco/swagger/Kraftvaerk.Umbraco.Headless.Blockpreview-api-v1/swagger.json --output ./src/blockpreview-api --client fetch --name BlockPreviewClient --useOptions",
+    "publish": "node build/umbraco.js publish"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lit": "^3.1.4"
+  },
+  "devDependencies": {
+    "@types/node": "^22.2.0",
+    "@umbraco-cms/backoffice": "18.0.0-rc2",
+    "cross-env": "^7.0.3",
+    "eslint": "^9.9.0",
+    "inquirer": "^10.1.8",
+    "openapi-typescript-codegen": "^0.29.0",
+    "typescript": "^5.2.2",
+    "vite": "^5.3.1"
+  }
+}

@@ -12,7 +12,6 @@ using NPoco.fastJSON;
 using Umbraco.Cms.Core.DeliveryApi;
 using Umbraco.Cms.Core.Models.DeliveryApi;
 using Umbraco.Cms.Core.Models.PublishedContent;
-using Umbraco.Cms.Core.PublishedCache;
 using Umbraco.Cms.Core.Services;
 
 namespace Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.BlockHelper;
@@ -21,12 +20,14 @@ public class BlockHelper : IBlockHelper
     private readonly IApiElementBuilder _apiElementBuilder;
     private readonly IContentTypeService _contentTypeService;
     private readonly IPublishedContentTypeFactory _publishedContentTypeFactory;
+
     public BlockHelper(IApiElementBuilder apiElementBuilder, IContentTypeService contentTypeService, IPublishedContentTypeFactory publishedContentTypeFactory)
     {
         _apiElementBuilder = apiElementBuilder;
         _contentTypeService = contentTypeService;
         _publishedContentTypeFactory = publishedContentTypeFactory;
     }
+
     public (IApiElement? apiElement, Dictionary<string, object?> rawData) BlockContent(string? content, string? contentTypeGuidString)
     {
         if (content == null || contentTypeGuidString == null || string.IsNullOrEmpty(content) || string.IsNullOrEmpty(contentTypeGuidString)) return Fail();
@@ -37,14 +38,11 @@ public class BlockHelper : IBlockHelper
 
         var contentType = _contentTypeService.Get(guid);
 
-        //if (contentType == null) return Fail();
-
         PopulateEditorAlias(contentAsJObject, contentType);
 
         contentAsJObject = ReNestJson(contentAsJObject);
 
         content = contentAsJObject.ToString(Formatting.None);
-
 
         if (contentType == null) return Fail();
 
@@ -65,8 +63,8 @@ public class BlockHelper : IBlockHelper
         try
         {
             Dictionary<string, object?> deserializedData = ConvertJsonElement(data);
-            VariationContext variationContext = new VariationContext();
-            IPublishedElement publishedElement = new PublishedElement(publishedContentType, Guid.NewGuid(), deserializedData, true, variationContext);
+
+            var publishedElement = new PreviewPublishedElement(publishedContentType, Guid.NewGuid(), deserializedData);
 
             var apiElement = _apiElementBuilder.Build(publishedElement);
             PatchNullPropertiesFromRawData(apiElement, contentAsJObject);

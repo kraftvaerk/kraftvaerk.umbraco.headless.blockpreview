@@ -46,20 +46,23 @@ public class RequestHelper : IRequestHelper
 
             if (!response.IsSuccessStatusCode)
             {
+                var failureContent = await response.Content.ReadAsStringAsync();
+
                 if (previewOptions.Debug)
                 {
-                    _logger.LogWarning("BlockPreview Debug: Request to {Url} failed with status {StatusCode}", url, response.StatusCode);
+                    _logger.LogWarning("BlockPreview Debug: Request to {Url} failed with status {StatusCode}. Response body: {ResponseBody}", url, response.StatusCode, failureContent);
                 }
                 return null;
             }
 
             var result = await response.Content.ReadAsStringAsync();
 
+            /*
             if (previewOptions.Debug)
             {
                 _logger.LogWarning("BlockPreview Debug: Received response from {Url}, length: {Length} chars", url, result?.Length ?? 0);
             }
-
+            */
             return result;
         }
     }
