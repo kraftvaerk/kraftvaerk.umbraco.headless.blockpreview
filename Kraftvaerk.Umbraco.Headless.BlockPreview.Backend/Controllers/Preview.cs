@@ -6,16 +6,14 @@ using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.BlockPreviewCach
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.BlockPreviewSettings;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.PreviewDB;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.RequestHelper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using StackExchange.Profiling.Internal;
+using Microsoft.Extensions.Logging;
 using Umbraco.Cms.Api.Common.Attributes;
 using Umbraco.Cms.Api.Common.Filters;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models.DeliveryApi;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Web.Common;
-using Umbraco.Cms.Web.Common.Authorization;
 
 namespace Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Controllers;
 
@@ -35,13 +33,16 @@ public class Preview : Controller
     private readonly IBlockPreviewSettings _settings;
     private readonly IBlockPreviewCache _cache;
     private readonly IUmbracoHelperAccessor _umbracoHelperAccessor;
+    private readonly ILogger<Preview> _logger;
+
     public Preview(
-        IBlockHelper blockHelper, 
-        IRequestHelper requestHelper, 
+        IBlockHelper blockHelper,
+        IRequestHelper requestHelper,
         IPreviewDB previewDB,
         IBlockPreviewSettings settings,
         IBlockPreviewCache cache,
-        IUmbracoHelperAccessor umbracoHelperAccessor)
+        IUmbracoHelperAccessor umbracoHelperAccessor,
+        ILogger<Preview> logger)
     {
         _blockHelper = blockHelper;
         _requestHelper = requestHelper;
@@ -49,99 +50,101 @@ public class Preview : Controller
         _settings = settings;
         _cache = cache;
         _umbracoHelperAccessor = umbracoHelperAccessor;
-
+        _logger = logger;
     }
 
     [HttpPost]
     [ApiVersionNeutral]
     public async Task<IActionResult> GetPreview([FromBody] BlockPreviewFrontendModel preview)
     {
-        if(preview == null || preview.Content == null || preview.ContentType == null)
+        if (preview == null || preview.Content == null || preview.ContentType == null)
         {
+            _logger.LogWarning("BlockPreview: Received invalid or incomplete preview request (null preview, content, or contentType).");
             return BadRequest("Invalid preview data provided.");
         }
 
-        // Check cache first if output caching is enabled
         var globalOptions = _settings.Options(null, preview.Culture, null);
-        if (globalOptions.EnableOutputCaching && _cache.TryGet(preview, out var cachedHtml))
-        {
-            return Ok(new { html = cachedHtml });
-        }
 
-        IApiElement? content = null;
-        IApiElement? settings = null;
-        Dictionary<string, object?> rawContent = new Dictionary<string, object?>();
-        Dictionary<string, object?> rawSettings = new Dictionary<string, object?>();
+        if (globalOptions.EnableOutputCaching && _cache.TryGet(preview, out var cachedHtml))
+            return Ok(new { html = cachedHtml });
+
+        IApiElement? content;
+        IApiElement? settings;
+        Dictionary<string, object?> rawContent;
+        Dictionary<string, object?> rawSettings;
         try
         {
-            var c = _blockHelper.BlockContent(preview.Content, preview.ContentType);
-            var s = _blockHelper.BlockContent(preview.Settings, preview.SettingsType);
-            content = c.apiElement;
-            settings = s.apiElement;
-            rawContent = c.rawData;
-            rawSettings = s.rawData;
+            (content, rawContent) = _blockHelper.BlockContent(preview.Content, preview.ContentType);
+            (settings, rawSettings) = _blockHelper.BlockContent(preview.Settings, preview.SettingsType);
         }
-        catch(Exception e)
+        catch (Exception e)
         {
+            if (globalOptions.Debug)
+                _logger.LogWarning(e, "BlockPreview Debug: Exception in BlockHelper for contentType {ContentType}.", preview.ContentType);
             return Problem(e.Message);
         }
 
         if (content == null)
         {
+            if (globalOptions.Debug)
+                _logger.LogWarning("BlockPreview Debug: BlockHelper returned null element for contentType {ContentType}.", preview.ContentType);
             return BadRequest("Could not create IApiElement from Content");
         }
 
-        var model = new BlockPreviewBackendModel() { Content = content, Settings = settings, RawContent = rawContent, RawSettings = rawSettings, Key = preview.Id.HasValue() ? Guid.Parse(preview.Id) : Guid.Empty };
+        var model = new BlockPreviewBackendModel()
+        {
+            Content = content,
+            Settings = settings,
+            RawContent = rawContent,
+            RawSettings = rawSettings,
+            Key = !string.IsNullOrEmpty(preview.Id) ? Guid.Parse(preview.Id) : Guid.Empty
+        };
+
+        // Resolve the domain from the page URL so options can vary per site
+        Guid? pageId = preview.Id != null ? Guid.Parse(preview.Id) : null;
+        string? resolvedDomain = null;
+        if (pageId.HasValue)
+        {
+            _umbracoHelperAccessor.TryGetUmbracoHelper(out var umbracoHelper);
+            if (umbracoHelper != null)
+            {
+                var url = umbracoHelper.Content(pageId.Value)?.Url(preview.Culture, UrlMode.Absolute);
+                if (url != null)
+                    resolvedDomain = new Uri(url).Host;
+            }
+        }
+
+        var options = _settings.Options(pageId, preview.Culture, resolvedDomain);
+
         try
         {
-            Guid? pageId = preview.Id != null ? Guid.Parse(preview.Id) : null;
-            string? resolvedDomain = null;
-            if (pageId.HasValue)
-            {
-                _umbracoHelperAccessor.TryGetUmbracoHelper(out var umbracoHelper);
+            var result = await _requestHelper.Post(model, options);
 
-                if(umbracoHelper != null)
-                {
-                    var pageContent = umbracoHelper.Content(pageId.Value);
-                    var url = pageContent?.Url(preview.Culture,UrlMode.Absolute);
-                    if(url != null)
-                    {
-                        var uri = new Uri(url);
-                        resolvedDomain = uri.Host;
-                    }
-                }
-            }
+            var html = options.Selector != null
+                ? _requestHelper.TrimByCssSelector(result ?? "", options.Selector)
+                : result;
 
-            var options = _settings.Options(pageId, preview.Culture, resolvedDomain);
-
-            var result = await _requestHelper.Post(model!, options);
-
-            var html = string.Empty;
-
-
-            if (options.Selector != null)
-                html = _requestHelper.TrimByCssSelector(result ?? "", options.Selector);
-            else html = result;
+            if (html == null && options.Selector != null && options.Debug)
+                _logger.LogWarning("BlockPreview Debug: CSS selector '{Selector}' matched nothing in the frontend response.", options.Selector);
 
             if (options.Template != null && options.Template.Contains(BlockPreviewConstants.HtmlReplace))
                 html = options.Template.Replace(BlockPreviewConstants.HtmlReplace, html);
 
             html = _settings.FinalHtmlManipulation(html ?? "", pageId, preview.Culture, resolvedDomain);
 
-            // Store in cache if output caching is enabled
             if (options.EnableOutputCaching && html != null)
-            {
                 _cache.Set(preview, html);
-            }
 
             return Ok(new { html });
         }
-        catch(Exception e)
+        catch (Exception e)
         {
+            if (options.Debug)
+                _logger.LogWarning(e, "BlockPreview Debug: Exception posting preview for contentType {ContentType} to {Host}.", preview.ContentType, options.Host);
             return Problem(e.Message);
         }
     }
-    
+
     [HttpPut]
     [ApiVersionNeutral]
     public IActionResult SetPreviewToggleState([FromBody] HeadlessPreviewToggleModel model)
@@ -150,23 +153,17 @@ public class Preview : Controller
         return Ok();
     }
 
-
     [HttpGet]
     [ApiVersionNeutral]
     public ActionResult<HeadlessPreviewToggleModel> GetPreviewToggleState([FromQuery] Guid id)
     {
-        var response = _previewDB.Get(id);
-
-        return Ok(response);
+        return Ok(_previewDB.Get(id));
     }
 
     [HttpOptions]
     [ApiVersionNeutral]
     public IActionResult Enabled()
     {
-        var response = _previewDB.GetEnabled();
-        return Ok(response);
+        return Ok(_previewDB.GetEnabled());
     }
 }
-
-

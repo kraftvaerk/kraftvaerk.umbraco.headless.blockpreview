@@ -1,0 +1,15 @@
+{
+    "$schema": "./../umbraco-package-schema.json",
+    "id": "Kraftvaerk.Umbraco.Headless.BlockPreview.Extension",
+    "name": "Kraftvaerk.Umbraco.Headless.BlockPreview.Extension",
+    "allowPackageTelemetry": true,
+    "version": "0.0.0",
+    "extensions": [
+        {
+          "name": "Kraftvaerk.Umbraco.Headless.BlockPreview.Extension EntryPoint",
+          "alias": "Kraftvaerk.Umbraco.Headless.BlockPreview.Extension.entrypoint",
+          "type": "backofficeEntryPoint",
+          "js": "/App_Plugins/Kraftvaerk.Umbraco.Headless.BlockPreview.extension/dist.js"
+        }
+      ]
+}
