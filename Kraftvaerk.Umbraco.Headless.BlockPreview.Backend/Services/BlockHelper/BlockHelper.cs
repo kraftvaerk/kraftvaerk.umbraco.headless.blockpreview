@@ -65,7 +65,7 @@ public class BlockHelper : IBlockHelper
         try
         {
             var deserializedData = ConvertJsonElement(data);
-            var publishedElement = new PreviewPublishedElement(publishedContentType, Guid.NewGuid(), deserializedData);
+            var publishedElement = PublishedElementProxy.Create(publishedContentType, Guid.NewGuid(), deserializedData);
             var apiElement = _apiElementBuilder.Build(publishedElement);
             PatchNullPropertiesFromRawData(apiElement, contentAsJObject);
             return (apiElement, deserializedData);

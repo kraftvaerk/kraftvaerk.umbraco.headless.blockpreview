@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/Umbraco/">
-    <Project Path="Umbraco/18.0.0-rc2/Umbraco-18.0.0-rc2.csproj" />
+    <Project Path="Umbraco/17.4.2/Umbraco-17.4.2.csproj" />
+    <Project Path="Umbraco/18.0.0-rc2/Umbraco-18.0.0-rc3.csproj" />
   </Folder>
   <Project Path="Kraftvaerk.Umbraco.Headless.BlockPreview.Backend/Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.csproj" />
   <Project Path="Kraftvaerk.Umbraco.Headless.BlockPreview.Extension/Kraftvaerk.Umbraco.Headless.BlockPreview.Extension.esproj">
