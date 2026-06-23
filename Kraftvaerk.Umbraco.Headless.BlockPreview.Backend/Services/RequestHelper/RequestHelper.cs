@@ -1,12 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using HtmlAgilityPack;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Models;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Options;
 using Kraftvaerk.Umbraco.Headless.Blockpreview.Backend.PackageConstants;
@@ -55,46 +50,28 @@ public class RequestHelper : IRequestHelper
                 return null;
             }
 
-            var result = await response.Content.ReadAsStringAsync();
-
-            /*
-            if (previewOptions.Debug)
-            {
-                _logger.LogWarning("BlockPreview Debug: Received response from {Url}, length: {Length} chars", url, result?.Length ?? 0);
-            }
-            */
-            return result;
+            return await response.Content.ReadAsStringAsync();
         }
     }
 
-    public string? TrimByCssSelector(string html, string selector)
-    {
-        return ExtractInnerHtml(html, selector);
-    }
+    public string? TrimByCssSelector(string html, string selector) =>
+        ExtractInnerHtml(html, selector);
 
-    private string? ExtractInnerHtml(string html, string selector)
+    private static string? ExtractInnerHtml(string html, string selector)
     {
         var doc = new HtmlDocument();
         doc.LoadHtml(html);
 
-        HtmlNode? node = null;
-
-        if (selector.StartsWith("#"))
+        HtmlNode? node = selector switch
         {
-            var id = selector.Substring(1);
-            node = doc.DocumentNode.SelectSingleNode($"//*[@id='{id}']");
-        }
-        else if (selector.StartsWith("."))
-        {
-            var className = selector.Substring(1);
-            node = doc.DocumentNode.SelectSingleNode($"//*[contains(concat(' ', normalize-space(@class), ' '), ' {className} ')]");
-        }
-        else if (selector.Equals("body", StringComparison.OrdinalIgnoreCase))
-        {
-
-            node = doc.DocumentNode.SelectSingleNode("//body");
-
-        }
+            _ when selector.StartsWith('#') =>
+                doc.DocumentNode.SelectSingleNode($"//*[@id='{selector[1..]}']"),
+            _ when selector.StartsWith('.') =>
+                doc.DocumentNode.SelectSingleNode($"//*[contains(concat(' ', normalize-space(@class), ' '), ' {selector[1..]} ')]"),
+            _ when selector.Equals("body", StringComparison.OrdinalIgnoreCase) =>
+                doc.DocumentNode.SelectSingleNode("//body"),
+            _ => null,
+        };
 
         return node?.InnerHtml;
     }
