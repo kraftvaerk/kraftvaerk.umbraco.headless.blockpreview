@@ -3,7 +3,7 @@
     "id": "Kraftvaerk.Umbraco.Headless.BlockPreview.Extension",
     "name": "Kraftvaerk.Umbraco.Headless.BlockPreview.Extension",
     "allowPackageTelemetry": true,
-    "version": "1.4.0",
+    "version": "1.4.1",
     "extensions": [
         {
           "name": "Kraftvaerk.Umbraco.Headless.BlockPreview.Extension EntryPoint",
