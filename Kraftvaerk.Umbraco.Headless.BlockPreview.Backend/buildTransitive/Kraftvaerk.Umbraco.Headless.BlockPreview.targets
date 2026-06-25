@@ -1,23 +1,23 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<PropertyGroup>
-		<PackageReferenceProjectContentFilesPath>$(MSBuildThisFileDirectory)..\content\ui\**</PackageReferenceProjectContentFilesPath>
+		<KraftvaerkBlockPreviewContentFilesPath>$(MSBuildThisFileDirectory)..\content\ui\**</KraftvaerkBlockPreviewContentFilesPath>
 
 	</PropertyGroup>
 
-	<Target Name="CopyPackageReferenceProjectAssets" BeforeTargets="ResolveStaticWebAssetsInputs">
+	<Target Name="CopyKraftvaerkBlockPreviewAssets" BeforeTargets="ResolveStaticWebAssetsInputs">
 		<ItemGroup>
-			<PackageReferenceProjectContentFiles Include="$(PackageReferenceProjectContentFilesPath)" />
+			<KraftvaerkBlockPreviewContentFiles Include="$(KraftvaerkBlockPreviewContentFilesPath)" />
 		</ItemGroup>
-		<Message Text="Copying Kraftvaerk.Umbraco.Headless.BlockPreview files: $(PackageReferenceProjectContentFilesPath) - #@(PackageReferenceProjectContentFiles->Count()) files" Importance="high" />
-		<Copy SourceFiles="@(PackageReferenceProjectContentFiles)" DestinationFiles="@(PackageReferenceProjectContentFiles->'$(MSBuildProjectDirectory)\wwwroot\App_Plugins\Kraftvaerk.Umbraco.Headless.BlockPreview.extension\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+		<Message Text="Copying Kraftvaerk.Umbraco.Headless.BlockPreview files: $(KraftvaerkBlockPreviewContentFilesPath) - #@(KraftvaerkBlockPreviewContentFiles->Count()) files" Importance="high" />
+		<Copy SourceFiles="@(KraftvaerkBlockPreviewContentFiles)" DestinationFiles="@(KraftvaerkBlockPreviewContentFiles->'$(MSBuildProjectDirectory)\wwwroot\App_Plugins\Kraftvaerk.Umbraco.Headless.BlockPreview.extension\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
 	</Target>
 
-	<Target Name="ClearPackageReferenceProjectAssets" BeforeTargets="Clean">
+	<Target Name="ClearKraftvaerkBlockPreviewAssets" BeforeTargets="Clean">
 		<ItemGroup>
-			<PackageReferenceProjectDir Include="$(MSBuildProjectDirectory)\wwwroot\App_Plugins\Kraftvaerk.Umbraco.Headless.BlockPreview.extension\" />
+			<KraftvaerkBlockPreviewContentDir Include="$(MSBuildProjectDirectory)\wwwroot\App_Plugins\Kraftvaerk.Umbraco.Headless.BlockPreview.extension\" />
 		</ItemGroup>
 		<Message Text="Clear old Kraftvaerk.Umbraco.Headless.BlockPreview data" Importance="high" />
-		<RemoveDir Directories="@(PackageReferenceProjectDir)" />
+		<RemoveDir Directories="@(KraftvaerkBlockPreviewContentDir)" />
 	</Target>
 
 
