@@ -7,6 +7,7 @@ using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.PreviewDB;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.RequestHelper;
 using Umbraco.Cms.Core.Composing;
 using Kraftvaerk.Umbraco.Headless.Blockpreview.Backend.Services.PreviewDB;
+using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services;
 
 namespace Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Composers
 {
@@ -24,6 +25,8 @@ namespace Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Composers
                 builder.Config.GetSection(HeadlessBlockPreviewOptions.SectionName));
 
             builder.Services.AddTransient<IBlockPreviewSettings, BlockPreviewSettings>();
+
+            builder.Services.AddScoped<ContextCultureService>();
 
         }
     }

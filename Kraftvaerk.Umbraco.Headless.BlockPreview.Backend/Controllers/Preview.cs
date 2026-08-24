@@ -1,6 +1,7 @@
 using Asp.Versioning;
 using Kraftvaerk.Umbraco.Headless.Blockpreview.Backend.PackageConstants;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Models;
+using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.BlockHelper;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.BlockPreviewCache;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.BlockPreviewSettings;
@@ -34,6 +35,7 @@ public class Preview : Controller
     private readonly IBlockPreviewCache _cache;
     private readonly IUmbracoHelperAccessor _umbracoHelperAccessor;
     private readonly ILogger<Preview> _logger;
+    private readonly ContextCultureService _contextCultureService;
 
     public Preview(
         IBlockHelper blockHelper,
@@ -42,7 +44,8 @@ public class Preview : Controller
         IBlockPreviewSettings settings,
         IBlockPreviewCache cache,
         IUmbracoHelperAccessor umbracoHelperAccessor,
-        ILogger<Preview> logger)
+        ILogger<Preview> logger,
+        ContextCultureService ContextCultureService)
     {
         _blockHelper = blockHelper;
         _requestHelper = requestHelper;
@@ -51,6 +54,7 @@ public class Preview : Controller
         _cache = cache;
         _umbracoHelperAccessor = umbracoHelperAccessor;
         _logger = logger;
+        _contextCultureService = ContextCultureService;
     }
 
     [HttpPost]
@@ -67,6 +71,9 @@ public class Preview : Controller
 
         if (globalOptions.EnableOutputCaching && _cache.TryGet(preview, out var cachedHtml))
             return Ok(new { html = cachedHtml });
+
+        if(!string.IsNullOrEmpty(preview.Culture))
+            _contextCultureService.setCulture(preview.Culture);
 
         IApiElement? content;
         IApiElement? settings;
@@ -91,13 +98,15 @@ public class Preview : Controller
             return BadRequest("Could not create IApiElement from Content");
         }
 
+
         var model = new BlockPreviewBackendModel()
         {
             Content = content,
             Settings = settings,
             RawContent = rawContent,
             RawSettings = rawSettings,
-            Key = !string.IsNullOrEmpty(preview.Id) ? Guid.Parse(preview.Id) : Guid.Empty
+            Key = !string.IsNullOrEmpty(preview.Id) ? Guid.Parse(preview.Id) : Guid.Empty,
+            Culture = preview.Culture
         };
 
         // Resolve the domain from the page URL so options can vary per site
@@ -109,7 +118,7 @@ public class Preview : Controller
             if (umbracoHelper != null)
             {
                 var url = umbracoHelper.Content(pageId.Value)?.Url(preview.Culture, UrlMode.Absolute);
-                if (url != null)
+                if (url is not null && url != "#" )
                     resolvedDomain = new Uri(url).Host;
             }
         }
