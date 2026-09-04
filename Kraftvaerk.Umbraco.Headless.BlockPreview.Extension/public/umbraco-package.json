@@ -3,13 +3,13 @@
     "id": "Kraftvaerk.Umbraco.Headless.BlockPreview.Extension",
     "name": "Kraftvaerk.Umbraco.Headless.BlockPreview.Extension",
     "allowPackageTelemetry": true,
-    "version": "1.4.1",
+    "version": "1.5.0",
     "extensions": [
         {
           "name": "Kraftvaerk.Umbraco.Headless.BlockPreview.Extension EntryPoint",
           "alias": "Kraftvaerk.Umbraco.Headless.BlockPreview.Extension.entrypoint",
           "type": "backofficeEntryPoint",
-          "js": "/App_Plugins/Kraftvaerk.Umbraco.Headless.BlockPreview.frontend/dist.js"
+          "js": "/App_Plugins/Kraftvaerk.Umbraco.Headless.BlockPreview.Extension/dist.js"
         }
       ]
 }

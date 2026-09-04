@@ -1,19 +1,27 @@
-var Be = (s) => {
+var st = (s) => {
   throw TypeError(s);
 };
-var Ne = (s, e, t) => e.has(s) || Be("Cannot " + t);
-var c = (s, e, t) => (Ne(s, e, "read from private field"), t ? t.call(s) : e.get(s)), k = (s, e, t) => e.has(s) ? Be("Cannot add the same private member more than once") : e instanceof WeakSet ? e.add(s) : e.set(s, t), y = (s, e, t, i) => (Ne(s, e, "write to private field"), i ? i.call(s, t) : e.set(s, t), t);
-import { UmbBlockActionBase as ot, UMB_BLOCK_MANAGER_CONTEXT as at } from "@umbraco-cms/backoffice/block";
-import { UmbLitElement as Fe } from "@umbraco-cms/backoffice/lit-element";
-import { UMB_VARIANT_WORKSPACE_CONTEXT as lt, UMB_WORKSPACE_CONDITION_ALIAS as Ce } from "@umbraco-cms/backoffice/workspace";
-import { UMB_AUTH_CONTEXT as de } from "@umbraco-cms/backoffice/auth";
-import { UMB_PROPERTY_DATASET_CONTEXT as ct } from "@umbraco-cms/backoffice/property";
-import { UMB_BLOCK_GRID_TYPE_WORKSPACE_ALIAS as ht } from "@umbraco-cms/backoffice/block-grid";
-import { UMB_BLOCK_LIST_TYPE_WORKSPACE_ALIAS as dt } from "@umbraco-cms/backoffice/block-list";
-const Ee = "kraftvaerk:toggle-preview";
-class ut extends ot {
+var He = (s, e, t) => e.has(s) || st("Cannot " + t);
+var h = (s, e, t) => (He(s, e, "read from private field"), t ? t.call(s) : e.get(s)), w = (s, e, t) => e.has(s) ? st("Cannot add the same private member more than once") : e instanceof WeakSet ? e.add(s) : e.set(s, t), y = (s, e, t, i) => (He(s, e, "write to private field"), i ? i.call(s, t) : e.set(s, t), t), se = (s, e, t) => (He(s, e, "access private method"), t);
+var $e = (s, e, t, i) => ({
+  set _(r) {
+    y(s, e, r, t);
+  },
+  get _() {
+    return h(s, e, i);
+  }
+});
+import { UmbBlockActionBase as Ut, UMB_BLOCK_MANAGER_CONTEXT as Bt } from "@umbraco-cms/backoffice/block";
+import { UmbLitElement as mt } from "@umbraco-cms/backoffice/lit-element";
+import { UMB_VARIANT_WORKSPACE_CONTEXT as Rt, UMB_WORKSPACE_CONDITION_ALIAS as it } from "@umbraco-cms/backoffice/workspace";
+import { UMB_AUTH_CONTEXT as Te } from "@umbraco-cms/backoffice/auth";
+import { UMB_PROPERTY_DATASET_CONTEXT as Ht } from "@umbraco-cms/backoffice/property";
+import { UMB_BLOCK_GRID_TYPE_WORKSPACE_ALIAS as Ct } from "@umbraco-cms/backoffice/block-grid";
+import { UMB_BLOCK_LIST_TYPE_WORKSPACE_ALIAS as Nt } from "@umbraco-cms/backoffice/block-list";
+const qe = "kraftvaerk:toggle-preview";
+class Mt extends Ut {
   async execute() {
-    f.useBeamFallback = !f.useBeamFallback, window.dispatchEvent(new CustomEvent(Ee));
+    d.useBeamFallback = !d.useBeamFallback, window.dispatchEvent(new CustomEvent(qe));
   }
 }
 /**
@@ -21,18 +29,18 @@ class ut extends ot {
  * Copyright 2019 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-const ie = globalThis, Te = ie.ShadowRoot && (ie.ShadyCSS === void 0 || ie.ShadyCSS.nativeShadow) && "adoptedStyleSheets" in Document.prototype && "replace" in CSSStyleSheet.prototype, ke = Symbol(), Ie = /* @__PURE__ */ new WeakMap();
-let Je = class {
+const ge = globalThis, Ge = ge.ShadowRoot && (ge.ShadyCSS === void 0 || ge.ShadyCSS.nativeShadow) && "adoptedStyleSheets" in Document.prototype && "replace" in CSSStyleSheet.prototype, Fe = Symbol(), rt = /* @__PURE__ */ new WeakMap();
+let _t = class {
   constructor(e, t, i) {
-    if (this._$cssResult$ = !0, i !== ke) throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");
+    if (this._$cssResult$ = !0, i !== Fe) throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");
     this.cssText = e, this.t = t;
   }
   get styleSheet() {
     let e = this.o;
     const t = this.t;
-    if (Te && e === void 0) {
+    if (Ge && e === void 0) {
       const i = t !== void 0 && t.length === 1;
-      i && (e = Ie.get(t)), e === void 0 && ((this.o = e = new CSSStyleSheet()).replaceSync(this.cssText), i && Ie.set(t, e));
+      i && (e = rt.get(t)), e === void 0 && ((this.o = e = new CSSStyleSheet()).replaceSync(this.cssText), i && rt.set(t, e));
     }
     return e;
   }
@@ -40,33 +48,33 @@ let Je = class {
     return this.cssText;
   }
 };
-const pt = (s) => new Je(typeof s == "string" ? s : s + "", void 0, ke), Ye = (s, ...e) => {
+const It = (s) => new _t(typeof s == "string" ? s : s + "", void 0, Fe), bt = (s, ...e) => {
   const t = s.length === 1 ? s[0] : e.reduce((i, r, n) => i + ((o) => {
     if (o._$cssResult$ === !0) return o.cssText;
     if (typeof o == "number") return o;
     throw Error("Value passed to 'css' function must be a 'css' function result: " + o + ". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.");
   })(r) + s[n + 1], s[0]);
-  return new Je(t, s, ke);
-}, ft = (s, e) => {
-  if (Te) s.adoptedStyleSheets = e.map((t) => t instanceof CSSStyleSheet ? t : t.styleSheet);
+  return new _t(t, s, Fe);
+}, Lt = (s, e) => {
+  if (Ge) s.adoptedStyleSheets = e.map((t) => t instanceof CSSStyleSheet ? t : t.styleSheet);
   else for (const t of e) {
-    const i = document.createElement("style"), r = ie.litNonce;
+    const i = document.createElement("style"), r = ge.litNonce;
     r !== void 0 && i.setAttribute("nonce", r), i.textContent = t.cssText, s.appendChild(i);
   }
-}, Le = Te ? (s) => s : (s) => s instanceof CSSStyleSheet ? ((e) => {
+}, nt = Ge ? (s) => s : (s) => s instanceof CSSStyleSheet ? ((e) => {
   let t = "";
   for (const i of e.cssRules) t += i.cssText;
-  return pt(t);
+  return It(t);
 })(s) : s;
 /**
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-const { is: mt, defineProperty: _t, getOwnPropertyDescriptor: $t, getOwnPropertyNames: bt, getOwnPropertySymbols: yt, getPrototypeOf: vt } = Object, B = globalThis, Me = B.trustedTypes, gt = Me ? Me.emptyScript : "", $e = B.reactiveElementPolyfillSupport, F = (s, e) => s, ue = { toAttribute(s, e) {
+const { is: qt, defineProperty: Dt, getOwnPropertyDescriptor: Wt, getOwnPropertyNames: xt, getOwnPropertySymbols: Kt, getPrototypeOf: Vt } = Object, W = globalThis, ot = W.trustedTypes, jt = ot ? ot.emptyScript : "", Ce = W.reactiveElementPolyfillSupport, ne = (s, e) => s, ke = { toAttribute(s, e) {
   switch (e) {
     case Boolean:
-      s = s ? gt : null;
+      s = s ? jt : null;
       break;
     case Object:
     case Array:
@@ -91,23 +99,23 @@ const { is: mt, defineProperty: _t, getOwnPropertyDescriptor: $t, getOwnProperty
       }
   }
   return t;
-} }, Pe = (s, e) => !mt(s, e), De = { attribute: !0, type: String, converter: ue, reflect: !1, useDefault: !1, hasChanged: Pe };
-Symbol.metadata ?? (Symbol.metadata = Symbol("metadata")), B.litPropertyMetadata ?? (B.litPropertyMetadata = /* @__PURE__ */ new WeakMap());
-let V = class extends HTMLElement {
+} }, Je = (s, e) => !qt(s, e), at = { attribute: !0, type: String, converter: ke, reflect: !1, useDefault: !1, hasChanged: Je };
+Symbol.metadata ?? (Symbol.metadata = Symbol("metadata")), W.litPropertyMetadata ?? (W.litPropertyMetadata = /* @__PURE__ */ new WeakMap());
+let Y = class extends HTMLElement {
   static addInitializer(e) {
     this._$Ei(), (this.l ?? (this.l = [])).push(e);
   }
   static get observedAttributes() {
     return this.finalize(), this._$Eh && [...this._$Eh.keys()];
   }
-  static createProperty(e, t = De) {
+  static createProperty(e, t = at) {
     if (t.state && (t.attribute = !1), this._$Ei(), this.prototype.hasOwnProperty(e) && ((t = Object.create(t)).wrapped = !0), this.elementProperties.set(e, t), !t.noAccessor) {
       const i = Symbol(), r = this.getPropertyDescriptor(e, i, t);
-      r !== void 0 && _t(this.prototype, e, r);
+      r !== void 0 && Dt(this.prototype, e, r);
     }
   }
   static getPropertyDescriptor(e, t, i) {
-    const { get: r, set: n } = $t(this.prototype, e) ?? { get() {
+    const { get: r, set: n } = Wt(this.prototype, e) ?? { get() {
       return this[t];
     }, set(o) {
       this[t] = o;
@@ -118,17 +126,17 @@ let V = class extends HTMLElement {
     }, configurable: !0, enumerable: !0 };
   }
   static getPropertyOptions(e) {
-    return this.elementProperties.get(e) ?? De;
+    return this.elementProperties.get(e) ?? at;
   }
   static _$Ei() {
-    if (this.hasOwnProperty(F("elementProperties"))) return;
-    const e = vt(this);
+    if (this.hasOwnProperty(ne("elementProperties"))) return;
+    const e = Vt(this);
     e.finalize(), e.l !== void 0 && (this.l = [...e.l]), this.elementProperties = new Map(e.elementProperties);
   }
   static finalize() {
-    if (this.hasOwnProperty(F("finalized"))) return;
-    if (this.finalized = !0, this._$Ei(), this.hasOwnProperty(F("properties"))) {
-      const t = this.properties, i = [...bt(t), ...yt(t)];
+    if (this.hasOwnProperty(ne("finalized"))) return;
+    if (this.finalized = !0, this._$Ei(), this.hasOwnProperty(ne("properties"))) {
+      const t = this.properties, i = [...xt(t), ...Kt(t)];
       for (const r of i) this.createProperty(r, t[r]);
     }
     const e = this[Symbol.metadata];
@@ -147,8 +155,8 @@ let V = class extends HTMLElement {
     const t = [];
     if (Array.isArray(e)) {
       const i = new Set(e.flat(1 / 0).reverse());
-      for (const r of i) t.unshift(Le(r));
-    } else e !== void 0 && t.push(Le(e));
+      for (const r of i) t.unshift(nt(r));
+    } else e !== void 0 && t.push(nt(e));
     return t;
   }
   static _$Eu(e, t) {
@@ -177,7 +185,7 @@ let V = class extends HTMLElement {
   }
   createRenderRoot() {
     const e = this.shadowRoot ?? this.attachShadow(this.constructor.shadowRootOptions);
-    return ft(e, this.constructor.elementStyles), e;
+    return Lt(e, this.constructor.elementStyles), e;
   }
   connectedCallback() {
     var e;
@@ -202,7 +210,7 @@ let V = class extends HTMLElement {
     var n;
     const i = this.constructor.elementProperties.get(e), r = this.constructor._$Eu(e, i);
     if (r !== void 0 && i.reflect === !0) {
-      const o = (((n = i.converter) == null ? void 0 : n.toAttribute) !== void 0 ? i.converter : ue).toAttribute(t, i.type);
+      const o = (((n = i.converter) == null ? void 0 : n.toAttribute) !== void 0 ? i.converter : ke).toAttribute(t, i.type);
       this._$Em = e, o == null ? this.removeAttribute(r) : this.setAttribute(r, o), this._$Em = null;
     }
   }
@@ -210,7 +218,7 @@ let V = class extends HTMLElement {
     var n, o;
     const i = this.constructor, r = i._$Eh.get(e);
     if (r !== void 0 && this._$Em !== r) {
-      const a = i.getPropertyOptions(r), l = typeof a.converter == "function" ? { fromAttribute: a.converter } : ((n = a.converter) == null ? void 0 : n.fromAttribute) !== void 0 ? a.converter : ue;
+      const a = i.getPropertyOptions(r), l = typeof a.converter == "function" ? { fromAttribute: a.converter } : ((n = a.converter) == null ? void 0 : n.fromAttribute) !== void 0 ? a.converter : ke;
       this._$Em = r, this[r] = l.fromAttribute(t, a.type) ?? ((o = this._$Ej) == null ? void 0 : o.get(r)) ?? null, this._$Em = null;
     }
   }
@@ -218,7 +226,7 @@ let V = class extends HTMLElement {
     var r;
     if (e !== void 0) {
       const n = this.constructor, o = this[e];
-      if (i ?? (i = n.getPropertyOptions(e)), !((i.hasChanged ?? Pe)(o, t) || i.useDefault && i.reflect && o === ((r = this._$Ej) == null ? void 0 : r.get(e)) && !this.hasAttribute(n._$Eu(e, i)))) return;
+      if (i ?? (i = n.getPropertyOptions(e)), !((i.hasChanged ?? Je)(o, t) || i.useDefault && i.reflect && o === ((r = this._$Ej) == null ? void 0 : r.get(e)) && !this.hasAttribute(n._$Eu(e, i)))) return;
       this.C(e, t, i);
     }
     this.isUpdatePending === !1 && (this._$ES = this._$EP());
@@ -294,76 +302,76 @@ let V = class extends HTMLElement {
   firstUpdated(e) {
   }
 };
-V.elementStyles = [], V.shadowRootOptions = { mode: "open" }, V[F("elementProperties")] = /* @__PURE__ */ new Map(), V[F("finalized")] = /* @__PURE__ */ new Map(), $e == null || $e({ ReactiveElement: V }), (B.reactiveElementVersions ?? (B.reactiveElementVersions = [])).push("2.1.0");
+Y.elementStyles = [], Y.shadowRootOptions = { mode: "open" }, Y[ne("elementProperties")] = /* @__PURE__ */ new Map(), Y[ne("finalized")] = /* @__PURE__ */ new Map(), Ce == null || Ce({ ReactiveElement: Y }), (W.reactiveElementVersions ?? (W.reactiveElementVersions = [])).push("2.1.0");
 /**
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-const J = globalThis, pe = J.trustedTypes, qe = pe ? pe.createPolicy("lit-html", { createHTML: (s) => s }) : void 0, Xe = "$lit$", U = `lit$${Math.random().toFixed(9).slice(2)}$`, Ze = "?" + U, Et = `<${Ze}>`, D = document, Y = () => D.createComment(""), X = (s) => s === null || typeof s != "object" && typeof s != "function", Oe = Array.isArray, At = (s) => Oe(s) || typeof (s == null ? void 0 : s[Symbol.iterator]) == "function", be = `[ 	
-\f\r]`, G = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, Ve = /-->/g, je = />/g, N = RegExp(`>|${be}(?:([^\\s"'>=/]+)(${be}*=${be}*(?:[^ 	
-\f\r"'\`<>=]|("|')|))|$)`, "g"), We = /'/g, Ke = /"/g, Qe = /^(?:script|style|textarea|title)$/i, wt = (s) => (e, ...t) => ({ _$litType$: s, strings: e, values: t }), Ae = wt(1), q = Symbol.for("lit-noChange"), m = Symbol.for("lit-nothing"), xe = /* @__PURE__ */ new WeakMap(), I = D.createTreeWalker(D, 129);
-function et(s, e) {
-  if (!Oe(s) || !s.hasOwnProperty("raw")) throw Error("invalid template strings array");
-  return qe !== void 0 ? qe.createHTML(e) : e;
+const oe = globalThis, Pe = oe.trustedTypes, lt = Pe ? Pe.createPolicy("lit-html", { createHTML: (s) => s }) : void 0, yt = "$lit$", H = `lit$${Math.random().toFixed(9).slice(2)}$`, $t = "?" + H, zt = `<${$t}>`, G = document, ce = () => G.createComment(""), he = (s) => s === null || typeof s != "object" && typeof s != "function", Ye = Array.isArray, Gt = (s) => Ye(s) || typeof (s == null ? void 0 : s[Symbol.iterator]) == "function", Ne = `[ 	
+\f\r]`, ie = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, ct = /-->/g, ht = />/g, x = RegExp(`>|${Ne}(?:([^\\s"'>=/]+)(${Ne}*=${Ne}*(?:[^ 	
+\f\r"'\`<>=]|("|')|))|$)`, "g"), dt = /'/g, ut = /"/g, vt = /^(?:script|style|textarea|title)$/i, Ft = (s) => (e, ...t) => ({ _$litType$: s, strings: e, values: t }), De = Ft(1), F = Symbol.for("lit-noChange"), b = Symbol.for("lit-nothing"), pt = /* @__PURE__ */ new WeakMap(), K = G.createTreeWalker(G, 129);
+function gt(s, e) {
+  if (!Ye(s) || !s.hasOwnProperty("raw")) throw Error("invalid template strings array");
+  return lt !== void 0 ? lt.createHTML(e) : e;
 }
-const St = (s, e) => {
+const Jt = (s, e) => {
   const t = s.length - 1, i = [];
-  let r, n = e === 2 ? "<svg>" : e === 3 ? "<math>" : "", o = G;
+  let r, n = e === 2 ? "<svg>" : e === 3 ? "<math>" : "", o = ie;
   for (let a = 0; a < t; a++) {
     const l = s[a];
-    let h, d, p = -1, b = 0;
-    for (; b < l.length && (o.lastIndex = b, d = o.exec(l), d !== null); ) b = o.lastIndex, o === G ? d[1] === "!--" ? o = Ve : d[1] !== void 0 ? o = je : d[2] !== void 0 ? (Qe.test(d[2]) && (r = RegExp("</" + d[2], "g")), o = N) : d[3] !== void 0 && (o = N) : o === N ? d[0] === ">" ? (o = r ?? G, p = -1) : d[1] === void 0 ? p = -2 : (p = o.lastIndex - d[2].length, h = d[1], o = d[3] === void 0 ? N : d[3] === '"' ? Ke : We) : o === Ke || o === We ? o = N : o === Ve || o === je ? o = G : (o = N, r = void 0);
-    const T = o === N && s[a + 1].startsWith("/>") ? " " : "";
-    n += o === G ? l + Et : p >= 0 ? (i.push(h), l.slice(0, p) + Xe + l.slice(p) + U + T) : l + U + (p === -2 ? a : T);
+    let u, p, m = -1, g = 0;
+    for (; g < l.length && (o.lastIndex = g, p = o.exec(l), p !== null); ) g = o.lastIndex, o === ie ? p[1] === "!--" ? o = ct : p[1] !== void 0 ? o = ht : p[2] !== void 0 ? (vt.test(p[2]) && (r = RegExp("</" + p[2], "g")), o = x) : p[3] !== void 0 && (o = x) : o === x ? p[0] === ">" ? (o = r ?? ie, m = -1) : p[1] === void 0 ? m = -2 : (m = o.lastIndex - p[2].length, u = p[1], o = p[3] === void 0 ? x : p[3] === '"' ? ut : dt) : o === ut || o === dt ? o = x : o === ct || o === ht ? o = ie : (o = x, r = void 0);
+    const U = o === x && s[a + 1].startsWith("/>") ? " " : "";
+    n += o === ie ? l + zt : m >= 0 ? (i.push(u), l.slice(0, m) + yt + l.slice(m) + H + U) : l + H + (m === -2 ? a : U);
   }
-  return [et(s, n + (s[t] || "<?>") + (e === 2 ? "</svg>" : e === 3 ? "</math>" : "")), i];
+  return [gt(s, n + (s[t] || "<?>") + (e === 2 ? "</svg>" : e === 3 ? "</math>" : "")), i];
 };
-class Z {
+class de {
   constructor({ strings: e, _$litType$: t }, i) {
     let r;
     this.parts = [];
     let n = 0, o = 0;
-    const a = e.length - 1, l = this.parts, [h, d] = St(e, t);
-    if (this.el = Z.createElement(h, i), I.currentNode = this.el.content, t === 2 || t === 3) {
-      const p = this.el.content.firstChild;
-      p.replaceWith(...p.childNodes);
+    const a = e.length - 1, l = this.parts, [u, p] = Jt(e, t);
+    if (this.el = de.createElement(u, i), K.currentNode = this.el.content, t === 2 || t === 3) {
+      const m = this.el.content.firstChild;
+      m.replaceWith(...m.childNodes);
     }
-    for (; (r = I.nextNode()) !== null && l.length < a; ) {
+    for (; (r = K.nextNode()) !== null && l.length < a; ) {
       if (r.nodeType === 1) {
-        if (r.hasAttributes()) for (const p of r.getAttributeNames()) if (p.endsWith(Xe)) {
-          const b = d[o++], T = r.getAttribute(p).split(U), te = /([.?@])?(.*)/.exec(b);
-          l.push({ type: 1, index: n, name: te[2], strings: T, ctor: te[1] === "." ? kt : te[1] === "?" ? Pt : te[1] === "@" ? Ot : _e }), r.removeAttribute(p);
-        } else p.startsWith(U) && (l.push({ type: 6, index: n }), r.removeAttribute(p));
-        if (Qe.test(r.tagName)) {
-          const p = r.textContent.split(U), b = p.length - 1;
-          if (b > 0) {
-            r.textContent = pe ? pe.emptyScript : "";
-            for (let T = 0; T < b; T++) r.append(p[T], Y()), I.nextNode(), l.push({ type: 2, index: ++n });
-            r.append(p[b], Y());
+        if (r.hasAttributes()) for (const m of r.getAttributeNames()) if (m.endsWith(yt)) {
+          const g = p[o++], U = r.getAttribute(m).split(H), ye = /([.?@])?(.*)/.exec(g);
+          l.push({ type: 1, index: n, name: ye[2], strings: U, ctor: ye[1] === "." ? Xt : ye[1] === "?" ? Qt : ye[1] === "@" ? Zt : Be }), r.removeAttribute(m);
+        } else m.startsWith(H) && (l.push({ type: 6, index: n }), r.removeAttribute(m));
+        if (vt.test(r.tagName)) {
+          const m = r.textContent.split(H), g = m.length - 1;
+          if (g > 0) {
+            r.textContent = Pe ? Pe.emptyScript : "";
+            for (let U = 0; U < g; U++) r.append(m[U], ce()), K.nextNode(), l.push({ type: 2, index: ++n });
+            r.append(m[g], ce());
           }
         }
-      } else if (r.nodeType === 8) if (r.data === Ze) l.push({ type: 2, index: n });
+      } else if (r.nodeType === 8) if (r.data === $t) l.push({ type: 2, index: n });
       else {
-        let p = -1;
-        for (; (p = r.data.indexOf(U, p + 1)) !== -1; ) l.push({ type: 7, index: n }), p += U.length - 1;
+        let m = -1;
+        for (; (m = r.data.indexOf(H, m + 1)) !== -1; ) l.push({ type: 7, index: n }), m += H.length - 1;
       }
       n++;
     }
   }
   static createElement(e, t) {
-    const i = D.createElement("template");
+    const i = G.createElement("template");
     return i.innerHTML = e, i;
   }
 }
-function x(s, e, t = s, i) {
+function ee(s, e, t = s, i) {
   var o, a;
-  if (e === q) return e;
+  if (e === F) return e;
   let r = i !== void 0 ? (o = t._$Co) == null ? void 0 : o[i] : t._$Cl;
-  const n = X(e) ? void 0 : e._$litDirective$;
-  return (r == null ? void 0 : r.constructor) !== n && ((a = r == null ? void 0 : r._$AO) == null || a.call(r, !1), n === void 0 ? r = void 0 : (r = new n(s), r._$AT(s, t, i)), i !== void 0 ? (t._$Co ?? (t._$Co = []))[i] = r : t._$Cl = r), r !== void 0 && (e = x(s, r._$AS(s, e.values), r, i)), e;
+  const n = he(e) ? void 0 : e._$litDirective$;
+  return (r == null ? void 0 : r.constructor) !== n && ((a = r == null ? void 0 : r._$AO) == null || a.call(r, !1), n === void 0 ? r = void 0 : (r = new n(s), r._$AT(s, t, i)), i !== void 0 ? (t._$Co ?? (t._$Co = []))[i] = r : t._$Cl = r), r !== void 0 && (e = ee(s, r._$AS(s, e.values), r, i)), e;
 }
-class Tt {
+class Yt {
   constructor(e, t) {
     this._$AV = [], this._$AN = void 0, this._$AD = e, this._$AM = t;
   }
@@ -374,30 +382,30 @@ class Tt {
     return this._$AM._$AU;
   }
   u(e) {
-    const { el: { content: t }, parts: i } = this._$AD, r = ((e == null ? void 0 : e.creationScope) ?? D).importNode(t, !0);
-    I.currentNode = r;
-    let n = I.nextNode(), o = 0, a = 0, l = i[0];
+    const { el: { content: t }, parts: i } = this._$AD, r = ((e == null ? void 0 : e.creationScope) ?? G).importNode(t, !0);
+    K.currentNode = r;
+    let n = K.nextNode(), o = 0, a = 0, l = i[0];
     for (; l !== void 0; ) {
       if (o === l.index) {
-        let h;
-        l.type === 2 ? h = new Q(n, n.nextSibling, this, e) : l.type === 1 ? h = new l.ctor(n, l.name, l.strings, this, e) : l.type === 6 && (h = new Ut(n, this, e)), this._$AV.push(h), l = i[++a];
+        let u;
+        l.type === 2 ? u = new _e(n, n.nextSibling, this, e) : l.type === 1 ? u = new l.ctor(n, l.name, l.strings, this, e) : l.type === 6 && (u = new es(n, this, e)), this._$AV.push(u), l = i[++a];
       }
-      o !== (l == null ? void 0 : l.index) && (n = I.nextNode(), o++);
+      o !== (l == null ? void 0 : l.index) && (n = K.nextNode(), o++);
     }
-    return I.currentNode = D, r;
+    return K.currentNode = G, r;
   }
   p(e) {
     let t = 0;
     for (const i of this._$AV) i !== void 0 && (i.strings !== void 0 ? (i._$AI(e, i, t), t += i.strings.length - 2) : i._$AI(e[t])), t++;
   }
 }
-class Q {
+class _e {
   get _$AU() {
     var e;
     return ((e = this._$AM) == null ? void 0 : e._$AU) ?? this._$Cv;
   }
   constructor(e, t, i, r) {
-    this.type = 2, this._$AH = m, this._$AN = void 0, this._$AA = e, this._$AB = t, this._$AM = i, this.options = r, this._$Cv = (r == null ? void 0 : r.isConnected) ?? !0;
+    this.type = 2, this._$AH = b, this._$AN = void 0, this._$AA = e, this._$AB = t, this._$AM = i, this.options = r, this._$Cv = (r == null ? void 0 : r.isConnected) ?? !0;
   }
   get parentNode() {
     let e = this._$AA.parentNode;
@@ -411,7 +419,7 @@ class Q {
     return this._$AB;
   }
   _$AI(e, t = this) {
-    e = x(this, e, t), X(e) ? e === m || e == null || e === "" ? (this._$AH !== m && this._$AR(), this._$AH = m) : e !== this._$AH && e !== q && this._(e) : e._$litType$ !== void 0 ? this.$(e) : e.nodeType !== void 0 ? this.T(e) : At(e) ? this.k(e) : this._(e);
+    e = ee(this, e, t), he(e) ? e === b || e == null || e === "" ? (this._$AH !== b && this._$AR(), this._$AH = b) : e !== this._$AH && e !== F && this._(e) : e._$litType$ !== void 0 ? this.$(e) : e.nodeType !== void 0 ? this.T(e) : Gt(e) ? this.k(e) : this._(e);
   }
   O(e) {
     return this._$AA.parentNode.insertBefore(e, this._$AB);
@@ -420,26 +428,26 @@ class Q {
     this._$AH !== e && (this._$AR(), this._$AH = this.O(e));
   }
   _(e) {
-    this._$AH !== m && X(this._$AH) ? this._$AA.nextSibling.data = e : this.T(D.createTextNode(e)), this._$AH = e;
+    this._$AH !== b && he(this._$AH) ? this._$AA.nextSibling.data = e : this.T(G.createTextNode(e)), this._$AH = e;
   }
   $(e) {
     var n;
-    const { values: t, _$litType$: i } = e, r = typeof i == "number" ? this._$AC(e) : (i.el === void 0 && (i.el = Z.createElement(et(i.h, i.h[0]), this.options)), i);
+    const { values: t, _$litType$: i } = e, r = typeof i == "number" ? this._$AC(e) : (i.el === void 0 && (i.el = de.createElement(gt(i.h, i.h[0]), this.options)), i);
     if (((n = this._$AH) == null ? void 0 : n._$AD) === r) this._$AH.p(t);
     else {
-      const o = new Tt(r, this), a = o.u(this.options);
+      const o = new Yt(r, this), a = o.u(this.options);
       o.p(t), this.T(a), this._$AH = o;
     }
   }
   _$AC(e) {
-    let t = xe.get(e.strings);
-    return t === void 0 && xe.set(e.strings, t = new Z(e)), t;
+    let t = pt.get(e.strings);
+    return t === void 0 && pt.set(e.strings, t = new de(e)), t;
   }
   k(e) {
-    Oe(this._$AH) || (this._$AH = [], this._$AR());
+    Ye(this._$AH) || (this._$AH = [], this._$AR());
     const t = this._$AH;
     let i, r = 0;
-    for (const n of e) r === t.length ? t.push(i = new Q(this.O(Y()), this.O(Y()), this, this.options)) : i = t[r], i._$AI(n), r++;
+    for (const n of e) r === t.length ? t.push(i = new _e(this.O(ce()), this.O(ce()), this, this.options)) : i = t[r], i._$AI(n), r++;
     r < t.length && (this._$AR(i && i._$AB.nextSibling, r), t.length = r);
   }
   _$AR(e = this._$AA.nextSibling, t) {
@@ -454,7 +462,7 @@ class Q {
     this._$AM === void 0 && (this._$Cv = e, (t = this._$AP) == null || t.call(this, e));
   }
 }
-class _e {
+class Be {
   get tagName() {
     return this.element.tagName;
   }
@@ -462,46 +470,46 @@ class _e {
     return this._$AM._$AU;
   }
   constructor(e, t, i, r, n) {
-    this.type = 1, this._$AH = m, this._$AN = void 0, this.element = e, this.name = t, this._$AM = r, this.options = n, i.length > 2 || i[0] !== "" || i[1] !== "" ? (this._$AH = Array(i.length - 1).fill(new String()), this.strings = i) : this._$AH = m;
+    this.type = 1, this._$AH = b, this._$AN = void 0, this.element = e, this.name = t, this._$AM = r, this.options = n, i.length > 2 || i[0] !== "" || i[1] !== "" ? (this._$AH = Array(i.length - 1).fill(new String()), this.strings = i) : this._$AH = b;
   }
   _$AI(e, t = this, i, r) {
     const n = this.strings;
     let o = !1;
-    if (n === void 0) e = x(this, e, t, 0), o = !X(e) || e !== this._$AH && e !== q, o && (this._$AH = e);
+    if (n === void 0) e = ee(this, e, t, 0), o = !he(e) || e !== this._$AH && e !== F, o && (this._$AH = e);
     else {
       const a = e;
-      let l, h;
-      for (e = n[0], l = 0; l < n.length - 1; l++) h = x(this, a[i + l], t, l), h === q && (h = this._$AH[l]), o || (o = !X(h) || h !== this._$AH[l]), h === m ? e = m : e !== m && (e += (h ?? "") + n[l + 1]), this._$AH[l] = h;
+      let l, u;
+      for (e = n[0], l = 0; l < n.length - 1; l++) u = ee(this, a[i + l], t, l), u === F && (u = this._$AH[l]), o || (o = !he(u) || u !== this._$AH[l]), u === b ? e = b : e !== b && (e += (u ?? "") + n[l + 1]), this._$AH[l] = u;
     }
     o && !r && this.j(e);
   }
   j(e) {
-    e === m ? this.element.removeAttribute(this.name) : this.element.setAttribute(this.name, e ?? "");
+    e === b ? this.element.removeAttribute(this.name) : this.element.setAttribute(this.name, e ?? "");
   }
 }
-class kt extends _e {
+class Xt extends Be {
   constructor() {
     super(...arguments), this.type = 3;
   }
   j(e) {
-    this.element[this.name] = e === m ? void 0 : e;
+    this.element[this.name] = e === b ? void 0 : e;
   }
 }
-class Pt extends _e {
+class Qt extends Be {
   constructor() {
     super(...arguments), this.type = 4;
   }
   j(e) {
-    this.element.toggleAttribute(this.name, !!e && e !== m);
+    this.element.toggleAttribute(this.name, !!e && e !== b);
   }
 }
-class Ot extends _e {
+class Zt extends Be {
   constructor(e, t, i, r, n) {
     super(e, t, i, r, n), this.type = 5;
   }
   _$AI(e, t = this) {
-    if ((e = x(this, e, t, 0) ?? m) === q) return;
-    const i = this._$AH, r = e === m && i !== m || e.capture !== i.capture || e.once !== i.once || e.passive !== i.passive, n = e !== m && (i === m || r);
+    if ((e = ee(this, e, t, 0) ?? b) === F) return;
+    const i = this._$AH, r = e === b && i !== b || e.capture !== i.capture || e.once !== i.once || e.passive !== i.passive, n = e !== b && (i === b || r);
     r && this.element.removeEventListener(this.name, this, i), n && this.element.addEventListener(this.name, this, e), this._$AH = e;
   }
   handleEvent(e) {
@@ -509,7 +517,7 @@ class Ot extends _e {
     typeof this._$AH == "function" ? this._$AH.call(((t = this.options) == null ? void 0 : t.host) ?? this.element, e) : this._$AH.handleEvent(e);
   }
 }
-class Ut {
+class es {
   constructor(e, t, i) {
     this.element = e, this.type = 6, this._$AN = void 0, this._$AM = t, this.options = i;
   }
@@ -517,17 +525,17 @@ class Ut {
     return this._$AM._$AU;
   }
   _$AI(e) {
-    x(this, e);
+    ee(this, e);
   }
 }
-const ye = J.litHtmlPolyfillSupport;
-ye == null || ye(Z, Q), (J.litHtmlVersions ?? (J.litHtmlVersions = [])).push("3.3.0");
-const Rt = (s, e, t) => {
+const Me = oe.litHtmlPolyfillSupport;
+Me == null || Me(de, _e), (oe.litHtmlVersions ?? (oe.litHtmlVersions = [])).push("3.3.0");
+const ts = (s, e, t) => {
   const i = (t == null ? void 0 : t.renderBefore) ?? e;
   let r = i._$litPart$;
   if (r === void 0) {
     const n = (t == null ? void 0 : t.renderBefore) ?? null;
-    i._$litPart$ = r = new Q(e.insertBefore(Y(), n), n, void 0, t ?? {});
+    i._$litPart$ = r = new _e(e.insertBefore(ce(), n), n, void 0, t ?? {});
   }
   return r._$AI(s), r;
 };
@@ -536,8 +544,8 @@ const Rt = (s, e, t) => {
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-const M = globalThis;
-let re = class extends V {
+const z = globalThis;
+let we = class extends Y {
   constructor() {
     super(...arguments), this.renderOptions = { host: this }, this._$Do = void 0;
   }
@@ -548,7 +556,7 @@ let re = class extends V {
   }
   update(e) {
     const t = this.render();
-    this.hasUpdated || (this.renderOptions.isConnected = this.isConnected), super.update(e), this._$Do = Rt(t, this.renderRoot, this.renderOptions);
+    this.hasUpdated || (this.renderOptions.isConnected = this.isConnected), super.update(e), this._$Do = ts(t, this.renderRoot, this.renderOptions);
   }
   connectedCallback() {
     var e;
@@ -559,20 +567,20 @@ let re = class extends V {
     super.disconnectedCallback(), (e = this._$Do) == null || e.setConnected(!1);
   }
   render() {
-    return q;
+    return F;
   }
 };
-var Ge;
-re._$litElement$ = !0, re.finalized = !0, (Ge = M.litElementHydrateSupport) == null || Ge.call(M, { LitElement: re });
-const ve = M.litElementPolyfillSupport;
-ve == null || ve({ LitElement: re });
-(M.litElementVersions ?? (M.litElementVersions = [])).push("4.2.0");
+var ft;
+we._$litElement$ = !0, we.finalized = !0, (ft = z.litElementHydrateSupport) == null || ft.call(z, { LitElement: we });
+const Ie = z.litElementPolyfillSupport;
+Ie == null || Ie({ LitElement: we });
+(z.litElementVersions ?? (z.litElementVersions = [])).push("4.2.0");
 /**
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-const tt = (s) => (e, t) => {
+const wt = (s) => (e, t) => {
   t !== void 0 ? t.addInitializer(() => {
     customElements.define(s, e);
   }) : customElements.define(s, e);
@@ -582,7 +590,7 @@ const tt = (s) => (e, t) => {
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-const Ht = { attribute: !0, type: String, converter: ue, reflect: !1, hasChanged: Pe }, Bt = (s = Ht, e, t) => {
+const ss = { attribute: !0, type: String, converter: ke, reflect: !1, hasChanged: Je }, is = (s = ss, e, t) => {
   const { kind: i, metadata: r } = t;
   let n = globalThis.litPropertyMetadata.get(r);
   if (n === void 0 && globalThis.litPropertyMetadata.set(r, n = /* @__PURE__ */ new Map()), i === "setter" && ((s = Object.create(s)).wrapped = !0), n.set(t.name, s), i === "accessor") {
@@ -603,8 +611,8 @@ const Ht = { attribute: !0, type: String, converter: ue, reflect: !1, hasChanged
   }
   throw Error("Unsupported decorator location: " + i);
 };
-function g(s) {
-  return (e, t) => typeof t == "object" ? Bt(s, e, t) : ((i, r, n) => {
+function $(s) {
+  return (e, t) => typeof t == "object" ? is(s, e, t) : ((i, r, n) => {
     const o = r.hasOwnProperty(n);
     return r.constructor.createProperty(n, i), o ? Object.getOwnPropertyDescriptor(r, n) : void 0;
   })(s, e, t);
@@ -614,16 +622,16 @@ function g(s) {
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-function Nt(s) {
-  return g({ ...s, state: !0, attribute: !1 });
+function rs(s) {
+  return $({ ...s, state: !0, attribute: !1 });
 }
 /**
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-const Ct = { ATTRIBUTE: 1, CHILD: 2, PROPERTY: 3, BOOLEAN_ATTRIBUTE: 4, EVENT: 5, ELEMENT: 6 }, It = (s) => (...e) => ({ _$litDirective$: s, values: e });
-class Lt {
+const ns = { ATTRIBUTE: 1, CHILD: 2, PROPERTY: 3, BOOLEAN_ATTRIBUTE: 4, EVENT: 5, ELEMENT: 6 }, os = (s) => (...e) => ({ _$litDirective$: s, values: e });
+class as {
   constructor(e) {
   }
   get _$AU() {
@@ -644,13 +652,13 @@ class Lt {
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-class we extends Lt {
+class We extends as {
   constructor(e) {
-    if (super(e), this.it = m, e.type !== Ct.CHILD) throw Error(this.constructor.directiveName + "() can only be used in child bindings");
+    if (super(e), this.it = b, e.type !== ns.CHILD) throw Error(this.constructor.directiveName + "() can only be used in child bindings");
   }
   render(e) {
-    if (e === m || e == null) return this._t = void 0, this.it = e;
-    if (e === q) return e;
+    if (e === b || e == null) return this._t = void 0, this.it = e;
+    if (e === F) return e;
     if (typeof e != "string") throw Error(this.constructor.directiveName + "() called with a non-string value");
     if (e === this.it) return this._t;
     this.it = e;
@@ -658,19 +666,19 @@ class we extends Lt {
     return t.raw = t, this._t = { _$litType$: this.constructor.resultType, strings: t, values: [] };
   }
 }
-we.directiveName = "unsafeHTML", we.resultType = 1;
-const Mt = It(we);
-class Dt {
+We.directiveName = "unsafeHTML", We.resultType = 1;
+const ls = os(We);
+class cs {
   constructor(e) {
     this.config = e;
   }
 }
-class ze extends Error {
+class xe extends Error {
   constructor(e, t, i) {
     super(i), this.name = "ApiError", this.url = t.url, this.status = t.status, this.statusText = t.statusText, this.body = t.body, this.request = e;
   }
 }
-class qt extends Error {
+class Et extends Error {
   constructor(e) {
     super(e), this.name = "CancelError";
   }
@@ -678,31 +686,31 @@ class qt extends Error {
     return !0;
   }
 }
-var A, w, v, R, L, K, H;
-class Vt {
+var S, T, A, M, V, Z, I;
+class hs {
   constructor(e) {
-    k(this, A);
-    k(this, w);
-    k(this, v);
-    k(this, R);
-    k(this, L);
-    k(this, K);
-    k(this, H);
-    y(this, A, !1), y(this, w, !1), y(this, v, !1), y(this, R, []), y(this, L, new Promise((t, i) => {
-      y(this, K, t), y(this, H, i);
+    w(this, S);
+    w(this, T);
+    w(this, A);
+    w(this, M);
+    w(this, V);
+    w(this, Z);
+    w(this, I);
+    y(this, S, !1), y(this, T, !1), y(this, A, !1), y(this, M, []), y(this, V, new Promise((t, i) => {
+      y(this, Z, t), y(this, I, i);
       const r = (a) => {
-        c(this, A) || c(this, w) || c(this, v) || (y(this, A, !0), c(this, K) && c(this, K).call(this, a));
+        h(this, S) || h(this, T) || h(this, A) || (y(this, S, !0), h(this, Z) && h(this, Z).call(this, a));
       }, n = (a) => {
-        c(this, A) || c(this, w) || c(this, v) || (y(this, w, !0), c(this, H) && c(this, H).call(this, a));
+        h(this, S) || h(this, T) || h(this, A) || (y(this, T, !0), h(this, I) && h(this, I).call(this, a));
       }, o = (a) => {
-        c(this, A) || c(this, w) || c(this, v) || c(this, R).push(a);
+        h(this, S) || h(this, T) || h(this, A) || h(this, M).push(a);
       };
       return Object.defineProperty(o, "isResolved", {
-        get: () => c(this, A)
+        get: () => h(this, S)
       }), Object.defineProperty(o, "isRejected", {
-        get: () => c(this, w)
+        get: () => h(this, T)
       }), Object.defineProperty(o, "isCancelled", {
-        get: () => c(this, v)
+        get: () => h(this, A)
       }), e(r, n, o);
     }));
   }
@@ -710,43 +718,43 @@ class Vt {
     return "Cancellable Promise";
   }
   then(e, t) {
-    return c(this, L).then(e, t);
+    return h(this, V).then(e, t);
   }
   catch(e) {
-    return c(this, L).catch(e);
+    return h(this, V).catch(e);
   }
   finally(e) {
-    return c(this, L).finally(e);
+    return h(this, V).finally(e);
   }
   cancel() {
-    if (!(c(this, A) || c(this, w) || c(this, v))) {
-      if (y(this, v, !0), c(this, R).length)
+    if (!(h(this, S) || h(this, T) || h(this, A))) {
+      if (y(this, A, !0), h(this, M).length)
         try {
-          for (const e of c(this, R))
+          for (const e of h(this, M))
             e();
         } catch (e) {
           console.warn("Cancellation threw an error", e);
           return;
         }
-      c(this, R).length = 0, c(this, H) && c(this, H).call(this, new qt("Request aborted"));
+      h(this, M).length = 0, h(this, I) && h(this, I).call(this, new Et("Request aborted"));
     }
   }
   get isCancelled() {
-    return c(this, v);
+    return h(this, A);
   }
 }
-A = new WeakMap(), w = new WeakMap(), v = new WeakMap(), R = new WeakMap(), L = new WeakMap(), K = new WeakMap(), H = new WeakMap();
-const Ue = (s) => s != null, ee = (s) => typeof s == "string", ge = (s) => ee(s) && s !== "", Re = (s) => typeof s == "object" && typeof s.type == "string" && typeof s.stream == "function" && typeof s.arrayBuffer == "function" && typeof s.constructor == "function" && typeof s.constructor.name == "string" && /^(Blob|File)$/.test(s.constructor.name) && /^(Blob|File)$/.test(s[Symbol.toStringTag]), st = (s) => s instanceof FormData, jt = (s) => {
+S = new WeakMap(), T = new WeakMap(), A = new WeakMap(), M = new WeakMap(), V = new WeakMap(), Z = new WeakMap(), I = new WeakMap();
+const Xe = (s) => s != null, be = (s) => typeof s == "string", Le = (s) => be(s) && s !== "", Qe = (s) => typeof s == "object" && typeof s.type == "string" && typeof s.stream == "function" && typeof s.arrayBuffer == "function" && typeof s.constructor == "function" && typeof s.constructor.name == "string" && /^(Blob|File)$/.test(s.constructor.name) && /^(Blob|File)$/.test(s[Symbol.toStringTag]), At = (s) => s instanceof FormData, ds = (s) => {
   try {
     return btoa(s);
   } catch {
     return Buffer.from(s).toString("base64");
   }
-}, Wt = (s) => {
+}, us = (s) => {
   const e = [], t = (r, n) => {
     e.push(`${encodeURIComponent(r)}=${encodeURIComponent(String(n))}`);
   }, i = (r, n) => {
-    Ue(n) && (Array.isArray(n) ? n.forEach((o) => {
+    Xe(n) && (Array.isArray(n) ? n.forEach((o) => {
       i(r, o);
     }) : typeof n == "object" ? Object.entries(n).forEach(([o, a]) => {
       i(`${r}[${o}]`, a);
@@ -755,45 +763,45 @@ const Ue = (s) => s != null, ee = (s) => typeof s == "string", ge = (s) => ee(s)
   return Object.entries(s).forEach(([r, n]) => {
     i(r, n);
   }), e.length > 0 ? `?${e.join("&")}` : "";
-}, Kt = (s, e) => {
+}, ps = (s, e) => {
   const t = s.ENCODE_PATH || encodeURI, i = e.url.replace("{api-version}", s.VERSION).replace(/{(.*?)}/g, (n, o) => {
     var a;
     return (a = e.path) != null && a.hasOwnProperty(o) ? t(String(e.path[o])) : n;
   }), r = `${s.BASE}${i}`;
-  return e.query ? `${r}${Wt(e.query)}` : r;
-}, xt = (s) => {
+  return e.query ? `${r}${us(e.query)}` : r;
+}, fs = (s) => {
   if (s.formData) {
     const e = new FormData(), t = (i, r) => {
-      ee(r) || Re(r) ? e.append(i, r) : e.append(i, JSON.stringify(r));
+      be(r) || Qe(r) ? e.append(i, r) : e.append(i, JSON.stringify(r));
     };
-    return Object.entries(s.formData).filter(([i, r]) => Ue(r)).forEach(([i, r]) => {
+    return Object.entries(s.formData).filter(([i, r]) => Xe(r)).forEach(([i, r]) => {
       Array.isArray(r) ? r.forEach((n) => t(i, n)) : t(i, r);
     }), e;
   }
-}, se = async (s, e) => typeof e == "function" ? e(s) : e, zt = async (s, e) => {
+}, ve = async (s, e) => typeof e == "function" ? e(s) : e, ms = async (s, e) => {
   const [t, i, r, n] = await Promise.all([
-    se(e, s.TOKEN),
-    se(e, s.USERNAME),
-    se(e, s.PASSWORD),
-    se(e, s.HEADERS)
+    ve(e, s.TOKEN),
+    ve(e, s.USERNAME),
+    ve(e, s.PASSWORD),
+    ve(e, s.HEADERS)
   ]), o = Object.entries({
     Accept: "application/json",
     ...n,
     ...e.headers
-  }).filter(([a, l]) => Ue(l)).reduce((a, [l, h]) => ({
+  }).filter(([a, l]) => Xe(l)).reduce((a, [l, u]) => ({
     ...a,
-    [l]: String(h)
+    [l]: String(u)
   }), {});
-  if (ge(t) && (o.Authorization = `Bearer ${t}`), ge(i) && ge(r)) {
-    const a = jt(`${i}:${r}`);
+  if (Le(t) && (o.Authorization = `Bearer ${t}`), Le(i) && Le(r)) {
+    const a = ds(`${i}:${r}`);
     o.Authorization = `Basic ${a}`;
   }
-  return e.body !== void 0 && (e.mediaType ? o["Content-Type"] = e.mediaType : Re(e.body) ? o["Content-Type"] = e.body.type || "application/octet-stream" : ee(e.body) ? o["Content-Type"] = "text/plain" : st(e.body) || (o["Content-Type"] = "application/json")), new Headers(o);
-}, Gt = (s) => {
+  return e.body !== void 0 && (e.mediaType ? o["Content-Type"] = e.mediaType : Qe(e.body) ? o["Content-Type"] = e.body.type || "application/octet-stream" : be(e.body) ? o["Content-Type"] = "text/plain" : At(e.body) || (o["Content-Type"] = "application/json")), new Headers(o);
+}, _s = (s) => {
   var e;
   if (s.body !== void 0)
-    return (e = s.mediaType) != null && e.includes("/json") ? JSON.stringify(s.body) : ee(s.body) || Re(s.body) || st(s.body) ? s.body : JSON.stringify(s.body);
-}, Ft = async (s, e, t, i, r, n, o) => {
+    return (e = s.mediaType) != null && e.includes("/json") ? JSON.stringify(s.body) : be(s.body) || Qe(s.body) || At(s.body) ? s.body : JSON.stringify(s.body);
+}, bs = async (s, e, t, i, r, n, o) => {
   const a = new AbortController(), l = {
     headers: n,
     body: i ?? r,
@@ -801,13 +809,13 @@ const Ue = (s) => s != null, ee = (s) => typeof s == "string", ge = (s) => ee(s)
     signal: a.signal
   };
   return s.WITH_CREDENTIALS && (l.credentials = s.CREDENTIALS), o(() => a.abort()), await fetch(t, l);
-}, Jt = (s, e) => {
+}, ys = (s, e) => {
   if (e) {
     const t = s.headers.get(e);
-    if (ee(t))
+    if (be(t))
       return t;
   }
-}, Yt = async (s) => {
+}, $s = async (s) => {
   if (s.status !== 204)
     try {
       const e = s.headers.get("Content-Type");
@@ -816,7 +824,7 @@ const Ue = (s) => s != null, ee = (s) => typeof s == "string", ge = (s) => ee(s)
     } catch (e) {
       console.error(e);
     }
-}, Xt = (s, e) => {
+}, vs = (s, e) => {
   const i = {
     400: "Bad Request",
     401: "Unauthorized",
@@ -828,7 +836,7 @@ const Ue = (s) => s != null, ee = (s) => typeof s == "string", ge = (s) => ee(s)
     ...s.errors
   }[e.status];
   if (i)
-    throw new ze(s, e, i);
+    throw new xe(s, e, i);
   if (!e.ok) {
     const r = e.status ?? "unknown", n = e.statusText ?? "unknown", o = (() => {
       try {
@@ -837,30 +845,30 @@ const Ue = (s) => s != null, ee = (s) => typeof s == "string", ge = (s) => ee(s)
         return;
       }
     })();
-    throw new ze(
+    throw new xe(
       s,
       e,
       `Generic Error: status: ${r}; status text: ${n}; body: ${o}`
     );
   }
-}, Zt = (s, e) => new Vt(async (t, i, r) => {
+}, gs = (s, e) => new hs(async (t, i, r) => {
   try {
-    const n = Kt(s, e), o = xt(e), a = Gt(e), l = await zt(s, e);
+    const n = ps(s, e), o = fs(e), a = _s(e), l = await ms(s, e);
     if (!r.isCancelled) {
-      const h = await Ft(s, e, n, a, o, l, r), d = await Yt(h), p = Jt(h, e.responseHeader), b = {
+      const u = await bs(s, e, n, a, o, l, r), p = await $s(u), m = ys(u, e.responseHeader), g = {
         url: n,
-        ok: h.ok,
-        status: h.status,
-        statusText: h.statusText,
-        body: p ?? d
+        ok: u.ok,
+        status: u.status,
+        statusText: u.statusText,
+        body: m ?? p
       };
-      Xt(e, b), t(b.body);
+      vs(e, g), t(g.body);
     }
   } catch (n) {
     i(n);
   }
 });
-class Qt extends Dt {
+class ws extends cs {
   constructor(e) {
     super(e);
   }
@@ -871,10 +879,10 @@ class Qt extends Dt {
    * @throws ApiError
    */
   request(e) {
-    return Zt(this.config, e);
+    return gs(this.config, e);
   }
 }
-class es {
+class Es {
   constructor(e) {
     this.httpRequest = e;
   }
@@ -904,7 +912,9 @@ class es {
       body: e,
       mediaType: "application/json",
       errors: {
-        401: "The resource is protected and requires an authentication token"
+        400: "Bad Request",
+        401: "The resource is protected and requires an authentication token",
+        500: "Internal Server Error"
       }
     });
   }
@@ -921,6 +931,19 @@ class es {
       query: {
         id: e
       },
+      errors: {
+        401: "The resource is protected and requires an authentication token"
+      }
+    });
+  }
+  /**
+   * @returns any OK
+   * @throws ApiError
+   */
+  getApiV1KraftvaerkUmbracoHeadlessBlockpreviewSettings() {
+    return this.httpRequest.request({
+      method: "GET",
+      url: "/api/v1/Kraftvaerk.Umbraco.Headless.BlockPreview/settings",
       errors: {
         401: "The resource is protected and requires an authentication token"
       }
@@ -945,8 +968,8 @@ class es {
     });
   }
 }
-class fe {
-  constructor(e, t = Qt) {
+class ue {
+  constructor(e, t = ws) {
     this.request = new t({
       BASE: (e == null ? void 0 : e.BASE) ?? "",
       VERSION: (e == null ? void 0 : e.VERSION) ?? "1.0",
@@ -957,86 +980,117 @@ class fe {
       PASSWORD: e == null ? void 0 : e.PASSWORD,
       HEADERS: e == null ? void 0 : e.HEADERS,
       ENCODE_PATH: e == null ? void 0 : e.ENCODE_PATH
-    }), this.kraftvaerkUmbracoHeadlessBlockpreviewApiV1 = new es(this.request);
+    }), this.kraftvaerkUmbracoHeadlessBlockpreviewApiV1 = new Es(this.request);
   }
 }
-var ts = Object.defineProperty, ss = Object.getOwnPropertyDescriptor, it = (s) => {
-  throw TypeError(s);
-}, E = (s, e, t, i) => {
-  for (var r = i > 1 ? void 0 : i ? ss(e, t) : e, n = s.length - 1, o; n >= 0; n--)
-    (o = s[n]) && (r = (i ? o(e, t, r) : o(r)) || r);
-  return i && r && ts(e, t, r), r;
-}, He = (s, e, t) => e.has(s) || it("Cannot " + t), u = (s, e, t) => (He(s, e, "read from private field"), e.get(s)), $ = (s, e, t) => e.has(s) ? it("Cannot add the same private member more than once") : e instanceof WeakSet ? e.add(s) : e.set(s, t), _ = (s, e, t, i) => (He(s, e, "write to private field"), e.set(s, t), t), is = (s, e, t) => (He(s, e, "access private method"), t), j, O, C, S, me, ne, W, oe, P, ae, le, ce, he, Se, rt;
-const rs = "umb-headless-preview";
-let f = class extends Fe {
+class Ze extends Error {
   constructor() {
-    super(), $(this, Se), $(this, j, null), $(this, O), $(this, C), $(this, S), $(this, me), $(this, ne), $(this, W), $(this, oe, !1), $(this, P), $(this, ae, !1), $(this, le, !1), $(this, ce, !1), $(this, he, () => this.requestUpdate()), this.init();
+    super("Preview request superseded"), this.name = "StalePreviewError";
+  }
+}
+var L, P, j, O, St, Tt, Ke;
+class As {
+  constructor(e = 6) {
+    w(this, O);
+    w(this, L);
+    w(this, P, 0);
+    w(this, j, []);
+    y(this, L, Math.max(1, e));
+  }
+  get maxConcurrent() {
+    return h(this, L);
+  }
+  set maxConcurrent(e) {
+    y(this, L, Math.max(1, Math.floor(e) || 1)), se(this, O, Ke).call(this);
+  }
+  get active() {
+    return h(this, P);
+  }
+  get pending() {
+    return h(this, j).length;
+  }
+  /**
+   * Runs `task` when a slot is free. If `isStale()` reports true by then the task is skipped
+   * and the returned promise rejects with StalePreviewError.
+   */
+  async run(e, t) {
+    await se(this, O, St).call(this);
+    try {
+      if (t != null && t()) throw new Ze();
+      return await e();
+    } finally {
+      se(this, O, Tt).call(this);
+    }
+  }
+}
+L = new WeakMap(), P = new WeakMap(), j = new WeakMap(), O = new WeakSet(), St = function() {
+  return h(this, P) < h(this, L) ? ($e(this, P)._++, Promise.resolve()) : new Promise((e) => {
+    h(this, j).push(() => {
+      $e(this, P)._++, e();
+    });
+  });
+}, Tt = function() {
+  $e(this, P)._--, se(this, O, Ke).call(this);
+}, Ke = function() {
+  for (; h(this, P) < h(this, L) && h(this, j).length > 0; ) {
+    const e = h(this, j).shift();
+    e == null || e();
+  }
+};
+var Ss = Object.defineProperty, Ts = Object.getOwnPropertyDescriptor, kt = (s) => {
+  throw TypeError(s);
+}, v = (s, e, t, i) => {
+  for (var r = i > 1 ? void 0 : i ? Ts(e, t) : e, n = s.length - 1, o; n >= 0; n--)
+    (o = s[n]) && (r = (i ? o(e, t, r) : o(r)) || r);
+  return i && r && Ss(e, t, r), r;
+}, et = (s, e, t) => e.has(s) || kt("Cannot " + t), c = (s, e, t) => (et(s, e, "read from private field"), e.get(s)), _ = (s, e, t) => e.has(s) ? kt("Cannot add the same private member more than once") : e instanceof WeakSet ? e.add(s) : e.set(s, t), f = (s, e, t, i) => (et(s, e, "write to private field"), e.set(s, t), t), k = (s, e, t) => (et(s, e, "access private method"), t), ks = (s, e, t, i) => ({
+  set _(r) {
+    f(s, e, r);
+  },
+  get _() {
+    return c(s, e);
+  }
+}), R, q, D, C, pe, Ee, Oe, X, re, B, Q, ae, le, fe, Ue, Ae, N, me, J, Se, E, Ve, je, tt, Pt, Re;
+const Ps = "umb-headless-preview", ze = "blockbeam";
+let d = class extends mt {
+  constructor() {
+    super(), _(this, E), _(this, R, null), _(this, q), _(this, D), _(this, C), _(this, pe), _(this, Ee), _(this, Oe), _(this, X), _(this, re, !1), _(this, B), _(this, Q, !1), _(this, ae, !1), _(this, le, !1), _(this, fe), _(this, Ue), _(this, Ae), _(this, N, !1), _(this, me, 0), _(this, J), _(this, Se, () => this.requestUpdate()), f(this, Ue, new Promise((s) => {
+      f(this, Ae, s);
+    })), this.init();
   }
   connectedCallback() {
-    super.connectedCallback(), window.addEventListener(Ee, u(this, he));
+    super.connectedCallback(), window.addEventListener(qe, c(this, Se)), c(this, N) && !c(this, J) && c(this, C) === d.loadingBarHtml && k(this, E, Re).call(this);
   }
   disconnectedCallback() {
-    super.disconnectedCallback(), window.removeEventListener(Ee, u(this, he));
+    super.disconnectedCallback(), window.removeEventListener(qe, c(this, Se)), clearTimeout(c(this, pe)), clearTimeout(c(this, Ee)), k(this, E, tt).call(this);
   }
-  async updated(s) {
-    super.updated(s), (u(this, O) !== this.content || u(this, C) !== this.settings) && is(this, Se, rt).call(this);
+  updated(s) {
+    super.updated(s), c(this, N) && (c(this, q) !== this.content || c(this, D) !== this.settings) && k(this, E, je).call(this);
   }
   render() {
     var s, e, t, i, r, n;
-    return u(this, P) || _(this, P, f.blockSettings.find((o) => {
+    return c(this, B) || f(this, B, d.blockSettings.find((o) => {
       var a;
       return o.id == ((a = this.blockType) == null ? void 0 : a.contentElementTypeKey);
-    })), u(this, O) || _(this, O, this.content), u(this, C) || _(this, C, this.settings), f.useBeamFallback || u(this, S) === "blockbeam" || u(this, oe) && !((s = u(this, P)) != null && s.enabledNested) || !((e = u(this, P)) != null && e.enabledGrid) && u(this, ae) || !((t = u(this, P)) != null && t.enabledList) && u(this, le) || !((i = u(this, P)) != null && i.enabledRTE) && u(this, ce) || u(this, W) ? this.blockBeam(u(this, W)) : Ae`<div class="__headless-preview"><a href=${((r = this.config) != null && r.showContentEdit ? (n = this.config) == null ? void 0 : n.editContentPath : void 0) ?? ""}>${Mt(u(this, S))}</a></div>`;
+    })), c(this, q) || f(this, q, this.content), c(this, D) || f(this, D, this.settings), d.useBeamFallback || c(this, C) === ze || c(this, re) && !((s = c(this, B)) != null && s.enabledNested) || !((e = c(this, B)) != null && e.enabledGrid) && c(this, Q) || !((t = c(this, B)) != null && t.enabledList) && c(this, ae) || !((i = c(this, B)) != null && i.enabledRTE) && c(this, le) || c(this, X) ? this.blockBeam(c(this, X)) : De`<div class="__headless-preview"><a href=${((r = this.config) != null && r.showContentEdit ? (n = this.config) == null ? void 0 : n.editContentPath : void 0) ?? ""}>${ls(c(this, C))}</a></div>`;
   }
   async init() {
-    _(this, S, f.loadingBarHtml), this.consumeContext(at, (s) => {
-      var e;
-      _(this, ne, (e = s == null ? void 0 : s.getVariantId()) == null ? void 0 : e.culture), _(this, ae, (s == null ? void 0 : s.getHostElement().tagName) === "UMB-PROPERTY-EDITOR-UI-BLOCK-GRID"), _(this, le, (s == null ? void 0 : s.getHostElement().tagName) === "UMB-PROPERTY-EDITOR-UI-BLOCK-LIST"), _(this, ce, (s == null ? void 0 : s.getHostElement().tagName) === "UMB-PROPERTY-EDITOR-UI-TIPTAP");
-    }), this.consumeContext(lt, (s) => {
-      _(this, j, s == null ? void 0 : s.getUnique()), _(this, O, this.content), this.getHtmlString().then(() => {
-        this.requestUpdate();
-      });
-    }), this.checkReadiness();
-  }
-  checkReadiness() {
-    setTimeout(() => {
-      u(this, S) === f.loadingBarHtml ? ((u(this, j) === null || u(this, j) === void 0) && _(this, oe, !0), this.getHtmlString()) : this.checkReadiness();
-    }, 500);
-  }
-  async getHtmlString() {
-    var e, t;
-    const s = {
-      id: u(this, j),
-      contentType: (e = this.blockType) == null ? void 0 : e.contentElementTypeKey,
-      settingsType: ((t = this.blockType) == null ? void 0 : t.settingsElementTypeKey) ?? "",
-      content: JSON.stringify(u(this, O)),
-      settings: JSON.stringify(u(this, C) ?? {}),
-      culture: u(this, ne)
-    };
-    try {
-      this.consumeContext(de, async (i) => {
-        const r = await (i == null ? void 0 : i.getLatestToken());
-        if (r) {
-          const n = new fe({
-            TOKEN: r
-          });
-          try {
-            const o = await n.kraftvaerkUmbracoHeadlessBlockpreviewApiV1.postApiV1KraftvaerkUmbracoHeadlessBlockpreview({
-              requestBody: s
-            });
-            _(this, S, o.html ?? "blockbeam");
-          } catch (o) {
-            _(this, S, "blockbeam"), _(this, W, o instanceof Error ? o.message : "Unknown error");
-          }
-          this.requestUpdate();
-        }
-      });
-    } catch (i) {
-      _(this, S, "blockbeam"), _(this, W, i instanceof Error ? i.message : "Unknown error");
-    }
+    f(this, C, d.loadingBarHtml), this.consumeContext(Bt, (s) => {
+      var t;
+      f(this, Oe, (t = s == null ? void 0 : s.getVariantId()) == null ? void 0 : t.culture);
+      const e = s == null ? void 0 : s.getHostElement().tagName;
+      f(this, Q, e === "UMB-PROPERTY-EDITOR-UI-BLOCK-GRID"), f(this, ae, e === "UMB-PROPERTY-EDITOR-UI-BLOCK-LIST"), f(this, le, e === "UMB-PROPERTY-EDITOR-UI-TIPTAP");
+    }), this.consumeContext(Te, (s) => {
+      s && (f(this, fe, s), c(this, Ae).call(this));
+    }), this.consumeContext(Rt, (s) => {
+      const e = s == null ? void 0 : s.getUnique();
+      s && f(this, re, !1), c(this, N) ? e !== c(this, R) && (f(this, R, e), k(this, E, je).call(this)) : (f(this, R, e), k(this, E, Ve).call(this));
+    }), f(this, Ee, window.setTimeout(() => {
+      c(this, N) || ((c(this, R) === null || c(this, R) === void 0) && f(this, re, !0), k(this, E, Ve).call(this));
+    }, d.readinessDelayMs));
   }
   resolveLabel(s) {
-    if (console.log("Resolving label", { label: s, content: this.content }), !s) return "error";
+    if (!s) return "error";
     if (!this.content) return s;
     const e = this.content;
     return s.replace(/\{[=+!]([^}]+)\}/g, (t, i) => {
@@ -1045,41 +1099,101 @@ let f = class extends Fe {
     });
   }
   blockBeam(s) {
-    return Ae`
-    <uui-ref-node .name=${this.resolveLabel(this.label)} .detail=${s ?? ""} standalone="">
+    return De`
+    <uui-ref-node .name=${this.resolveLabel(this.label)} .detail=${s ?? ""} title=${s ?? ""} standalone="">
       <uui-icon slot="icon" .name=${this.icon ?? "icon-plugin"} style="--uui-icon-color:var(--uui-palette-maroon-flush);"></uui-icon>
      </uui-ref-node>`;
   }
 };
-j = /* @__PURE__ */ new WeakMap();
-O = /* @__PURE__ */ new WeakMap();
+R = /* @__PURE__ */ new WeakMap();
+q = /* @__PURE__ */ new WeakMap();
+D = /* @__PURE__ */ new WeakMap();
 C = /* @__PURE__ */ new WeakMap();
-S = /* @__PURE__ */ new WeakMap();
-me = /* @__PURE__ */ new WeakMap();
-ne = /* @__PURE__ */ new WeakMap();
-W = /* @__PURE__ */ new WeakMap();
-oe = /* @__PURE__ */ new WeakMap();
-P = /* @__PURE__ */ new WeakMap();
+pe = /* @__PURE__ */ new WeakMap();
+Ee = /* @__PURE__ */ new WeakMap();
+Oe = /* @__PURE__ */ new WeakMap();
+X = /* @__PURE__ */ new WeakMap();
+re = /* @__PURE__ */ new WeakMap();
+B = /* @__PURE__ */ new WeakMap();
+Q = /* @__PURE__ */ new WeakMap();
 ae = /* @__PURE__ */ new WeakMap();
 le = /* @__PURE__ */ new WeakMap();
-ce = /* @__PURE__ */ new WeakMap();
-he = /* @__PURE__ */ new WeakMap();
-Se = /* @__PURE__ */ new WeakSet();
-rt = function() {
-  clearTimeout(u(this, me)), _(this, me, window.setTimeout(async () => {
-    _(this, O, this.content), _(this, C, this.settings), await this.getHtmlString();
-  }, 10));
+fe = /* @__PURE__ */ new WeakMap();
+Ue = /* @__PURE__ */ new WeakMap();
+Ae = /* @__PURE__ */ new WeakMap();
+N = /* @__PURE__ */ new WeakMap();
+me = /* @__PURE__ */ new WeakMap();
+J = /* @__PURE__ */ new WeakMap();
+Se = /* @__PURE__ */ new WeakMap();
+E = /* @__PURE__ */ new WeakSet();
+Ve = function() {
+  c(this, N) || (f(this, N, !0), f(this, q, this.content), f(this, D, this.settings), k(this, E, Re).call(this));
 };
-f.useBeamFallback = !1;
-f.loadingBarHtml = `
+je = function() {
+  clearTimeout(c(this, pe)), f(this, pe, window.setTimeout(() => {
+    f(this, q, this.content), f(this, D, this.settings), k(this, E, Re).call(this);
+  }, d.editDebounceMs));
+};
+tt = function() {
+  var s;
+  ks(this, me)._++, (s = c(this, J)) == null || s.cancel(), f(this, J, void 0);
+};
+Pt = function() {
+  return c(this, ae) ? "list" : c(this, le) ? "rte" : "grid";
+};
+Re = async function() {
+  var r, n;
+  k(this, E, tt).call(this);
+  const s = c(this, me), e = () => s !== c(this, me), t = this.layout, i = {
+    id: c(this, R),
+    contentType: (r = this.blockType) == null ? void 0 : r.contentElementTypeKey,
+    settingsType: ((n = this.blockType) == null ? void 0 : n.settingsElementTypeKey) ?? "",
+    content: JSON.stringify(c(this, q)),
+    settings: JSON.stringify(c(this, D) ?? {}),
+    culture: c(this, Oe),
+    editor: k(this, E, Pt).call(this),
+    contentKey: this.contentKey ?? null,
+    columnSpan: c(this, Q) ? (t == null ? void 0 : t.columnSpan) ?? null : null,
+    rowSpan: c(this, Q) ? (t == null ? void 0 : t.rowSpan) ?? null : null
+  };
+  try {
+    if (await c(this, Ue), e()) return;
+    const o = await d.queue.run(async () => {
+      var p, m;
+      const a = await ((p = c(this, fe)) == null ? void 0 : p.getLatestToken());
+      if (!a) throw new Error("Not authenticated");
+      if (e()) throw new Ze();
+      const u = new ue({
+        BASE: ((m = c(this, fe)) == null ? void 0 : m.getServerUrl()) ?? "",
+        TOKEN: a
+      }).kraftvaerkUmbracoHeadlessBlockpreviewApiV1.postApiV1KraftvaerkUmbracoHeadlessBlockpreview({
+        requestBody: i
+      });
+      return f(this, J, u), await u;
+    }, e);
+    if (e()) return;
+    f(this, C, o.html ?? ze), f(this, X, void 0);
+  } catch (o) {
+    if (e() || Os(o)) return;
+    f(this, C, ze), f(this, X, Us(o));
+  } finally {
+    e() || f(this, J, void 0);
+  }
+  this.requestUpdate();
+};
+d.useBeamFallback = !1;
+d.loadingBarHtml = `
     <uui-ref-node name="Loading preview..." detail="" standalone href="">
       <uui-icon slot="icon" name="icon-plugin"></uui-icon>
       <uui-loader-bar style="color: #006eff;"></uui-loader-bar>
     </uui-ref-node>
   `;
-f.blockSettings = [];
-f.styles = [
-  Ye`
+d.blockSettings = [];
+d.queue = new As(6);
+d.readinessDelayMs = 500;
+d.editDebounceMs = 150;
+d.styles = [
+  bt`
       .__headless-preview {
         border: 2px solid transparent;
         box-sizing: border-box;
@@ -1101,46 +1215,66 @@ f.styles = [
       }
     `
 ];
-E([
-  g({ attribute: !1 })
-], f.prototype, "content", 2);
-E([
-  g({ attribute: !1 })
-], f.prototype, "settings", 2);
-E([
-  g({ attribute: !1 })
-], f.prototype, "blockType", 2);
-E([
-  g({ attribute: !1 })
-], f.prototype, "label", 2);
-E([
-  g({ attribute: !1 })
-], f.prototype, "icon", 2);
-E([
-  g({ attribute: !1 })
-], f.prototype, "config", 2);
-E([
-  g({ attribute: !1 })
-], f.prototype, "contentInvalid", 2);
-E([
-  g({ attribute: !1 })
-], f.prototype, "settingsInvalid", 2);
-E([
-  g({ attribute: !1 })
-], f.prototype, "unsupported", 2);
-E([
-  g({ attribute: !1 })
-], f.prototype, "unpublished", 2);
-f = E([
-  tt(rs)
-], f);
-var ns = Object.defineProperty, os = Object.getOwnPropertyDescriptor, nt = (s, e, t, i) => {
-  for (var r = i > 1 ? void 0 : i ? os(e, t) : e, n = s.length - 1, o; n >= 0; n--)
+v([
+  $({ attribute: !1 })
+], d.prototype, "content", 2);
+v([
+  $({ attribute: !1 })
+], d.prototype, "settings", 2);
+v([
+  $({ attribute: !1 })
+], d.prototype, "blockType", 2);
+v([
+  $({ attribute: !1 })
+], d.prototype, "label", 2);
+v([
+  $({ attribute: !1 })
+], d.prototype, "icon", 2);
+v([
+  $({ attribute: !1 })
+], d.prototype, "config", 2);
+v([
+  $({ attribute: !1 })
+], d.prototype, "contentKey", 2);
+v([
+  $({ attribute: !1 })
+], d.prototype, "layout", 2);
+v([
+  $({ attribute: !1 })
+], d.prototype, "contentInvalid", 2);
+v([
+  $({ attribute: !1 })
+], d.prototype, "settingsInvalid", 2);
+v([
+  $({ attribute: !1 })
+], d.prototype, "unsupported", 2);
+v([
+  $({ attribute: !1 })
+], d.prototype, "unpublished", 2);
+d = v([
+  wt(Ps)
+], d);
+function Os(s) {
+  return s instanceof Ze || s instanceof Et ? !0 : s instanceof Error && s.name === "AbortError";
+}
+function Us(s) {
+  if (s instanceof xe) {
+    const e = s.body;
+    if (e && typeof e == "object") {
+      const t = e.detail ?? e.title;
+      if (t) return e.correlationId ? `${t} [${e.correlationId}]` : t;
+    }
+    return `${s.status} ${s.statusText || s.message}`.trim();
+  }
+  return s instanceof Error ? s.message : String(s);
+}
+var Bs = Object.defineProperty, Rs = Object.getOwnPropertyDescriptor, Ot = (s, e, t, i) => {
+  for (var r = i > 1 ? void 0 : i ? Rs(e, t) : e, n = s.length - 1, o; n >= 0; n--)
     (o = s[n]) && (r = (i ? o(e, t, r) : o(r)) || r);
-  return i && r && ns(e, t, r), r;
+  return i && r && Bs(e, t, r), r;
 };
-const as = "umb-headless-preview-workspace-view";
-let z = class extends Fe {
+const Hs = "umb-headless-preview-workspace-view";
+let te = class extends mt {
   constructor() {
     super(), this.model = {
       id: "",
@@ -1150,15 +1284,15 @@ let z = class extends Fe {
       enabledGrid: !1,
       enabledRTE: !1,
       advancedSettings: ""
-    }, this.consumeContext(ct, async (s) => {
+    }, this.consumeContext(Ht, async (s) => {
       const e = s == null ? void 0 : s.getUnique();
       e && (this.model.id = e, await this.loadInitialState());
     });
   }
   async loadInitialState() {
     try {
-      this.consumeContext(de, async (s) => {
-        const e = await (s == null ? void 0 : s.getLatestToken()) ?? "", t = (s == null ? void 0 : s.getServerUrl()) ?? "", r = await new fe({
+      this.consumeContext(Te, async (s) => {
+        const e = await (s == null ? void 0 : s.getLatestToken()) ?? "", t = (s == null ? void 0 : s.getServerUrl()) ?? "", r = await new ue({
           BASE: t,
           TOKEN: e
         }).kraftvaerkUmbracoHeadlessBlockpreviewApiV1.getApiV1KraftvaerkUmbracoHeadlessBlockpreview({
@@ -1174,9 +1308,9 @@ let z = class extends Fe {
     }
   }
   async updateModel(s) {
-    this.model = { ...this.model, ...s }, this.consumeContext(de, async (e) => {
+    this.model = { ...this.model, ...s }, this.consumeContext(Te, async (e) => {
       const t = await (e == null ? void 0 : e.getLatestToken()) ?? "", i = (e == null ? void 0 : e.getServerUrl()) ?? "";
-      await new fe({
+      await new ue({
         BASE: i,
         TOKEN: t
       }).kraftvaerkUmbracoHeadlessBlockpreviewApiV1.putApiV1KraftvaerkUmbracoHeadlessBlockpreview({
@@ -1210,7 +1344,7 @@ let z = class extends Fe {
     }
   */
   render() {
-    return Ae`
+    return De`
       <uui-box headline="Workspace View">
         <uui-label>Enabled</uui-label>
 
@@ -1260,8 +1394,8 @@ let z = class extends Fe {
     `;
   }
 };
-z.styles = [
-  Ye`
+te.styles = [
+  bt`
       uui-toggle,
       uui-textarea {
         margin-top: var(--uui-size-space-3);
@@ -1283,27 +1417,27 @@ z.styles = [
       }
     `
 ];
-nt([
-  Nt()
-], z.prototype, "model", 2);
-z = nt([
-  tt(as)
-], z);
-const gs = async (s, e) => {
-  s.consumeContext(de, async (t) => {
-    const i = await (t == null ? void 0 : t.getLatestToken()) ?? "", r = (t == null ? void 0 : t.getServerUrl()) ?? "", n = await ls(r, i);
-    f.blockSettings = n;
+Ot([
+  rs()
+], te.prototype, "model", 2);
+te = Ot([
+  wt(Hs)
+], te);
+const Fs = async (s, e) => {
+  s.consumeContext(Te, async (t) => {
+    const i = await (t == null ? void 0 : t.getLatestToken()) ?? "", r = (t == null ? void 0 : t.getServerUrl()) ?? "", n = await Cs(r, i);
+    d.blockSettings = n, await Ns(r, i);
     const o = {
       alias: "Kraftvaerk.Umbraco.Headless.BlockPreview",
       name: "Umbraco Community Headless Block Preview",
       type: "blockEditorCustomView",
-      element: f,
-      forContentTypeAlias: n.filter((d) => d.enabled && d.alias).map((d) => d.alias) ?? []
+      element: d,
+      forContentTypeAlias: n.filter((p) => p.enabled && p.alias).map((p) => p.alias) ?? []
     }, a = {
       type: "workspaceView",
       alias: "umb.workspaceView.headlessPreviewGrid",
       name: "Headless Preview",
-      element: z,
+      element: te,
       weight: 1100,
       meta: {
         label: "Block Preview",
@@ -1312,15 +1446,15 @@ const gs = async (s, e) => {
       },
       conditions: [
         {
-          alias: Ce,
-          match: ht
+          alias: it,
+          match: Ct
         }
       ]
     }, l = {
       type: "workspaceView",
       alias: "umb.workspaceView.headlessPreviewList",
       name: "Headless Preview",
-      element: z,
+      element: te,
       weight: 1100,
       meta: {
         label: "Block Preview",
@@ -1329,35 +1463,43 @@ const gs = async (s, e) => {
       },
       conditions: [
         {
-          alias: Ce,
-          match: dt
+          alias: it,
+          match: Nt
         }
       ]
-    }, h = {
+    }, u = {
       type: "blockAction",
       kind: "default",
       alias: "Kraftvaerk.Umbraco.Headless.BlockPreview.ToggleAction",
       name: "Toggle Headless Preview",
-      api: ut,
-      forContentTypeAlias: n.filter((d) => d.enabled && d.alias).map((d) => d.alias),
+      api: Mt,
+      forContentTypeAlias: n.filter((p) => p.enabled && p.alias).map((p) => p.alias),
       meta: {
         icon: "icon-plugin",
         label: "Toggle Preview"
       }
     };
-    e.register(o), e.register(h), e.register(a), e.register(l);
+    e.register(o), e.register(u), e.register(a), e.register(l);
   });
 };
-async function ls(s, e) {
-  cs();
+async function Cs(s, e) {
+  Ms();
   try {
-    const i = await new fe({ BASE: s, TOKEN: e }).kraftvaerkUmbracoHeadlessBlockpreviewApiV1.optionsApiV1KraftvaerkUmbracoHeadlessBlockpreview();
-    return console.log("Enabled block aliases:", i), i;
+    const i = await new ue({ BASE: s, TOKEN: e }).kraftvaerkUmbracoHeadlessBlockpreviewApiV1.optionsApiV1KraftvaerkUmbracoHeadlessBlockpreview();
+    return console.debug("Headless BlockPreview: enabled blocks", i), i;
   } catch (t) {
-    return console.error("Fetch failed:", t), [];
+    return console.error("Headless BlockPreview: could not load enabled blocks", t), [];
   }
 }
-async function cs() {
+async function Ns(s, e) {
+  try {
+    const i = await new ue({ BASE: s, TOKEN: e }).kraftvaerkUmbracoHeadlessBlockpreviewApiV1.getApiV1KraftvaerkUmbracoHeadlessBlockpreviewSettings();
+    i != null && i.maxConcurrentPreviews && (d.queue.maxConcurrent = i.maxConcurrentPreviews), console.debug("Headless BlockPreview: settings", i);
+  } catch (t) {
+    console.debug("Headless BlockPreview: settings endpoint unavailable, using defaults", t);
+  }
+}
+async function Ms() {
   const s = "/App_Plugins/global/global.css";
   try {
     if ((await fetch(s, { method: "HEAD" })).ok) {
@@ -1368,6 +1510,6 @@ async function cs() {
   }
 }
 export {
-  gs as onInit
+  Fs as onInit
 };
 //# sourceMappingURL=dist.js.map

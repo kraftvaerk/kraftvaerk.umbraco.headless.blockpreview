@@ -2,6 +2,7 @@ using System.Text.Json;
 using Umbraco.Cms.Core.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Models;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.PreviewDB;
 using Kraftvaerk.Umbraco.Headless.Blockpreview.Backend.PackageConstants;
@@ -12,15 +13,22 @@ public class PreviewDB : IPreviewDB
 {
     private readonly IContentTypeService _contentTypeService;
     private readonly IMemoryCache _cache;
+    private readonly ILogger<PreviewDB> _logger;
     private readonly string _storagePath;
     private readonly string _filePath;
 
     private const string CacheKey = "PreviewDB_State";
 
-    public PreviewDB(IWebHostEnvironment env, IContentTypeService contentTypeService, IMemoryCache cache)
+    // The service is transient but the file is shared, so serialise all access process-wide.
+    private static readonly object FileLock = new();
+
+    private static readonly JsonSerializerOptions WriteOptions = new() { WriteIndented = true };
+
+    public PreviewDB(IWebHostEnvironment env, IContentTypeService contentTypeService, IMemoryCache cache, ILogger<PreviewDB> logger)
     {
         _contentTypeService = contentTypeService;
         _cache = cache;
+        _logger = logger;
 
         _storagePath = Path.Combine(env.ContentRootPath, BlockPreviewConstants.BlockPreviewFolder);
         _filePath = Path.Combine(_storagePath, BlockPreviewConstants.BlockStateFile);
@@ -30,28 +38,72 @@ public class PreviewDB : IPreviewDB
 
     private void EnsureInitialized()
     {
-        if (!Directory.Exists(_storagePath))
-            Directory.CreateDirectory(_storagePath);
+        lock (FileLock)
+        {
+            if (!Directory.Exists(_storagePath))
+                Directory.CreateDirectory(_storagePath);
 
-        if (!File.Exists(_filePath))
-            File.WriteAllText(_filePath, "[]");
+            if (!File.Exists(_filePath))
+                File.WriteAllText(_filePath, "[]");
+        }
     }
 
     private List<HeadlessPreviewToggleModel> ReadState()
     {
-        return _cache.GetOrCreate(CacheKey, entry =>
+        if (_cache.TryGetValue(CacheKey, out List<HeadlessPreviewToggleModel>? cached) && cached != null)
+            return cached;
+
+        lock (FileLock)
         {
-            var json = File.ReadAllText(_filePath);
-            return JsonSerializer.Deserialize<List<HeadlessPreviewToggleModel>>(json) ?? [];
-        }) ?? [];
+            if (_cache.TryGetValue(CacheKey, out cached) && cached != null)
+                return cached;
+
+            var state = WithRetry(() =>
+            {
+                var json = File.ReadAllText(_filePath);
+                return JsonSerializer.Deserialize<List<HeadlessPreviewToggleModel>>(json) ?? [];
+            });
+
+            _cache.Set(CacheKey, state);
+            return state;
+        }
     }
 
     private void WriteState(List<HeadlessPreviewToggleModel> aliases)
     {
         var state = aliases.Distinct().ToList();
-        var json = JsonSerializer.Serialize(state, new JsonSerializerOptions { WriteIndented = true });
-        File.WriteAllText(_filePath, json);
-        _cache.Set(CacheKey, state);
+        var json = JsonSerializer.Serialize(state, WriteOptions);
+
+        lock (FileLock)
+        {
+            // Write to a sibling temp file and swap it in, so a reader never sees a half-written file.
+            var tempPath = _filePath + "." + Guid.NewGuid().ToString("N") + ".tmp";
+            WithRetry(() =>
+            {
+                File.WriteAllText(tempPath, json);
+                File.Move(tempPath, _filePath, overwrite: true);
+                return true;
+            });
+
+            _cache.Set(CacheKey, state);
+        }
+    }
+
+    private T WithRetry<T>(Func<T> action)
+    {
+        const int attempts = 5;
+        for (var attempt = 1; ; attempt++)
+        {
+            try
+            {
+                return action();
+            }
+            catch (IOException e) when (attempt < attempts)
+            {
+                _logger.LogDebug(e, "BlockPreview: state file busy, retrying ({Attempt}/{Attempts}).", attempt, attempts);
+                Thread.Sleep(50 * attempt);
+            }
+        }
     }
 
     public HeadlessPreviewToggleModel Get(Guid blockId)
@@ -75,12 +127,13 @@ public class PreviewDB : IPreviewDB
         if (contentType == null)
             return;
 
-        var enabledAliases = ReadState().ToList();
-        model.Alias = contentType.Alias;
-        enabledAliases.RemoveAll(x => x.Id == model.Id);
-
-        enabledAliases.Add(model);
-
-        WriteState(enabledAliases);
+        lock (FileLock)
+        {
+            var enabledAliases = ReadState().ToList();
+            model.Alias = contentType.Alias;
+            enabledAliases.RemoveAll(x => x.Id == model.Id);
+            enabledAliases.Add(model);
+            WriteState(enabledAliases);
+        }
     }
 }

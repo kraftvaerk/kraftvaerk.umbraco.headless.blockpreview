@@ -38,7 +38,10 @@ public class BlockPreviewCache : IBlockPreviewCache
             model.SettingsType,
             model.Content,
             model.Settings,
-            model.Culture
+            model.Culture,
+            model.Editor,
+            model.ColumnSpan,
+            model.RowSpan,
         };
 
         var json = JsonSerializer.Serialize(keyData);

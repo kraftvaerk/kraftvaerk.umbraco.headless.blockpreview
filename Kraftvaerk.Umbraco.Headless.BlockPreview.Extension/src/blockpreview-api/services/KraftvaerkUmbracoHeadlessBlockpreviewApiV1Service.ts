@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { BlockPreviewClientSettings } from '../models/BlockPreviewClientSettings';
 import type { BlockPreviewFrontendModel } from '../models/BlockPreviewFrontendModel';
 import type { BlockPreviewResponse } from '../models/BlockPreviewResponse';
 import type { HeadlessPreviewToggleModel } from '../models/HeadlessPreviewToggleModel';
@@ -37,7 +38,9 @@ export class KraftvaerkUmbracoHeadlessBlockpreviewApiV1Service {
             body: requestBody,
             mediaType: 'application/json',
             errors: {
+                400: `Bad Request`,
                 401: `The resource is protected and requires an authentication token`,
+                500: `Internal Server Error`,
             },
         });
     }
@@ -56,6 +59,19 @@ export class KraftvaerkUmbracoHeadlessBlockpreviewApiV1Service {
             query: {
                 'id': id,
             },
+            errors: {
+                401: `The resource is protected and requires an authentication token`,
+            },
+        });
+    }
+    /**
+     * @returns any OK
+     * @throws ApiError
+     */
+    public getApiV1KraftvaerkUmbracoHeadlessBlockpreviewSettings(): CancelablePromise<BlockPreviewClientSettings> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/api/v1/Kraftvaerk.Umbraco.Headless.BlockPreview/settings',
             errors: {
                 401: `The resource is protected and requires an authentication token`,
             },

@@ -9,5 +9,9 @@ export type BlockPreviewFrontendModel = {
     content?: string | null;
     settings?: string | null;
     culture?: string | null;
+    editor?: string | null;
+    contentKey?: string | null;
+    columnSpan?: number | null;
+    rowSpan?: number | null;
 };
 

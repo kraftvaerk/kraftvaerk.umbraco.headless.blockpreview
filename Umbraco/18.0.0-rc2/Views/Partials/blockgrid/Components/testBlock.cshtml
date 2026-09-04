@@ -1,0 +1,13 @@
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockGridItem<TestBlock>>
+@{
+    // MVC-mode block preview sample. ViewBag.BlockPreview is only set when rendered by Headless BlockPreview (UseMVC: true).
+    var inPreview = ViewBag.BlockPreview != null;
+    string pageName;
+    try { pageName = Umbraco.AssignedContentItem.Name; } catch { pageName = "(no page)"; }
+}
+<div class="test-block" data-preview="@inPreview" data-editor="@ViewBag.BlockPreviewEditor" data-cols="@Model.ColumnSpan">
+    <h2>@Model.Content.Textbox</h2>
+    <p>Numeric: @Model.Content.Numeric, Toggle: @Model.Content.Toggle</p>
+    <p>Page: @pageName</p>
+    <a href="/somewhere">A link that must not navigate in preview</a>
+</div>

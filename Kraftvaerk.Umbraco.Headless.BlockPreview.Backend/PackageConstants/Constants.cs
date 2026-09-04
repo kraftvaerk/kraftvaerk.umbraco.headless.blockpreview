@@ -1,9 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Kraftvaerk.Umbraco.Headless.Blockpreview.Backend.PackageConstants;
 public static class BlockPreviewConstants
 {
@@ -12,4 +6,10 @@ public static class BlockPreviewConstants
     public const string BlockPreviewFolder = "blockpreview";
     public const string BlockStateFile = "state.json";
     public const string DefaultHeader = "kuhb-header";
+    public const string HttpClientName = "fetch-headless-preview-by-post";
+
+    /// <summary>
+    /// Class the preview HTML is expected to be wrapped in. Stylesheets served by the package rewrite html/body/:root to it.
+    /// </summary>
+    public const string PreviewRootClass = "__block-preview";
 }

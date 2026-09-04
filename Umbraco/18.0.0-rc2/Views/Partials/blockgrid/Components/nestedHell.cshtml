@@ -1,0 +1,13 @@
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockGridItem<NestedHell>>
+<div class="nested-hell">
+    <p>Dropdown: @Model.Content.DropDown</p>
+    @if (Model.Content.Nested != null)
+    {
+        <ul>
+            @foreach (var item in Model.Content.Nested)
+            {
+                <li>@item.Content.ContentType.Alias</li>
+            }
+        </ul>
+    }
+</div>

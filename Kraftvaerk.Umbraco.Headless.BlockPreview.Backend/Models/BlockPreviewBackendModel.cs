@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Umbraco.Cms.Core.Models.DeliveryApi;
 
 namespace Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Models
@@ -16,7 +11,9 @@ namespace Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Models
         public Dictionary<string, object?> RawContent { get; set; } = new Dictionary<string, object?>();
         public Dictionary<string, object?> RawSettings { get; set; } = new Dictionary<string, object?>();
 
+        /// <summary>
+        /// Key of the document being edited, or <see cref="Guid.Empty"/> when unknown.
+        /// </summary>
         public Guid Key { get; set; }
     }
 }
-

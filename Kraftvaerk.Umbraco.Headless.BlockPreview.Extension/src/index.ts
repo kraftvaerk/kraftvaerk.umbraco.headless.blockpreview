@@ -19,6 +19,7 @@ export const onInit: UmbEntryPointOnInit = async (_host, extensionRegistry) => {
     const enabledBlocks = await fetchEnabledBlocks(base, token);
 
     HeadlessPreviewElement.blockSettings = enabledBlocks;
+    await applyClientSettings(base, token);
 
     const blockPreview : ManifestBlockEditorCustomView = {
       alias: 'Kraftvaerk.Umbraco.Headless.BlockPreview',
@@ -94,11 +95,25 @@ async function fetchEnabledBlocks(base: string, token: string): Promise<Headless
 
     const data = await client.kraftvaerkUmbracoHeadlessBlockpreviewApiV1.optionsApiV1KraftvaerkUmbracoHeadlessBlockpreview();
 
-    console.log('Enabled block aliases:', data);
+    console.debug('Headless BlockPreview: enabled blocks', data);
     return data;
   } catch (error) {
-    console.error('Fetch failed:', error);
+    console.error('Headless BlockPreview: could not load enabled blocks', error);
     return []
+  }
+}
+
+/** Reads runtime settings (queue size etc.) from the backend. Older backends without the endpoint keep the defaults. */
+async function applyClientSettings(base: string, token: string) {
+  try {
+    const client = new BlockPreviewClient({ BASE: base, TOKEN: token });
+    const settings = await client.kraftvaerkUmbracoHeadlessBlockpreviewApiV1.getApiV1KraftvaerkUmbracoHeadlessBlockpreviewSettings();
+    if (settings?.maxConcurrentPreviews) {
+      HeadlessPreviewElement.queue.maxConcurrent = settings.maxConcurrentPreviews;
+    }
+    console.debug('Headless BlockPreview: settings', settings);
+  } catch (error) {
+    console.debug('Headless BlockPreview: settings endpoint unavailable, using defaults', error);
   }
 }
 

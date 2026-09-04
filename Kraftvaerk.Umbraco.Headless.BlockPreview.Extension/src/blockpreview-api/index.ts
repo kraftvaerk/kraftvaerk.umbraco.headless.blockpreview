@@ -10,6 +10,7 @@ export { CancelablePromise, CancelError } from './core/CancelablePromise';
 export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
+export type { BlockPreviewClientSettings } from './models/BlockPreviewClientSettings';
 export type { BlockPreviewFrontendModel } from './models/BlockPreviewFrontendModel';
 export type { BlockPreviewResponse } from './models/BlockPreviewResponse';
 export { EventMessageTypeModel } from './models/EventMessageTypeModel';

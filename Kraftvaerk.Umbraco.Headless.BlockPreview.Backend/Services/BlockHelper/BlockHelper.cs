@@ -1,3 +1,4 @@
+using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Exceptions;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -6,7 +7,6 @@ using Umbraco.Cms.Core.DeliveryApi;
 using Umbraco.Cms.Core.Models.DeliveryApi;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Services;
-using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.BlockPreviewSettings;
 
 namespace Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.BlockHelper;
 
@@ -15,65 +15,88 @@ public class BlockHelper : IBlockHelper
     private readonly IApiElementBuilder _apiElementBuilder;
     private readonly IContentTypeService _contentTypeService;
     private readonly IPublishedContentTypeFactory _publishedContentTypeFactory;
-    private readonly IBlockPreviewSettings _settings;
     private readonly ILogger<BlockHelper> _logger;
 
     public BlockHelper(
         IApiElementBuilder apiElementBuilder,
         IContentTypeService contentTypeService,
         IPublishedContentTypeFactory publishedContentTypeFactory,
-        IBlockPreviewSettings settings,
         ILogger<BlockHelper> logger)
     {
         _apiElementBuilder = apiElementBuilder;
         _contentTypeService = contentTypeService;
         _publishedContentTypeFactory = publishedContentTypeFactory;
-        _settings = settings;
         _logger = logger;
     }
 
     public (IApiElement? apiElement, Dictionary<string, object?> rawData) BlockContent(string? content, string? contentTypeGuidString)
     {
-        if (string.IsNullOrEmpty(content) || string.IsNullOrEmpty(contentTypeGuidString)) return Fail();
+        var element = BuildElement(content, contentTypeGuidString);
+        if (element == null) return (null, []);
 
-        var debug = _settings.Options(null, null, null).Debug;
-        var contentAsJObject = JObject.Parse(content);
-        var guid = Guid.Parse(contentTypeGuidString);
-        var contentType = _contentTypeService.Get(guid);
+        return (BuildApiElement(element), element.RawData);
+    }
+
+    public BlockElement? BuildElement(string? content, string? contentTypeGuidString, Guid? elementKey = null)
+    {
+        if (string.IsNullOrWhiteSpace(content) || string.IsNullOrWhiteSpace(contentTypeGuidString))
+            return null;
+
+        if (!Guid.TryParse(contentTypeGuidString, out var contentTypeKey))
+            throw new BlockPreviewException($"'{contentTypeGuidString}' is not a valid content type key.", 400);
+
+        var contentType = _contentTypeService.Get(contentTypeKey)
+            ?? throw new BlockPreviewException($"Content type {contentTypeKey} was not found.", 400);
+
+        JObject contentAsJObject;
+        try
+        {
+            contentAsJObject = JObject.Parse(content);
+        }
+        catch (JsonReaderException e)
+        {
+            throw new BlockPreviewException($"Block data for '{contentType.Alias}' is not valid JSON: {e.Message}", 400, e);
+        }
 
         PopulateEditorAlias(contentAsJObject, contentType);
         contentAsJObject = ReNestJson(contentAsJObject);
         content = contentAsJObject.ToString(Formatting.None);
 
-        if (contentType == null)
-        {
-            if (debug) _logger.LogWarning("BlockPreview Debug: Content type {Guid} not found in Umbraco.", guid);
-            return Fail();
-        }
-
         var publishedContentType = _publishedContentTypeFactory.CreateContentType(contentType);
 
-        var data = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(content);
-        if (data == null)
-        {
-            if (debug) _logger.LogWarning("BlockPreview Debug: Failed to deserialize content JSON for content type {Guid}.", guid);
-            return Fail();
-        }
+        var data = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(content)
+            ?? throw new BlockPreviewException($"Block data for '{contentType.Alias}' could not be deserialized.", 400);
 
         CleanupKeys(publishedContentType, data);
 
         try
         {
             var deserializedData = ConvertJsonElement(data);
-            var publishedElement = PublishedElementProxy.Create(publishedContentType, Guid.NewGuid(), deserializedData);
-            var apiElement = _apiElementBuilder.Build(publishedElement);
-            PatchNullPropertiesFromRawData(apiElement, contentAsJObject);
-            return (apiElement, deserializedData);
+            var publishedElement = PublishedElementProxy.Create(publishedContentType, elementKey ?? Guid.NewGuid(), deserializedData);
+            return new BlockElement
+            {
+                Element = publishedElement,
+                RawData = deserializedData,
+                RawJson = contentAsJObject,
+            };
         }
         catch (Exception e)
         {
-            if (debug) _logger.LogWarning(e, "BlockPreview Debug: Exception building IApiElement for content type {Guid}.", guid);
-            return Fail();
+            throw new BlockPreviewException($"Could not create an element of type '{contentType.Alias}': {e.Message}", 500, e);
+        }
+    }
+
+    public IApiElement BuildApiElement(BlockElement element)
+    {
+        try
+        {
+            var apiElement = _apiElementBuilder.Build(element.Element);
+            PatchNullPropertiesFromRawData(apiElement, element.RawJson);
+            return apiElement;
+        }
+        catch (Exception e)
+        {
+            throw new BlockPreviewException($"Could not build the Delivery API model for '{element.Element.ContentType.Alias}': {e.Message}", 500, e);
         }
     }
 
@@ -100,7 +123,7 @@ public class BlockHelper : IBlockHelper
             if (prop?.EditorAlias == "Umbraco.MultiNodeTreePicker")
             {
                 var originalValue = data[key]?.ToString();
-                if (!string.IsNullOrWhiteSpace(originalValue))
+                if (!string.IsNullOrWhiteSpace(originalValue) && originalValue.TrimStart().StartsWith('['))
                 {
                     var deserialized = System.Text.Json.JsonSerializer.Deserialize<List<Dictionary<string, string>>>(originalValue);
                     if (deserialized != null)
@@ -295,7 +318,4 @@ public class BlockHelper : IBlockHelper
         JsonValueKind.Null => null,
         _ => element.GetRawText(),
     };
-
-    private static (IApiElement? apiElement, Dictionary<string, object?> rawData) Fail() =>
-        (null, []);
 }

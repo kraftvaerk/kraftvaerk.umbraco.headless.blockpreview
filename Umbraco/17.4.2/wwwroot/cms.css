@@ -1,0 +1,23 @@
+/* Sample site stylesheet, referenced by HeadlessBlockPreview:Template and HeadlessBlockPreview:Stylesheets. */
+:root {
+  --brand: #006eff;
+  --brand-text: var(--brand);
+  --spacing: 16px;
+}
+
+html, body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+}
+
+body.dark { background: #111; }
+
+.test-block {
+  padding: var(--spacing);
+  color: var(--brand-text, black);
+  border: 1px solid var(--missing-variable, #ccc);
+}
+
+@media (min-width: 600px) {
+  body { font-size: 18px; }
+}
