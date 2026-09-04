@@ -15,5 +15,10 @@ namespace Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Models
         /// Key of the document being edited, or <see cref="Guid.Empty"/> when unknown.
         /// </summary>
         public Guid Key { get; set; }
+
+        /// <summary>
+        /// Culture the block is being edited in, so the frontend can render language-specific markup.
+        /// </summary>
+        public string? Culture { get; set; }
     }
 }

@@ -7,6 +7,7 @@ using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Options;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.BlockHelper;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.BlockPreviewCache;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.BlockPreviewSettings;
+using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.ContextCulture;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.MvcRenderer;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.PreviewDB;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.RequestHelper;
@@ -41,6 +42,7 @@ public class Preview : Controller
     private readonly IBlockPreviewCache _cache;
     private readonly IUmbracoContextAccessor _umbracoContextAccessor;
     private readonly IPublishedUrlProvider _publishedUrlProvider;
+    private readonly IContextCultureService _contextCulture;
     private readonly ILogger<Preview> _logger;
 
     public Preview(
@@ -52,8 +54,10 @@ public class Preview : Controller
         IBlockPreviewCache cache,
         IUmbracoContextAccessor umbracoContextAccessor,
         IPublishedUrlProvider publishedUrlProvider,
+        IContextCultureService contextCulture,
         ILogger<Preview> logger)
     {
+        _contextCulture = contextCulture;
         _blockHelper = blockHelper;
         _requestHelper = requestHelper;
         _mvcRenderer = mvcRenderer;
@@ -97,6 +101,10 @@ public class Preview : Controller
             options = _settings.Options(pageId, preview.Culture, resolvedDomain);
             target = options.UseMVC ? "mvc" : $"{options.Host}{options.Api}";
 
+            // Must happen before any property value is resolved, otherwise nested blocks and dictionary values
+            // come out in the default language on multilanguage sites.
+            _contextCulture.SetCulture(preview.Culture);
+
             Guid? contentKey = Guid.TryParse(preview.ContentKey, out var parsedContentKey) && parsedContentKey != Guid.Empty ? parsedContentKey : null;
 
             var contentElement = _blockHelper.BuildElement(preview.Content, preview.ContentType, contentKey)
@@ -127,6 +135,7 @@ public class Preview : Controller
                     RawContent = contentElement.RawData,
                     RawSettings = settingsElement?.RawData ?? [],
                     Key = pageId ?? Guid.Empty,
+                    Culture = preview.Culture,
                 };
 
                 html = await _requestHelper.Post(model, options, HttpContext.RequestAborted);
