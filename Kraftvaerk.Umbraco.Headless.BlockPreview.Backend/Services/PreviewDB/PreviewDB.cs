@@ -4,10 +4,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Models;
-using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.PreviewDB;
-using Kraftvaerk.Umbraco.Headless.Blockpreview.Backend.PackageConstants;
+using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.PackageConstants;
 
-namespace Kraftvaerk.Umbraco.Headless.Blockpreview.Backend.Services.PreviewDB;
+namespace Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.PreviewDB;
 
 public class PreviewDB : IPreviewDB
 {
@@ -78,12 +77,33 @@ public class PreviewDB : IPreviewDB
         {
             // Write to a sibling temp file and swap it in, so a reader never sees a half-written file.
             var tempPath = _filePath + "." + Guid.NewGuid().ToString("N") + ".tmp";
-            WithRetry(() =>
+            try
             {
                 File.WriteAllText(tempPath, json);
-                File.Move(tempPath, _filePath, overwrite: true);
-                return true;
-            });
+                try
+                {
+                    WithRetry(() =>
+                    {
+                        File.Move(tempPath, _filePath, overwrite: true);
+                        return true;
+                    });
+                }
+                catch (Exception e) when (e is IOException or UnauthorizedAccessException)
+                {
+                    // Windows can refuse to replace a file that another process (indexer, antivirus, an IDE) still
+                    // holds open. Losing atomicity beats losing the toggle, so write in place as a last resort.
+                    _logger.LogDebug(e, "BlockPreview: could not swap the state file into place, writing it directly.");
+                    WithRetry(() =>
+                    {
+                        File.WriteAllText(_filePath, json);
+                        return true;
+                    });
+                }
+            }
+            finally
+            {
+                try { File.Delete(tempPath); } catch { /* already moved or never written */ }
+            }
 
             _cache.Set(CacheKey, state);
         }
@@ -98,7 +118,7 @@ public class PreviewDB : IPreviewDB
             {
                 return action();
             }
-            catch (IOException e) when (attempt < attempts)
+            catch (Exception e) when (attempt < attempts && e is IOException or UnauthorizedAccessException)
             {
                 _logger.LogDebug(e, "BlockPreview: state file busy, retrying ({Attempt}/{Attempts}).", attempt, attempts);
                 Thread.Sleep(50 * attempt);

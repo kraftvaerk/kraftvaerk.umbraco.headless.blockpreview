@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Exceptions;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Models;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Options;
-using Kraftvaerk.Umbraco.Headless.Blockpreview.Backend.PackageConstants;
+using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.PackageConstants;
 
 namespace Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.RequestHelper;
 public class RequestHelper : IRequestHelper

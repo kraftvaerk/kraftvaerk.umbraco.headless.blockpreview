@@ -1,4 +1,4 @@
-using Kraftvaerk.Umbraco.Headless.Blockpreview.Backend.PackageConstants;
+using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.PackageConstants;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.PreviewStylesheets;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

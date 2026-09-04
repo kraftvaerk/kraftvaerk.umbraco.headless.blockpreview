@@ -4,13 +4,13 @@ using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.BlockHelper;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.BlockPreviewCache;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.BlockPreviewSettings;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.ContextCulture;
+using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.DomainResolver;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.MvcRenderer;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.PreviewDB;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.PreviewStylesheets;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Services.RequestHelper;
 using Umbraco.Cms.Core.Composing;
-using Kraftvaerk.Umbraco.Headless.Blockpreview.Backend.PackageConstants;
-using Kraftvaerk.Umbraco.Headless.Blockpreview.Backend.Services.PreviewDB;
+using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.PackageConstants;
 
 namespace Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Composers
 {
@@ -36,6 +36,7 @@ namespace Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Composers
 
             builder.Services.AddTransient<IBlockPreviewSettings, BlockPreviewSettings>();
             builder.Services.AddScoped<IContextCultureService, ContextCultureService>();
+            builder.Services.AddTransient<IPreviewDomainResolver, PreviewDomainResolver>();
         }
     }
 }

@@ -281,6 +281,9 @@ I develop up against my own headless project found at [kasparboelkjeldsen/kjelds
 - Frontend timeout is configurable (`TimeoutSeconds`, default raised from 10 to 30) and cancelled when the editor moves on.
 - The backoffice queues preview requests (`MaxConcurrentPreviews`, default 6), cancels superseded ones, and no longer double-fires the first request.
 - The preview request now carries `editor`, `contentKey`, `columnSpan` and `rowSpan`.
+- **Multilanguage fixes** (#4, #5, #6, by Mark Brunner and Mads Mørch Schou): the culture being edited is applied to the variation and thread context before any value is resolved, so nested blocks render in the right language; the backend model sent to the frontend carries `culture`; block labels render through UFM (`{umbValue:alias}`) and icon values with extra classes resolve correctly.
+- Block data normalisation (editor shape → stored shape) now lives in `BlockValueNormalizer`, a pure class with unit tests. Nested block values whose entries lack an `editorAlias` are resolved through their content type, so multi node tree pickers inside nested blocks convert correctly.
+- New `Kraftvaerk.Umbraco.Headless.BlockPreview.Tests` project (xUnit) with block JSON captured from the sample site. Run with `dotnet test`; the backend's npm build is skipped for test runs via `-p:BuildExtension=false`.
 
 ## License & Contributing
 

@@ -1,0 +1,82 @@
+{
+  "contentData": [
+    {
+      "contentTypeKey": "28fd7acc-0f3a-4228-bcdc-bdc86e2ee7a5",
+      "key": "c1c1ee35-6965-4e46-acfb-50107a7de528",
+      "udi": null,
+      "values": [
+        {
+          "alias": "dropDown",
+          "culture": null,
+          "editorAlias": null,
+          "segment": null,
+          "value": [
+            "s1"
+          ]
+        },
+        {
+          "alias": "nested",
+          "culture": null,
+          "editorAlias": null,
+          "segment": null,
+          "value": {
+            "contentData": [
+              {
+                "contentTypeKey": "28fd7acc-0f3a-4228-bcdc-bdc86e2ee7a5",
+                "key": "a66f3ff5-ecd0-4503-aabc-fe4f48ad8f61",
+                "udi": null,
+                "values": [
+                  {
+                    "alias": "dropDown",
+                    "culture": null,
+                    "editorAlias": null,
+                    "segment": null,
+                    "value": [
+                      "s2"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "settingsData": [],
+            "expose": [
+              {
+                "contentKey": "a66f3ff5-ecd0-4503-aabc-fe4f48ad8f61",
+                "culture": null,
+                "segment": null
+              }
+            ],
+            "Layout": {
+              "Umbraco.BlockList": [
+                {
+                  "contentKey": "a66f3ff5-ecd0-4503-aabc-fe4f48ad8f61",
+                  "contentUdi": null,
+                  "settingsKey": null,
+                  "settingsUdi": null
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "settingsData": [],
+  "expose": [
+    {
+      "contentKey": "c1c1ee35-6965-4e46-acfb-50107a7de528",
+      "culture": null,
+      "segment": null
+    }
+  ],
+  "Layout": {
+    "Umbraco.BlockList": [
+      {
+        "contentKey": "c1c1ee35-6965-4e46-acfb-50107a7de528",
+        "contentUdi": null,
+        "settingsKey": null,
+        "settingsUdi": null
+      }
+    ]
+  }
+}

@@ -41,7 +41,8 @@
 	  <!-- Include the .props file in the buildTransitive folder so it's automatically imported by consumers -->
   </ItemGroup>
 
-  <Target Name="BuildExtension" AfterTargets="Build">
+  <!-- Pass -p:BuildExtension=false to skip the npm build (test runs, CI without node). -->
+  <Target Name="BuildExtension" AfterTargets="Build" Condition="'$(BuildExtension)' != 'false'">
     <Exec Command="npm run build" WorkingDirectory="$(MSBuildProjectDirectory)\..\Kraftvaerk.Umbraco.Headless.BlockPreview.Extension" />
   </Target>
 

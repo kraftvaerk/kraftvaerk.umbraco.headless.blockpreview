@@ -1,7 +1,7 @@
 using System.Text;
 using System.Text.RegularExpressions;
 using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.Options;
-using Kraftvaerk.Umbraco.Headless.Blockpreview.Backend.PackageConstants;
+using Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.PackageConstants;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;

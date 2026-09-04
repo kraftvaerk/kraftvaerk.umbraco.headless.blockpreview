@@ -52,7 +52,6 @@ public class MvcBlockRenderer : IMvcBlockRenderer
     private readonly IUmbracoHelperAccessor _umbracoHelperAccessor;
     private readonly IPublishedRouter _publishedRouter;
     private readonly IPublishedUrlProvider _publishedUrlProvider;
-    private readonly IVariationContextAccessor _variationContextAccessor;
     private readonly ILogger<MvcBlockRenderer> _logger;
 
     public MvcBlockRenderer(
@@ -65,7 +64,6 @@ public class MvcBlockRenderer : IMvcBlockRenderer
         IUmbracoHelperAccessor umbracoHelperAccessor,
         IPublishedRouter publishedRouter,
         IPublishedUrlProvider publishedUrlProvider,
-        IVariationContextAccessor variationContextAccessor,
         ILogger<MvcBlockRenderer> logger)
     {
         _httpContextAccessor = httpContextAccessor;
@@ -77,7 +75,6 @@ public class MvcBlockRenderer : IMvcBlockRenderer
         _umbracoHelperAccessor = umbracoHelperAccessor;
         _publishedRouter = publishedRouter;
         _publishedUrlProvider = publishedUrlProvider;
-        _variationContextAccessor = variationContextAccessor;
         _logger = logger;
     }
 
@@ -252,18 +249,7 @@ public class MvcBlockRenderer : IMvcBlockRenderer
     /// </summary>
     private async Task PrepareUmbracoContextAsync(MvcBlockRenderRequest request, HttpContext httpContext)
     {
-        if (!string.IsNullOrWhiteSpace(request.Culture))
-        {
-            try
-            {
-                _variationContextAccessor.VariationContext = new VariationContext(request.Culture);
-            }
-            catch (Exception e)
-            {
-                _logger.LogDebug(e, "BlockPreview: could not set variation context to {Culture}.", request.Culture);
-            }
-        }
-
+        // The variation context (culture) is set by IContextCultureService before rendering starts.
         if (request.PageKey is not { } pageKey || pageKey == Guid.Empty)
             return;
 

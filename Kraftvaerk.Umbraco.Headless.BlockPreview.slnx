@@ -4,6 +4,7 @@
     <Project Path="Umbraco/18.0.0-rc2/Umbraco-18.0.0-rc3.csproj" />
   </Folder>
   <Project Path="Kraftvaerk.Umbraco.Headless.BlockPreview.Backend/Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.csproj" />
+  <Project Path="Kraftvaerk.Umbraco.Headless.BlockPreview.Tests/Kraftvaerk.Umbraco.Headless.BlockPreview.Tests.csproj" />
   <Project Path="Kraftvaerk.Umbraco.Headless.BlockPreview.Extension/Kraftvaerk.Umbraco.Headless.BlockPreview.Extension.esproj">
     <Build />
     <Deploy />

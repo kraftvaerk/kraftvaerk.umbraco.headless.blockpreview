@@ -26,7 +26,8 @@ public sealed class ContextCultureService : IContextCultureService
         CultureInfo cultureInfo;
         try
         {
-            cultureInfo = CultureInfo.GetCultureInfo(culture);
+            // predefinedOnly: ICU happily invents a culture for any well-formed name, which is not what we want here.
+            cultureInfo = CultureInfo.GetCultureInfo(culture, predefinedOnly: true);
         }
         catch (CultureNotFoundException e)
         {

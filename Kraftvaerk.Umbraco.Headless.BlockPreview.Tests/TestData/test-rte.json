@@ -1,0 +1,74 @@
+{
+  "blocks": {
+    "contentData": [
+      {
+        "contentTypeKey": "fb1c626d-b539-49be-9295-412f1bfe462a",
+        "key": "d7a254bc-5c73-4f85-b2f9-a76aba234eb2",
+        "udi": null,
+        "values": [
+          {
+            "alias": "email",
+            "culture": null,
+            "editorAlias": null,
+            "segment": null,
+            "value": "kaspar@kjeldsen.dk"
+          },
+          {
+            "alias": "contentPicker",
+            "culture": null,
+            "editorAlias": null,
+            "segment": null,
+            "value": "umb://document/df0c2388df3c4126bc32640f87a66292"
+          },
+          {
+            "alias": "decimal",
+            "culture": null,
+            "editorAlias": null,
+            "segment": null,
+            "value": "11"
+          },
+          {
+            "alias": "numeric",
+            "culture": null,
+            "editorAlias": null,
+            "segment": null,
+            "value": "0"
+          },
+          {
+            "alias": "slider",
+            "culture": null,
+            "editorAlias": null,
+            "segment": null,
+            "value": "0"
+          },
+          {
+            "alias": "toggle",
+            "culture": null,
+            "editorAlias": null,
+            "segment": null,
+            "value": "0"
+          }
+        ]
+      }
+    ],
+    "settingsData": [],
+    "expose": [
+      {
+        "contentKey": "d7a254bc-5c73-4f85-b2f9-a76aba234eb2",
+        "culture": null,
+        "segment": null
+      }
+    ],
+    "Layout": {
+      "Umbraco.RichText": [
+        {
+          "contentKey": "d7a254bc-5c73-4f85-b2f9-a76aba234eb2",
+          "contentUdi": null,
+          "settingsKey": null,
+          "settingsUdi": null
+        }
+      ]
+    }
+  },
+  "markup": "\u003Cp\u003EBlock Test\u003C/p\u003E\u003Cumb-rte-block data-content-key=\u0022d7a254bc-5c73-4f85-b2f9-a76aba234eb2\u0022\u003E\u003C/umb-rte-block\u003E\u003Cp\u003E\u003C/p\u003E"
+}

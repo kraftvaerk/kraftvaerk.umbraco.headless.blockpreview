@@ -1,4 +1,4 @@
-namespace Kraftvaerk.Umbraco.Headless.Blockpreview.Backend.PackageConstants;
+namespace Kraftvaerk.Umbraco.Headless.BlockPreview.Backend.PackageConstants;
 public static class BlockPreviewConstants
 {
     public const string PackageName = "Kraftvaerk.Umbraco.Headless.Blockpreview";
